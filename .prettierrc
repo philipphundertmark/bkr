@@ -1,3 +1,6 @@
 {
+  "importOrder": ["<THIRD_PARTY_MODULES>", "^@bkr/(.*)$", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
   "singleQuote": true
 }
