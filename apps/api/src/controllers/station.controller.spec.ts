@@ -1,26 +1,16 @@
 import express from 'express';
 import request from 'supertest';
 
-import { MockType } from '../mock-type';
 import { StationService } from '../services/station.service';
 import { mockStationService } from '../services/station.service.mock';
 import { StationController } from './station.controller';
 
+const app = express();
+app.use(StationController(mockStationService as unknown as StationService));
+
 describe('StationController', () => {
-  // App
-  let app: express.Express;
-
-  // Dependencies
-  let stationServiceMock: MockType<StationService>;
-
-  beforeEach(() => {
-    stationServiceMock = mockStationService();
-
-    app = express();
-    app.use(StationController(stationServiceMock as unknown as StationService));
-  });
-
-  it('works', (done) => {
-    request(app).get('/not-found').expect(404, done);
+  it('works', async () => {
+    const response = await request(app).get('/not-found');
+    expect(response.status).toEqual(404);
   });
 });
