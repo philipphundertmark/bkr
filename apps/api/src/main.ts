@@ -1,20 +1,41 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
+import cors from 'cors';
 import express from 'express';
-import * as path from 'path';
+import helmet from 'helmet';
+import http from 'http';
+
+import { config } from './config';
+import { StationController } from './controllers/station.controller';
+import { TeamController } from './controllers/team.controller';
+import { TokenController } from './controllers/token.controller';
+import { prisma } from './prisma';
+import { StationService } from './services/station.service';
+import { TeamService } from './services/team.service';
+import { TokenService } from './services/token.service';
 
 const app = express();
+const server = http.createServer(app);
 
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+// Services
+const stationService = new StationService(prisma);
+const teamService = new TeamService(prisma);
+const tokenService = new TokenService();
 
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to api!' });
-});
+// Middleware
+app.use(
+  cors({
+    origin: config.ORIGIN,
+  })
+);
+app.use(express.json());
+app.use(helmet());
+
+// Routes
+app.use(StationController(stationService));
+app.use(TeamController(teamService));
+app.use(TokenController(tokenService, stationService));
 
 const port = process.env.PORT || 3333;
-const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
+server.listen(port, () => {
+  console.log('Listening at http://localhost:' + port);
 });
 server.on('error', console.error);
