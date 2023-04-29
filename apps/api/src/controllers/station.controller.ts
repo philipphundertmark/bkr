@@ -8,128 +8,147 @@ import { badRequest, internalServerError } from '../errors';
 import { hasRole } from '../middleware/has-role';
 import { CreateStationSchema, UpdateStationSchema } from '../schemas';
 import { StationService } from '../services/station.service';
+import { handler } from './handler';
 
 export function StationController(stationService: StationService): Router {
   const router = Router();
 
-  router.post('/stations', hasRole(Role.ADMIN), async (req, res) => {
-    const { value, error } = CreateStationSchema.validate(req.body);
-    if (error) {
-      return badRequest(res, error.message);
-    }
+  router.post(
+    '/stations',
+    hasRole(Role.ADMIN),
+    handler(async (req, res) => {
+      const { value, error } = CreateStationSchema.validate(req.body);
+      if (error) {
+        return badRequest(res, error.message);
+      }
 
-    const { name, number, members, code } = value;
+      const { name, number, members, code } = value;
 
-    let station: SetOptional<Station, 'code'> | null;
+      let station: SetOptional<Station, 'code'> | null;
 
-    try {
-      station = await stationService.getStationByNumber(number);
-    } catch (err) {
-      console.error(err);
-      return internalServerError(res);
-    }
+      try {
+        station = await stationService.getStationByNumber(number);
+      } catch (err) {
+        console.error(err);
+        return internalServerError(res);
+      }
 
-    if (station !== null) {
-      return badRequest(res, '"number" must be unique');
-    }
+      if (station !== null) {
+        return badRequest(res, '"number" must be unique');
+      }
 
-    try {
-      station = await stationService.getStationByCode(code);
-    } catch (err) {
-      console.error(err);
-      return internalServerError(res);
-    }
+      try {
+        station = await stationService.getStationByCode(code);
+      } catch (err) {
+        console.error(err);
+        return internalServerError(res);
+      }
 
-    if (station !== null) {
-      return badRequest(res, '"code" must be unique');
-    }
+      if (station !== null) {
+        return badRequest(res, '"code" must be unique');
+      }
 
-    try {
-      station = await stationService.createStation(name, number, members, code);
-    } catch (err) {
-      console.error(err);
-      return internalServerError(res);
-    }
+      try {
+        station = await stationService.createStation(
+          name,
+          number,
+          members,
+          code
+        );
+      } catch (err) {
+        console.error(err);
+        return internalServerError(res);
+      }
 
-    delete station.code;
+      delete station.code;
 
-    res.status(201);
-    res.json(station);
-  });
+      res.status(201);
+      res.json(station);
+    })
+  );
 
-  router.get('/stations', async (req, res) => {
-    let stations: SetOptional<Station, 'code'>[];
+  router.get(
+    '/stations',
+    handler(async (req, res) => {
+      throw new Error('Test');
 
-    try {
-      stations = await stationService.getAll();
-    } catch (err) {
-      console.error(err);
-      return internalServerError(res);
-    }
+      let stations: SetOptional<Station, 'code'>[];
 
-    stations.forEach((station) => delete station.code);
+      try {
+        stations = await stationService.getAll();
+      } catch (err) {
+        console.error(err);
+        return internalServerError(res);
+      }
 
-    res.json(stations);
-  });
+      stations.forEach((station) => delete station.code);
 
-  router.put('/stations/:stationId', hasRole(Role.ADMIN), async (req, res) => {
-    const stationId = req.params.stationId;
+      res.json(stations);
+    })
+  );
 
-    const { value, error } = UpdateStationSchema.validate(req.body);
-    if (error) {
-      return badRequest(res, error.message);
-    }
+  router.put(
+    '/stations/:stationId',
+    hasRole(Role.ADMIN),
+    handler(async (req, res) => {
+      const stationId = req.params.stationId;
 
-    const { name, number, members, code } = value;
+      const { value, error } = UpdateStationSchema.validate(req.body);
+      if (error) {
+        return badRequest(res, error.message);
+      }
 
-    let station: SetOptional<Station, 'code'> | null;
+      const { name, number, members, code } = value;
 
-    try {
-      station = await stationService.getStationById(stationId);
-    } catch (err) {
-      console.error(err);
-      return internalServerError(res);
-    }
+      let station: SetOptional<Station, 'code'> | null;
 
-    if (station === null) {
-      return badRequest(res, `Station ${stationId} does not exist`);
-    }
+      try {
+        station = await stationService.getStationById(stationId);
+      } catch (err) {
+        console.error(err);
+        return internalServerError(res);
+      }
 
-    try {
-      station =
-        typeof code !== 'undefined'
-          ? await stationService.getStationByCode(code)
-          : null;
-    } catch (err) {
-      console.error(err);
-      return internalServerError(res);
-    }
+      if (station === null) {
+        return badRequest(res, `Station ${stationId} does not exist`);
+      }
 
-    if (typeof code !== 'undefined' && station !== null) {
-      return badRequest(res, '"code" must be unique');
-    }
+      try {
+        station =
+          typeof code !== 'undefined'
+            ? await stationService.getStationByCode(code)
+            : null;
+      } catch (err) {
+        console.error(err);
+        return internalServerError(res);
+      }
 
-    try {
-      station = await stationService.updateStation(stationId, {
-        name: name,
-        number: number,
-        code: code,
-        members: members,
-      });
-    } catch (err) {
-      console.error(err);
-      return internalServerError(res);
-    }
+      if (typeof code !== 'undefined' && station !== null) {
+        return badRequest(res, '"code" must be unique');
+      }
 
-    delete station.code;
+      try {
+        station = await stationService.updateStation(stationId, {
+          name: name,
+          number: number,
+          code: code,
+          members: members,
+        });
+      } catch (err) {
+        console.error(err);
+        return internalServerError(res);
+      }
 
-    res.json(station);
-  });
+      delete station.code;
+
+      res.json(station);
+    })
+  );
 
   router.delete(
     '/stations/:stationId',
     hasRole(Role.ADMIN),
-    async (req, res) => {
+    handler(async (req, res) => {
       const stationId = req.params.stationId;
 
       let station: Station | null;
@@ -153,7 +172,7 @@ export function StationController(stationService: StationService): Router {
       }
 
       res.end();
-    }
+    })
   );
 
   return router;

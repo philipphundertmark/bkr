@@ -48,6 +48,16 @@ app.use(StationController(stationService));
 app.use(TeamController(teamService));
 app.use(TokenController(tokenService, stationService));
 
+// Error handling
+app.use((err: Error, req: express.Request, res: express.Response) => {
+  console.log(err);
+
+  res.status(500);
+  res.json({
+    error: 'Internal Server Error',
+  });
+});
+
 const port = process.env.PORT || 3333;
 server.listen(port, () => {
   console.log('Listening at http://localhost:' + port);
