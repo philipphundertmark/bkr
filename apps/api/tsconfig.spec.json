@@ -7,8 +7,10 @@
   },
   "include": [
     "jest.config.ts",
-    "src/**/*.test.ts",
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts"
+    "./src/mock-type.ts",
+    "**/*.mock.ts",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/*.d.ts"
   ]
 }
