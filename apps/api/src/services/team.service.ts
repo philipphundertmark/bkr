@@ -33,6 +33,14 @@ export class TeamService {
     });
   }
 
+  getTeamByNumber(number: number): Promise<Team | null> {
+    return this.prisma.team.findUnique({
+      where: {
+        number: number,
+      },
+    });
+  }
+
   updateTeam(
     id: string,
     updates: {

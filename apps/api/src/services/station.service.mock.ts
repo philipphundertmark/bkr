@@ -18,6 +18,9 @@ export function mockStationService(): MockType<StationService> {
     getStationById: jest.fn(async () => {
       throw new Error('Not implemented');
     }),
+    getStationByNumber: jest.fn(async () => {
+      throw new Error('Not implemented');
+    }),
     updateStation: jest.fn(async () => {
       throw new Error('Not implemented');
     }),

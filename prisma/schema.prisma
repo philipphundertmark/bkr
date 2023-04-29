@@ -13,7 +13,7 @@ model Team {
   updatedAt DateTime @updatedAt
 
   name    String
-  number  Int
+  number  Int      @unique
   members String[]
 
   startedAt  DateTime?
@@ -26,7 +26,7 @@ model Station {
   updatedAt DateTime @updatedAt
 
   name    String
-  number  Int
+  number  Int      @unique
   members String[]
 
   code String @unique

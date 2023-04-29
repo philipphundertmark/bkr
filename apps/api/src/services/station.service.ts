@@ -39,6 +39,14 @@ export class StationService {
     });
   }
 
+  getStationByNumber(number: number): Promise<Station | null> {
+    return this.prisma.station.findUnique({
+      where: {
+        number: number,
+      },
+    });
+  }
+
   getStationByCode(code: string): Promise<Station | null> {
     return this.prisma.station.findUnique({
       where: {

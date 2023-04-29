@@ -6,7 +6,7 @@ import { config } from '../config';
 
 export class TokenService {
   createToken(
-    sub: number,
+    sub: string,
     username: string,
     role: Role,
     expiresIn: string | number = '1d'

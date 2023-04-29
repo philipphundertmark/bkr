@@ -15,6 +15,9 @@ export function mockTeamService(): MockType<TeamService> {
     getTeamById: jest.fn(async () => {
       throw new Error('Not implemented');
     }),
+    getTeamByNumber: jest.fn(async () => {
+      throw new Error('Not implemented');
+    }),
     updateTeam: jest.fn(async () => {
       throw new Error('Not implemented');
     }),
