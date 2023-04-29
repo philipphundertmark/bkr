@@ -32,13 +32,9 @@ export function hasRole(...roles: Role[]) {
       return unauthorized(res);
     }
 
-    const sub = parseInt(payload.sub ?? '');
+    const sub = payload.sub ?? '';
     const role = payload.role;
     const username = payload.username;
-
-    if (isNaN(sub)) {
-      return unauthorized(res);
-    }
 
     if (typeof role !== 'string' || !isRole(role) || !roles.includes(role)) {
       return unauthorized(res);

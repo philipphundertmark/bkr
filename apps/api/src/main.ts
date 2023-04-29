@@ -1,7 +1,9 @@
 import cors from 'cors';
 import express from 'express';
+import expressWinston from 'express-winston';
 import helmet from 'helmet';
 import http from 'http';
+import winston from 'winston';
 
 import { config } from './config';
 import { StationController } from './controllers/station.controller';
@@ -27,6 +29,18 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(
+  expressWinston.logger({
+    format: winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.colorize(),
+      winston.format.printf(({ level, message, timestamp }) => {
+        return `${timestamp} ${level}: ${message}`;
+      })
+    ),
+    transports: [new winston.transports.Console()],
+  })
+);
 app.use(helmet());
 
 // Routes
