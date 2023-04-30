@@ -9,7 +9,6 @@ export const handler = (handler: RequestHandler) => {
     try {
       await handler(req, res, next);
     } catch (err) {
-      console.error(err);
       next(err);
     }
   };
