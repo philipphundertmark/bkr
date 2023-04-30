@@ -2,9 +2,9 @@ import { Station } from '@prisma/client';
 import { Router } from 'express';
 import { SetOptional } from 'type-fest';
 
-import { Role } from '@bkr/api-interface';
+import { Role, isAdmin } from '@bkr/api-interface';
 
-import { badRequest, internalServerError } from '../errors';
+import { BadRequestException, InternalServerErrorException } from '../errors';
 import { hasRole } from '../middleware/has-role';
 import { CreateStationSchema, UpdateStationSchema } from '../schemas';
 import { StationService } from '../services/station.service';
@@ -18,9 +18,7 @@ export function StationController(stationService: StationService): Router {
     hasRole(Role.ADMIN),
     handler(async (req, res) => {
       const { value, error } = CreateStationSchema.validate(req.body);
-      if (error) {
-        return badRequest(res, error.message);
-      }
+      if (error) throw new BadRequestException(error.message);
 
       const { name, number, members, code } = value;
 
@@ -29,23 +27,21 @@ export function StationController(stationService: StationService): Router {
       try {
         station = await stationService.getStationByNumber(number);
       } catch (err) {
-        console.error(err);
-        return internalServerError(res);
+        throw new InternalServerErrorException();
       }
 
       if (station !== null) {
-        return badRequest(res, '"number" must be unique');
+        throw new BadRequestException('"number" must be unique');
       }
 
       try {
         station = await stationService.getStationByCode(code);
       } catch (err) {
-        console.error(err);
-        return internalServerError(res);
+        throw new InternalServerErrorException();
       }
 
       if (station !== null) {
-        return badRequest(res, '"code" must be unique');
+        throw new BadRequestException('"code" must be unique');
       }
 
       try {
@@ -56,11 +52,12 @@ export function StationController(stationService: StationService): Router {
           code
         );
       } catch (err) {
-        console.error(err);
-        return internalServerError(res);
+        throw new InternalServerErrorException();
       }
 
-      delete station.code;
+      if (!isAdmin(req.user)) {
+        delete station.code;
+      }
 
       res.status(201);
       res.json(station);
@@ -75,12 +72,14 @@ export function StationController(stationService: StationService): Router {
       try {
         stations = await stationService.getAll();
       } catch (err) {
-        console.error(err);
-        return internalServerError(res);
+        throw new InternalServerErrorException();
       }
 
-      stations.forEach((station) => delete station.code);
+      if (!isAdmin(req.user)) {
+        stations.forEach((station) => delete station.code);
+      }
 
+      res.status(200);
       res.json(stations);
     })
   );
@@ -92,9 +91,7 @@ export function StationController(stationService: StationService): Router {
       const stationId = req.params.stationId;
 
       const { value, error } = UpdateStationSchema.validate(req.body);
-      if (error) {
-        return badRequest(res, error.message);
-      }
+      if (error) throw new BadRequestException(error.message);
 
       const { name, number, members, code } = value;
 
@@ -103,12 +100,11 @@ export function StationController(stationService: StationService): Router {
       try {
         station = await stationService.getStationById(stationId);
       } catch (err) {
-        console.error(err);
-        return internalServerError(res);
+        throw new InternalServerErrorException();
       }
 
       if (station === null) {
-        return badRequest(res, `Station ${stationId} does not exist`);
+        throw new BadRequestException(`Station ${stationId} does not exist`);
       }
 
       try {
@@ -117,12 +113,11 @@ export function StationController(stationService: StationService): Router {
             ? await stationService.getStationByCode(code)
             : null;
       } catch (err) {
-        console.error(err);
-        return internalServerError(res);
+        throw new InternalServerErrorException();
       }
 
       if (typeof code !== 'undefined' && station !== null) {
-        return badRequest(res, '"code" must be unique');
+        throw new BadRequestException('"code" must be unique');
       }
 
       try {
@@ -133,12 +128,14 @@ export function StationController(stationService: StationService): Router {
           members: members,
         });
       } catch (err) {
-        console.error(err);
-        return internalServerError(res);
+        throw new InternalServerErrorException();
       }
 
-      delete station.code;
+      if (!isAdmin(req.user)) {
+        delete station.code;
+      }
 
+      res.status(200);
       res.json(station);
     })
   );
@@ -154,21 +151,20 @@ export function StationController(stationService: StationService): Router {
       try {
         station = await stationService.getStationById(stationId);
       } catch (err) {
-        console.error(err);
-        return internalServerError(res);
+        throw new InternalServerErrorException();
       }
 
       if (station === null) {
-        return badRequest(res, `Station ${stationId} does not exist`);
+        throw new BadRequestException(`Station ${stationId} does not exist`);
       }
 
       try {
         await stationService.deleteStation(stationId);
       } catch (err) {
-        console.error(err);
-        return internalServerError(res);
+        throw new InternalServerErrorException();
       }
 
+      res.status(200);
       res.end();
     })
   );

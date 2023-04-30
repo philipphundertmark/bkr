@@ -1,4 +1,4 @@
-import { JwtPayload } from '@bkr2022/api-interfaces';
+import { JwtPayload } from '@bkr/api-interface';
 
 declare global {
   namespace Express {

@@ -42,6 +42,8 @@ export const errorHandler: express.ErrorRequestHandler = (
   }
 
   if (err instanceof InternalServerErrorException || err instanceof Error) {
+    console.log(err.message);
+
     res.status(500);
     res.json({
       error: err.message,
@@ -49,6 +51,8 @@ export const errorHandler: express.ErrorRequestHandler = (
 
     return;
   }
+
+  console.log(err);
 
   res.status(500);
   res.json({

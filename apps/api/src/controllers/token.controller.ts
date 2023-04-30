@@ -4,7 +4,7 @@ import { Router } from 'express';
 import { Role } from '@bkr/api-interface';
 
 import { config } from '../config';
-import { badRequest, internalServerError } from '../errors';
+import { BadRequestException, InternalServerErrorException } from '../errors';
 import { CreateTokenSchema } from '../schemas';
 import { StationService } from '../services/station.service';
 import { TokenService } from '../services/token.service';
@@ -20,9 +20,7 @@ export function TokenController(
     '/token',
     handler(async (req, res) => {
       const { value, error } = CreateTokenSchema.validate(req.body);
-      if (error) {
-        return badRequest(res, error.message);
-      }
+      if (error) throw new BadRequestException(error.message);
 
       const { code } = value;
 
@@ -42,12 +40,11 @@ export function TokenController(
       try {
         station = await stationService.getStationByCode(code);
       } catch (err) {
-        console.error(err);
-        return internalServerError(res);
+        throw new InternalServerErrorException();
       }
 
       if (station === null) {
-        return badRequest(res, '"code" is invalid');
+        throw new BadRequestException('"code" is invalid');
       }
 
       const token = tokenService.createToken(
