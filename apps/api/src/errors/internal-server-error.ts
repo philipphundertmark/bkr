@@ -5,3 +5,9 @@ import { error } from './error';
 export function internalServerError(res: Response, message?: string): void {
   error(res, 500, message ?? 'Internal Server Error');
 }
+
+export class InternalServerErrorException extends Error {
+  constructor(message?: string) {
+    super(message ?? 'Internal Server Error');
+  }
+}
