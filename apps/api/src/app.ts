@@ -1,21 +1,19 @@
 import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
-import http from 'http';
 
 import { errorHandler } from './error-handler';
 import { logger } from './logger';
 
-export interface ServerConfig {
+export interface AppConfig {
   origin: string;
 }
 
-export const createServer = (
+export const createApp = (
   handlers: express.RequestHandler[],
-  config?: ServerConfig
-): http.Server => {
+  config?: AppConfig
+): express.Application => {
   const app = express();
-  const server = http.createServer(app);
 
   // Middleware
   app.use(cors({ origin: config?.origin }));
@@ -29,5 +27,5 @@ export const createServer = (
   // Error handler
   app.use(errorHandler);
 
-  return server;
+  return app;
 };
