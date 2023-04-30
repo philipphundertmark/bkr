@@ -70,8 +70,6 @@ export function StationController(stationService: StationService): Router {
   router.get(
     '/stations',
     handler(async (req, res) => {
-      throw new Error('Test');
-
       let stations: SetOptional<Station, 'code'>[];
 
       try {

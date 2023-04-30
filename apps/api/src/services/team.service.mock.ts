@@ -1,7 +1,7 @@
 import { MockType } from '../mock-type';
 import { TeamService } from './team.service';
 
-export const mockTeamService: MockType<TeamService> = {
+export const teamServiceMock: MockType<TeamService> = {
   createTeam: jest.fn(async () => {
     throw new Error('Not implemented');
   }),

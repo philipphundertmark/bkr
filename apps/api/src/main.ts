@@ -49,14 +49,22 @@ app.use(TeamController(teamService));
 app.use(TokenController(tokenService, stationService));
 
 // Error handling
-app.use((err: Error, req: express.Request, res: express.Response) => {
-  console.log(err);
+app.use(
+  (
+    err: Error,
+    req: express.Request,
+    res: express.Response,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    next: express.NextFunction
+  ) => {
+    console.log(err);
 
-  res.status(500);
-  res.json({
-    error: 'Internal Server Error',
-  });
-});
+    res.status(500);
+    res.json({
+      error: 'Internal Server Error',
+    });
+  }
+);
 
 const port = process.env.PORT || 3333;
 server.listen(port, () => {
