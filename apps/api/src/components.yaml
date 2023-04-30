@@ -72,7 +72,7 @@ components:
             type: string
             minLength: 3
         code:
-          description: The station code is only visible to admin users
+          description: The station code is only visible to admin users.
           type: string
           length: 6
 
@@ -95,6 +95,27 @@ components:
             type: string
             minLength: 3
           default: []
+        code:
+          type: string
+          length: 6
+
+    #-------------------------------
+    # Token schemas
+    #-------------------------------
+    Token:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+          format: jwt
+
+    CreateTokenSchema:
+      type: object
+      required:
+        - code
+      properties:
         code:
           type: string
           length: 6

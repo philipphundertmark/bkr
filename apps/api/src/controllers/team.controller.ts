@@ -1,9 +1,8 @@
-import { Team } from '@prisma/client';
 import { Router } from 'express';
 
 import { Role } from '@bkr/api-interface';
 
-import { BadRequestException, InternalServerErrorException } from '../errors';
+import { BadRequestException } from '../errors';
 import { hasRole } from '../middleware/has-role';
 import { CreateTeamSchema, UpdateTeamSchema } from '../schemas';
 import { TeamService } from '../services/team.service';
@@ -17,27 +16,20 @@ export function TeamController(teamService: TeamService): Router {
     hasRole(Role.ADMIN),
     handler(async (req, res) => {
       const { value, error } = CreateTeamSchema.validate(req.body);
-      if (error) throw new BadRequestException(error.message);
+
+      if (error) {
+        throw new BadRequestException(error.message);
+      }
 
       const { name, number, members } = value;
 
-      let team: Team | null;
-
-      try {
-        team = await teamService.getTeamByNumber(number);
-      } catch (err) {
-        throw new InternalServerErrorException();
-      }
+      let team = await teamService.getTeamByNumber(number);
 
       if (team !== null) {
         throw new BadRequestException('"number" must be unique');
       }
 
-      try {
-        team = await teamService.createTeam(name, number, members);
-      } catch (err) {
-        throw new InternalServerErrorException();
-      }
+      team = await teamService.createTeam(name, number, members);
 
       res.status(201);
       res.json(team);
@@ -47,13 +39,7 @@ export function TeamController(teamService: TeamService): Router {
   router.get(
     '/teams',
     handler(async (req, res) => {
-      let teams: Team[];
-
-      try {
-        teams = await teamService.getAll();
-      } catch (err) {
-        throw new InternalServerErrorException();
-      }
+      const teams = await teamService.getAll();
 
       res.status(200);
       res.json(teams);
@@ -67,32 +53,25 @@ export function TeamController(teamService: TeamService): Router {
       const teamId = req.params.teamId;
 
       const { value, error } = UpdateTeamSchema.validate(req.body);
-      if (error) throw new BadRequestException(error.message);
+
+      if (error) {
+        throw new BadRequestException(error.message);
+      }
 
       const { name, members, startedAt, finishedAt } = value;
 
-      let team: Team | null;
-
-      try {
-        team = await teamService.getTeamById(teamId);
-      } catch (err) {
-        throw new InternalServerErrorException();
-      }
+      let team = await teamService.getTeamById(teamId);
 
       if (team === null) {
         throw new BadRequestException(`Team ${teamId} does not exist`);
       }
 
-      try {
-        team = await teamService.updateTeam(teamId, {
-          name,
-          members,
-          startedAt,
-          finishedAt,
-        });
-      } catch (err) {
-        throw new InternalServerErrorException();
-      }
+      team = await teamService.updateTeam(teamId, {
+        name,
+        members,
+        startedAt,
+        finishedAt,
+      });
 
       res.status(200);
       res.json(team);
@@ -105,23 +84,13 @@ export function TeamController(teamService: TeamService): Router {
     handler(async (req, res) => {
       const teamId = req.params.teamId;
 
-      let team: Team | null;
-
-      try {
-        team = await teamService.getTeamById(teamId);
-      } catch (err) {
-        throw new InternalServerErrorException();
-      }
+      const team = await teamService.getTeamById(teamId);
 
       if (team === null) {
         throw new BadRequestException(`Team ${teamId} does not exist`);
       }
 
-      try {
-        await teamService.deleteTeam(teamId);
-      } catch (err) {
-        throw new InternalServerErrorException();
-      }
+      await teamService.deleteTeam(teamId);
 
       res.status(200);
       res.end();

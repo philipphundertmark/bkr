@@ -3,12 +3,11 @@ import express from 'express';
 import {
   BadRequestException,
   ForbiddenException,
-  InternalServerErrorException,
   UnauthorizedException,
 } from './errors';
 
 export const errorHandler: express.ErrorRequestHandler = (
-  err: Error,
+  err: unknown,
   req: express.Request,
   res: express.Response,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -41,21 +40,11 @@ export const errorHandler: express.ErrorRequestHandler = (
     return;
   }
 
-  if (err instanceof InternalServerErrorException || err instanceof Error) {
-    console.log(err.message);
-
-    res.status(500);
-    res.json({
-      error: err.message,
-    });
-
-    return;
-  }
-
-  console.log(err);
+  const message = err instanceof Error ? err.message : 'Unknown error';
+  console.log(message);
 
   res.status(500);
   res.json({
-    error: 'Unknown Error',
+    error: message,
   });
 };
