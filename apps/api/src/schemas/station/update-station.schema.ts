@@ -12,5 +12,5 @@ export const UpdateStationSchema: joi.ObjectSchema<UpdateStationSchema> =
     name: joi.string().min(3),
     number: joi.number().min(1),
     members: joi.array().items(joi.string().min(3)),
-    code: joi.string().min(6),
+    code: joi.string().length(6),
   });

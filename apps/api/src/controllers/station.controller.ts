@@ -13,6 +13,53 @@ import { handler } from './handler';
 export function StationController(stationService: StationService): Router {
   const router = Router();
 
+  /**
+   * @openapi
+   *
+   * /stations:
+   *   post:
+   *     description: Create a new station
+   *     tags:
+   *      - Station
+   *     requestBody:
+   *       description: Station to create
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/CreateStationSchema'
+   *     responses:
+   *       201:
+   *         description: The created station
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Station'
+   *       400:
+   *         description: Bad Request
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/BadRequest'
+   *       401:
+   *         description: Unauthorized
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Unauthorized'
+   *       403:
+   *         description: Forbidden
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Forbidden'
+   *       500:
+   *         description: Internal Server Error
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/InternalServerError'
+   */
   router.post(
     '/stations',
     hasRole(Role.ADMIN),

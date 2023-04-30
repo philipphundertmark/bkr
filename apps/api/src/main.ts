@@ -1,5 +1,4 @@
 import http from 'http';
-import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
 import { createApp } from './app';
@@ -11,6 +10,7 @@ import { prisma } from './prisma';
 import { StationService } from './services/station.service';
 import { TeamService } from './services/team.service';
 import { TokenService } from './services/token.service';
+import { openapiSpec } from './swagger';
 
 const stationService = new StationService(prisma);
 const teamService = new TeamService(prisma);
@@ -28,19 +28,8 @@ const app = createApp(
 );
 const server = http.createServer(app);
 
-const options = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Bierkistenrennen API',
-      version: '1.0.0',
-    },
-  },
-  apis: ['./controllers/*.controller.ts'],
-};
-const openapiSpecification = swaggerJsdoc(options);
-
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
+// Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpec));
 
 const port = process.env.PORT || 3333;
 server.listen(port, () => {

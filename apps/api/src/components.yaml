@@ -1,0 +1,109 @@
+components:
+  schemas:
+    #-------------------------------
+    # Errors
+    #-------------------------------
+    BadRequest:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Bad Request
+
+    Unauthorized:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Unauthorized
+
+    Forbidden:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Forbidden
+
+    NotFound:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Not Found
+
+    InternalServerError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Internal Server Error
+
+    #-------------------------------
+    # Station schemas
+    #-------------------------------
+    Station:
+      type: object
+      required:
+        - id
+        - createdAt
+        - updatedAt
+        - name
+        - number
+        - members
+      properties:
+        id:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+          minLength: 3
+        number:
+          type: integer
+          minimum: 1
+        members:
+          type: array
+          items:
+            type: string
+            minLength: 3
+        code:
+          description: The station code is only visible to admin users
+          type: string
+          length: 6
+
+    CreateStationSchema:
+      type: object
+      required:
+        - name
+        - number
+        - code
+      properties:
+        name:
+          type: string
+          minLength: 3
+        number:
+          type: integer
+          minimum: 1
+        members:
+          type: array
+          items:
+            type: string
+            minLength: 3
+          default: []
+        code:
+          type: string
+          length: 6
+
+  parameters:
+    stationId:
+      name: stationId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid

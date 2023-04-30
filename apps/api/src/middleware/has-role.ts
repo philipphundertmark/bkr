@@ -4,7 +4,7 @@ import * as jwt from 'jsonwebtoken';
 import { Role, isRole } from '@bkr/api-interface';
 
 import { config } from '../config';
-import { UnauthorizedException } from '../errors';
+import { ForbiddenException, UnauthorizedException } from '../errors';
 
 export function hasRole(...roles: Role[]) {
   return function (
@@ -36,7 +36,7 @@ export function hasRole(...roles: Role[]) {
     const username = payload.username;
 
     if (typeof role !== 'string' || !isRole(role) || !roles.includes(role)) {
-      throw new UnauthorizedException();
+      throw new ForbiddenException();
     }
 
     req.user = {

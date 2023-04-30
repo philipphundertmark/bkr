@@ -12,5 +12,5 @@ export const CreateStationSchema: joi.ObjectSchema<CreateStationSchema> =
     name: joi.string().min(3).required(),
     number: joi.number().min(1).required(),
     members: joi.array().items(joi.string().min(3)).default([]),
-    code: joi.string().min(6).required(),
+    code: joi.string().length(6).required(),
   });
