@@ -12,13 +12,13 @@ export interface ServerConfig {
 
 export const createServer = (
   handlers: express.RequestHandler[],
-  config: ServerConfig
+  config?: ServerConfig
 ): http.Server => {
   const app = express();
   const server = http.createServer(app);
 
   // Middleware
-  app.use(cors({ origin: config.origin }));
+  app.use(cors({ origin: config?.origin }));
   app.use(express.json());
   app.use(helmet());
   app.use(logger);

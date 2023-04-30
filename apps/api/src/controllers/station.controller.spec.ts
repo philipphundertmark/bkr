@@ -1,8 +1,7 @@
-import express from 'express';
-import http from 'http';
 import superagent from 'superagent';
 import prefix from 'superagent-prefix';
 
+import { createServer } from '../server';
 import { StationService } from '../services/station.service';
 import {
   mockStation,
@@ -15,10 +14,9 @@ const port = 3000 + Number(process.env.JEST_WORKER_ID);
 const agent = superagent.agent();
 agent.use(prefix(`http://localhost:${port}`));
 
-const app = express();
-const server = http.createServer(app);
-
-app.use(StationController(stationServiceMock as unknown as StationService));
+const server = createServer([
+  StationController(stationServiceMock as unknown as StationService),
+]);
 
 describe('StationController', () => {
   beforeAll(() => {
