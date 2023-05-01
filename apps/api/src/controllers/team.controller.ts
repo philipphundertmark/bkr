@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { Role } from '@bkr/api-interface';
 
-import { BadRequestException } from '../errors';
+import { BadRequestException, NotFoundException } from '../errors';
 import { hasRole } from '../middleware/has-role';
 import { CreateTeamSchema, UpdateTeamSchema } from '../schemas';
 import { TeamService } from '../services/team.service';
@@ -63,7 +63,7 @@ export function TeamController(teamService: TeamService): Router {
       let team = await teamService.getTeamById(teamId);
 
       if (team === null) {
-        throw new BadRequestException(`Team ${teamId} does not exist`);
+        throw new NotFoundException(`Team ${teamId} does not exist`);
       }
 
       team = await teamService.updateTeam(teamId, {
@@ -87,7 +87,7 @@ export function TeamController(teamService: TeamService): Router {
       const team = await teamService.getTeamById(teamId);
 
       if (team === null) {
-        throw new BadRequestException(`Team ${teamId} does not exist`);
+        throw new NotFoundException(`Team ${teamId} does not exist`);
       }
 
       await teamService.deleteTeam(teamId);

@@ -4,7 +4,7 @@ import { SetOptional } from 'type-fest';
 
 import { Role, isAdmin } from '@bkr/api-interface';
 
-import { BadRequestException } from '../errors';
+import { BadRequestException, NotFoundException } from '../errors';
 import { hasRole } from '../middleware/has-role';
 import { CreateStationSchema, UpdateStationSchema } from '../schemas';
 import { StationService } from '../services/station.service';
@@ -148,7 +148,7 @@ export function StationController(stationService: StationService): Router {
       let station = await stationService.getStationById(stationId);
 
       if (station === null) {
-        throw new BadRequestException(`Station ${stationId} does not exist`);
+        throw new NotFoundException(`Station ${stationId} does not exist`);
       }
 
       station =
@@ -181,7 +181,7 @@ export function StationController(stationService: StationService): Router {
       const station = await stationService.getStationById(stationId);
 
       if (station === null) {
-        throw new BadRequestException(`Station ${stationId} does not exist`);
+        throw new NotFoundException(`Station ${stationId} does not exist`);
       }
 
       await stationService.deleteStation(stationId);
