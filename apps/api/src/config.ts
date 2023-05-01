@@ -1,23 +1,21 @@
-const IS_TEST_ENV = process.env.NODE_ENV === 'test';
+/**
+ * Require an environment variable to be set and return its value
+ *
+ * @param name The name of the environment variable to require
+ * @returns The value of the environment variable
+ */
+function requireEnvironmentVariable(name: string): string {
+  const value = process.env[name];
 
-const ADMIN_CODE = process.env.ADMIN_CODE ?? (IS_TEST_ENV ? '<mocked>' : undefined);
-if (typeof ADMIN_CODE === 'undefined') {
-  throw new Error('Required environment variable ADMIN_CODE is missing');
-}
+  if (typeof value === 'undefined') {
+    throw new Error(`Required environment variable ${name} is missing`);
+  }
 
-const ORIGIN = process.env.ORIGIN ?? (IS_TEST_ENV ? '<mocked>' : undefined);
-if (typeof ORIGIN === 'undefined') {
-  throw new Error('Required environment variable ORIGIN is missing');
-}
-
-const SECRET = process.env.SECRET ?? (IS_TEST_ENV ? '<mocked>' : undefined);
-if (typeof SECRET === 'undefined') {
-  throw new Error('Required environment variable SECRET is missing');
+  return value;
 }
 
 export const config = {
-  IS_TEST_ENV,
-  ADMIN_CODE,
-  ORIGIN,
-  SECRET,
+  ADMIN_CODE: requireEnvironmentVariable('ADMIN_CODE'),
+  ORIGIN: requireEnvironmentVariable('ORIGIN'),
+  SECRET: requireEnvironmentVariable('SECRET'),
 };
