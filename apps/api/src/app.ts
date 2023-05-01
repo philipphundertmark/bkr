@@ -2,7 +2,7 @@ import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 
-import { errorHandler } from './error-handler';
+import { errorHandler } from './errors/error-handler';
 import { logger } from './logger';
 
 export interface AppConfig {

@@ -1,6 +1,5 @@
+import axios from 'axios';
 import http from 'http';
-import superagent from 'superagent';
-import prefix from 'superagent-prefix';
 
 import { createApp } from '../app';
 import { StationService } from '../services/station.service';
@@ -10,9 +9,10 @@ import { tokenServiceMock } from '../services/token.service.mock';
 import { TokenController } from './token.controller';
 
 const port = 3000 + Number(process.env.JEST_WORKER_ID);
-
-const agent = superagent.agent();
-agent.use(prefix(`http://localhost:${port}`));
+const client = axios.create({
+  baseURL: `http://localhost:${port}`,
+  validateStatus: () => true,
+});
 
 const app = createApp([
   TokenController(
@@ -32,7 +32,8 @@ describe('TokenController', () => {
   });
 
   it('works', async () => {
-    const response = await agent.get('/not-found').catch((err) => err.response);
-    expect(response.statusCode).toEqual(404);
+    const response = await client.get('/not-found');
+
+    expect(response.status).toEqual(404);
   });
 });

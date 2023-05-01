@@ -4,7 +4,7 @@ import {
   BadRequestException,
   ForbiddenException,
   UnauthorizedException,
-} from './errors';
+} from '.';
 
 export const errorHandler: express.ErrorRequestHandler = (
   err: unknown,

@@ -1,6 +1,5 @@
+import axios from 'axios';
 import http from 'http';
-import superagent from 'superagent';
-import prefix from 'superagent-prefix';
 
 import { createApp } from '../app';
 import { StationService } from '../services/station.service';
@@ -11,9 +10,10 @@ import {
 import { StationController } from './station.controller';
 
 const port = 3000 + Number(process.env.JEST_WORKER_ID);
-
-const agent = superagent.agent();
-agent.use(prefix(`http://localhost:${port}`));
+const client = axios.create({
+  baseURL: `http://localhost:${port}`,
+  validateStatus: () => true,
+});
 
 const app = createApp([
   StationController(stationServiceMock as unknown as StationService),
@@ -33,12 +33,10 @@ describe('StationController', () => {
     it('returns no sessions', async () => {
       stationServiceMock.getAll.mockResolvedValueOnce([]);
 
-      const response = await agent
-        .get('/stations')
-        .catch((err) => err.response);
+      const response = await client.get('/stations');
 
-      expect(response.statusCode).toEqual(200);
-      expect(response.body).toEqual([]);
+      expect(response.status).toEqual(200);
+      expect(response.data).toEqual([]);
     });
 
     it('returns all sessions', async () => {
@@ -55,12 +53,10 @@ describe('StationController', () => {
 
       stationServiceMock.getAll.mockResolvedValueOnce(stations);
 
-      const response = await agent
-        .get('/stations')
-        .catch((err) => err.response);
+      const response = await client.get('/stations');
 
-      expect(response.statusCode).toEqual(200);
-      expect(response.body).toHaveLength(stations.length);
+      expect(response.status).toEqual(200);
+      expect(response.data).toHaveLength(stations.length);
     });
   });
 });
