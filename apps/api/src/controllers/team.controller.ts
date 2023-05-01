@@ -36,6 +36,30 @@ export function TeamController(teamService: TeamService): Router {
     })
   );
 
+  /**
+   * @openapi
+   *
+   * /teams:
+   *   get:
+   *     description: Get all teams
+   *     tags:
+   *       - Team
+   *     responses:
+   *       200:
+   *         description: All teams
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: array
+   *               items:
+   *                 $ref: '#/components/schemas/Team'
+   *       500:
+   *         description: An unexpected error occurred
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/InternalServerError'
+   */
   router.get(
     '/teams',
     handler(async (req, res) => {

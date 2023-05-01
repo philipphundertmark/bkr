@@ -100,6 +100,40 @@ components:
           length: 6
 
     #-------------------------------
+    # Team schemas
+    #-------------------------------
+    Team:
+      type: object
+      required:
+        - id
+        - createdAt
+        - updatedAt
+        - name
+        - number
+        - members
+      properties:
+        id:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+          minLength: 3
+        number:
+          type: integer
+          minimum: 1
+        members:
+          type: array
+          items:
+            type: string
+            minLength: 3
+
+    #-------------------------------
     # Token schemas
     #-------------------------------
     Token:
