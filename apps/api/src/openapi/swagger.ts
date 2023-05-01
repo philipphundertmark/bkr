@@ -11,7 +11,7 @@ const options: swaggerJsdoc.Options = {
   },
   failOnErrors: true,
   apis: [
-    './apps/api/src/components.yaml',
+    './apps/api/src/openapi/components.yaml',
     './apps/api/src/controllers/*.controller.ts',
   ],
 };

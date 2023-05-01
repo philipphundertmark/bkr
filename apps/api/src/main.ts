@@ -6,11 +6,11 @@ import { config } from './config';
 import { StationController } from './controllers/station.controller';
 import { TeamController } from './controllers/team.controller';
 import { TokenController } from './controllers/token.controller';
+import { openapiSpec } from './openapi/swagger';
 import { prisma } from './prisma';
 import { StationService } from './services/station.service';
 import { TeamService } from './services/team.service';
 import { TokenService } from './services/token.service';
-import { openapiSpec } from './swagger';
 
 const stationService = new StationService(prisma);
 const teamService = new TeamService(prisma);
