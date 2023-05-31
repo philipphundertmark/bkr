@@ -7,6 +7,10 @@ import {
   mockStation,
   stationServiceMock,
 } from '../services/station.service.mock';
+import {
+  mockAuthorizationHeaderForAdmin,
+  mockAuthorizationHeaderForStation,
+} from '../test-utils';
 import { StationController } from './station.controller';
 
 const port = 3000 + Number(process.env.JEST_WORKER_ID);
@@ -27,6 +31,44 @@ describe('StationController', () => {
 
   afterAll(() => {
     server.close();
+  });
+
+  describe('POST /stations', () => {
+    it('returns 400 if the request payload is invalid', async () => {
+      const response = await client.post(
+        '/stations',
+        {
+          name: 'Station 1',
+          number: 1,
+        },
+        {
+          headers: mockAuthorizationHeaderForAdmin(),
+        }
+      );
+
+      expect(response.status).toEqual(400);
+      expect(response.data).toEqual({
+        error: '"code" is required',
+      });
+    });
+
+    it('returns 401 if the user is not authenticated', async () => {
+      const response = await client.post('/stations');
+
+      expect(response.status).toEqual(401);
+    });
+
+    it('returns 403 if the user is not authorized', async () => {
+      const response = await client.post(
+        '/stations',
+        {},
+        {
+          headers: mockAuthorizationHeaderForStation(),
+        }
+      );
+
+      expect(response.status).toEqual(403);
+    });
   });
 
   describe('GET /stations', () => {

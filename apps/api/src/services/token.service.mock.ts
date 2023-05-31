@@ -1,4 +1,4 @@
-import { MockType } from '../mock-type';
+import { MockType } from '../test-utils';
 import { TokenService } from './token.service';
 
 export const tokenServiceMock: MockType<TokenService> = {

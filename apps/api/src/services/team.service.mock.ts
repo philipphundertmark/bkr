@@ -1,4 +1,4 @@
-import { MockType } from '../mock-type';
+import { MockType } from '../test-utils';
 import { TeamService } from './team.service';
 
 export const teamServiceMock: MockType<TeamService> = {
