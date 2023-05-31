@@ -52,6 +52,60 @@ describe('StationController', () => {
       });
     });
 
+    it("returns 400 if the station's code is already in use", async () => {
+      stationServiceMock.getStationByCode.mockResolvedValueOnce(
+        mockStation({
+          name: 'Station 1',
+          number: 1,
+          code: '123456',
+        })
+      );
+
+      const response = await client.post(
+        '/stations',
+        {
+          name: 'Station 2',
+          number: 2,
+          code: '123456',
+        },
+        {
+          headers: mockAuthorizationHeaderForAdmin(),
+        }
+      );
+
+      expect(response.status).toEqual(400);
+      expect(response.data).toEqual({
+        error: '"code" must be unique',
+      });
+    });
+
+    it("returns 400 if the station's number is already in use", async () => {
+      stationServiceMock.getStationByCode.mockResolvedValueOnce(null);
+      stationServiceMock.getStationByNumber.mockResolvedValueOnce(
+        mockStation({
+          name: 'Station 1',
+          number: 1,
+        })
+      );
+
+      const response = await client.post(
+        '/stations',
+        {
+          name: 'Station 2',
+          number: 1,
+          code: '123456',
+        },
+        {
+          headers: mockAuthorizationHeaderForAdmin(),
+        }
+      );
+
+      expect(response.status).toEqual(400);
+      expect(response.data).toEqual({
+        error: '"number" must be unique',
+      });
+    });
+
     it('returns 401 if the user is not authenticated', async () => {
       const response = await client.post('/stations');
 

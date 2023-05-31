@@ -73,16 +73,16 @@ export function StationController(stationService: StationService): Router {
       const { name, number, members, code } = value;
 
       let station: SetOptional<Station, 'code'> | null =
-        await stationService.getStationByNumber(number);
-
-      if (station !== null) {
-        throw new BadRequestException('"number" must be unique');
-      }
-
-      station = await stationService.getStationByCode(code);
+        await stationService.getStationByCode(code);
 
       if (station !== null) {
         throw new BadRequestException('"code" must be unique');
+      }
+
+      station = await stationService.getStationByNumber(number);
+
+      if (station !== null) {
+        throw new BadRequestException('"number" must be unique');
       }
 
       station = await stationService.createStation(name, number, members, code);

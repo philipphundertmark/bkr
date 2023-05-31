@@ -1,28 +1,29 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Station } from '@prisma/client';
 
 import { MockType } from '../test-utils';
 import { StationService } from './station.service';
 
 export const stationServiceMock: MockType<StationService> = {
-  createStation: jest.fn(async () => {
+  createStation: jest.fn(async (...args) => {
     throw new Error('Not implemented');
   }),
-  deleteStation: jest.fn(async () => {
+  deleteStation: jest.fn(async (...args) => {
     throw new Error('Not implemented');
   }),
-  getAll: jest.fn(async () => {
+  getAll: jest.fn(async (...args) => {
     throw new Error('Not implemented');
   }),
-  getStationByCode: jest.fn(async () => {
+  getStationByCode: jest.fn(async (...args) => {
     throw new Error('Not implemented');
   }),
-  getStationById: jest.fn(async () => {
+  getStationById: jest.fn(async (...args) => {
     throw new Error('Not implemented');
   }),
-  getStationByNumber: jest.fn(async () => {
+  getStationByNumber: jest.fn(async (...args) => {
     throw new Error('Not implemented');
   }),
-  updateStation: jest.fn(async () => {
+  updateStation: jest.fn(async (...args) => {
     throw new Error('Not implemented');
   }),
 };
@@ -34,6 +35,6 @@ export const mockStation = (updates: Partial<Station>): Station => ({
   name: 'mock-station',
   number: 1,
   members: [],
-  code: 'mock-code',
+  code: '000000',
   ...updates,
 });
