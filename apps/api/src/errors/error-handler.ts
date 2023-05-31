@@ -3,6 +3,7 @@ import express from 'express';
 import {
   BadRequestException,
   ForbiddenException,
+  NotFoundException,
   UnauthorizedException,
 } from '.';
 
@@ -33,6 +34,15 @@ export const errorHandler: express.ErrorRequestHandler = (
 
   if (err instanceof ForbiddenException) {
     res.status(403);
+    res.json({
+      error: err.message,
+    });
+
+    return;
+  }
+
+  if (err instanceof NotFoundException) {
+    res.status(404);
     res.json({
       error: err.message,
     });
