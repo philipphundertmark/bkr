@@ -76,6 +76,7 @@ export class StationService {
         number: updates.number,
         members: updates.members,
         code: updates.code,
+        order: updates.order,
       },
     });
   }
