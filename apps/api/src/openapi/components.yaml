@@ -99,6 +99,24 @@ components:
           type: string
           length: 6
 
+    UpdateStationSchema:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 3
+        number:
+          type: integer
+          minimum: 1
+        members:
+          type: array
+          items:
+            type: string
+            minLength: 3
+        code:
+          type: string
+          length: 6
+
     #-------------------------------
     # Team schemas
     #-------------------------------
@@ -121,6 +139,40 @@ components:
         updatedAt:
           type: string
           format: date-time
+        name:
+          type: string
+          minLength: 3
+        number:
+          type: integer
+          minimum: 1
+        members:
+          type: array
+          items:
+            type: string
+            minLength: 3
+
+    CreateTeamSchema:
+      type: object
+      required:
+        - name
+        - number
+      properties:
+        name:
+          type: string
+          minLength: 3
+        number:
+          type: integer
+          minimum: 1
+        members:
+          type: array
+          items:
+            type: string
+            minLength: 3
+          default: []
+
+    UpdateTeamSchema:
+      type: object
+      properties:
         name:
           type: string
           minLength: 3
@@ -157,8 +209,24 @@ components:
   parameters:
     stationId:
       name: stationId
+      description: ID of the station
       in: path
       required: true
       schema:
         type: string
         format: uuid
+
+    teamId:
+      name: teamId
+      description: ID of the team
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
