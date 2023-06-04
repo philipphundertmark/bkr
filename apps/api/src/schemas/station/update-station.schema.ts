@@ -13,7 +13,7 @@ export const UpdateStationSchema: joi.ObjectSchema<UpdateStationSchema> =
   joi.object({
     name: joi.string().min(3),
     number: joi.number().min(1),
-    members: joi.array().items(joi.string().min(3)),
+    members: joi.array().items(joi.string()),
     code: joi.string().length(6),
     order: joi.string().valid(Order.ASC, Order.DESC),
   });

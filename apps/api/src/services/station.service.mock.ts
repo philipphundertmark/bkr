@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Station } from '@prisma/client';
+import { Order, Station } from '@prisma/client';
 
 import { MockType } from '../test-utils';
 import { StationService } from './station.service';
@@ -36,5 +36,6 @@ export const mockStation = (updates: Partial<Station>): Station => ({
   number: 1,
   members: [],
   code: '000000',
+  order: Order.ASC,
   ...updates,
 });

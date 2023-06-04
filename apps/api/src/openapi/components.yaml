@@ -63,7 +63,6 @@ components:
           type: array
           items:
             type: string
-            minLength: 3
           default: []
         code:
           description: The station code is only visible to admin users.
@@ -132,7 +131,6 @@ components:
           type: array
           items:
             type: string
-            minLength: 3
           default: []
 
     CreateTeamSchema:
