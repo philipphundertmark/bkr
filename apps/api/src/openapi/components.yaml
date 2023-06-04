@@ -43,13 +43,6 @@ components:
     #-------------------------------
     Station:
       type: object
-      required:
-        - id
-        - createdAt
-        - updatedAt
-        - name
-        - number
-        - members
       properties:
         id:
           type: string
@@ -60,29 +53,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-        name:
-          type: string
-          minLength: 3
-        number:
-          type: integer
-          minimum: 1
-        members:
-          type: array
-          items:
-            type: string
-            minLength: 3
-        code:
-          description: The station code is only visible to admin users.
-          type: string
-          length: 6
-
-    CreateStationSchema:
-      type: object
-      required:
-        - name
-        - number
-        - code
-      properties:
         name:
           type: string
           minLength: 3
@@ -96,39 +66,52 @@ components:
             minLength: 3
           default: []
         code:
+          description: The station code is only visible to admin users.
           type: string
           length: 6
+        order:
+          description: The order in which to rank the teams.
+          type: string
+          enum: [ASC, DESC]
+
+    CreateStationSchema:
+      type: object
+      required:
+        - name
+        - number
+        - code
+        - order
+      properties:
+        name:
+          $ref: '#/components/schemas/Station/properties/name'
+        number:
+          $ref: '#/components/schemas/Station/properties/number'
+        members:
+          $ref: '#/components/schemas/Station/properties/members'
+        code:
+          $ref: '#/components/schemas/Station/properties/code'
+        order:
+          $ref: '#/components/schemas/Station/properties/order'
 
     UpdateStationSchema:
       type: object
       properties:
         name:
-          type: string
-          minLength: 3
+          $ref: '#/components/schemas/Station/properties/name'
         number:
-          type: integer
-          minimum: 1
+          $ref: '#/components/schemas/Station/properties/number'
         members:
-          type: array
-          items:
-            type: string
-            minLength: 3
+          $ref: '#/components/schemas/Station/properties/members'
         code:
-          type: string
-          length: 6
+          $ref: '#/components/schemas/Station/properties/code'
+        order:
+          $ref: '#/components/schemas/Station/properties/order'
 
     #-------------------------------
     # Team schemas
     #-------------------------------
     Team:
       type: object
-      required:
-        - id
-        - createdAt
-        - updatedAt
-        - name
-        - number
-        - members
       properties:
         id:
           type: string
@@ -150,6 +133,7 @@ components:
           items:
             type: string
             minLength: 3
+          default: []
 
     CreateTeamSchema:
       type: object
@@ -158,32 +142,21 @@ components:
         - number
       properties:
         name:
-          type: string
-          minLength: 3
+          $ref: '#/components/schemas/Station/properties/name'
         number:
-          type: integer
-          minimum: 1
+          $ref: '#/components/schemas/Station/properties/number'
         members:
-          type: array
-          items:
-            type: string
-            minLength: 3
-          default: []
+          $ref: '#/components/schemas/Station/properties/members'
 
     UpdateTeamSchema:
       type: object
       properties:
         name:
-          type: string
-          minLength: 3
+          $ref: '#/components/schemas/Station/properties/name'
         number:
-          type: integer
-          minimum: 1
+          $ref: '#/components/schemas/Station/properties/number'
         members:
-          type: array
-          items:
-            type: string
-            minLength: 3
+          $ref: '#/components/schemas/Station/properties/members'
 
     #-------------------------------
     # Token schemas
@@ -226,7 +199,7 @@ components:
         format: uuid
 
   securitySchemes:
-    bearerAuth: # arbitrary name for the security scheme
+    bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT

@@ -1,4 +1,4 @@
-import { PrismaClient, Station } from '@prisma/client';
+import { Order, PrismaClient, Station } from '@prisma/client';
 
 export class StationService {
   constructor(private prisma: PrismaClient) {}
@@ -7,7 +7,8 @@ export class StationService {
     name: string,
     number: number,
     members: string[],
-    code: string
+    code: string,
+    order: Order
   ): Promise<Station> {
     return this.prisma.station.create({
       data: {
@@ -15,6 +16,7 @@ export class StationService {
         number: number,
         code: code,
         members: members,
+        order: order,
       },
     });
   }
@@ -62,6 +64,7 @@ export class StationService {
       number?: number;
       members?: string[];
       code?: string;
+      order?: Order;
     }
   ): Promise<Station> {
     return this.prisma.station.update({

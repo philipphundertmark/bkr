@@ -72,7 +72,7 @@ export function StationController(stationService: StationService): Router {
         throw new BadRequestException(error.message);
       }
 
-      const { name, number, members, code } = value;
+      const { name, number, members, code, order } = value;
 
       let station: SetOptional<Station, 'code'> | null =
         await stationService.getStationByCode(code);
@@ -87,7 +87,13 @@ export function StationController(stationService: StationService): Router {
         throw new BadRequestException('"number" must be unique');
       }
 
-      station = await stationService.createStation(name, number, members, code);
+      station = await stationService.createStation(
+        name,
+        number,
+        members,
+        code,
+        order
+      );
 
       res.status(201);
       res.json(station);
@@ -202,7 +208,7 @@ export function StationController(stationService: StationService): Router {
         throw new BadRequestException(error.message);
       }
 
-      const { name, number, members, code } = value;
+      const { name, number, members, code, order } = value;
 
       let station = await stationService.getStationById(stationId);
 
@@ -224,6 +230,7 @@ export function StationController(stationService: StationService): Router {
         number: number,
         code: code,
         members: members,
+        order: order,
       });
 
       res.status(200);

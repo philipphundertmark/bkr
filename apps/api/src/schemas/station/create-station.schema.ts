@@ -1,3 +1,4 @@
+import { Order } from '@prisma/client';
 import * as joi from 'joi';
 
 export interface CreateStationSchema {
@@ -5,6 +6,7 @@ export interface CreateStationSchema {
   number: number;
   members: string[];
   code: string;
+  order: Order;
 }
 
 export const CreateStationSchema: joi.ObjectSchema<CreateStationSchema> =
@@ -13,4 +15,5 @@ export const CreateStationSchema: joi.ObjectSchema<CreateStationSchema> =
     number: joi.number().min(1).required(),
     members: joi.array().items(joi.string().min(3)).default([]),
     code: joi.string().length(6).required(),
+    order: joi.string().valid(Order.ASC, Order.DESC).required(),
   });
