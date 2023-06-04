@@ -12,6 +12,19 @@ enum Order {
   DESC
 }
 
+model Station {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name    String
+  number  Int      @unique
+  members String[]
+
+  code  String @unique
+  order Order
+}
+
 model Team {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
@@ -23,17 +36,4 @@ model Team {
 
   startedAt  DateTime?
   finishedAt DateTime?
-}
-
-model Station {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  name    String
-  number  Int      @unique
-  members String[]
-  order   Order
-
-  code String @unique
 }
