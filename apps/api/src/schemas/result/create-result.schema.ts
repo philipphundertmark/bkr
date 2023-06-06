@@ -1,10 +1,10 @@
 import * as joi from 'joi';
 
 export interface CreateResultSchema {
-  teamId: number;
+  teamId: string;
 }
 
 export const CreateResultSchema: joi.ObjectSchema<CreateResultSchema> =
   joi.object({
-    teamId: joi.number().required(),
+    teamId: joi.string().uuid().required(),
   });
