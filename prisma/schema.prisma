@@ -12,6 +12,19 @@ enum Order {
   DESC
 }
 
+model Result {
+  team      Team    @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId    String
+  station   Station @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  stationId String
+
+  checkIn  DateTime  @default(now())
+  checkOut DateTime?
+  points   Int       @default(0)
+
+  @@id([teamId, stationId])
+}
+
 model Station {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
@@ -21,8 +34,9 @@ model Station {
   number  Int      @unique
   members String[]
 
-  code  String @unique
-  order Order
+  code   String   @unique
+  order  Order
+  Result Result[]
 }
 
 model Team {
@@ -37,4 +51,5 @@ model Team {
   startedAt  DateTime?
   finishedAt DateTime?
   penalty    Int       @default(0)
+  Result     Result[]
 }
