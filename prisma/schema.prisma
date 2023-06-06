@@ -36,4 +36,5 @@ model Team {
 
   startedAt  DateTime?
   finishedAt DateTime?
+  penalty    Int       @default(0)
 }

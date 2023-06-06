@@ -188,7 +188,7 @@ export function TeamController(teamService: TeamService): Router {
         throw new BadRequestException(error.message);
       }
 
-      const { name, members, startedAt, finishedAt } = value;
+      const { name, members, startedAt, finishedAt, penalty } = value;
 
       let team = await teamService.getTeamById(teamId);
 
@@ -201,6 +201,7 @@ export function TeamController(teamService: TeamService): Router {
         members,
         startedAt,
         finishedAt,
+        penalty,
       });
 
       res.status(200);

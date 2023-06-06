@@ -49,6 +49,7 @@ export class TeamService {
       members?: string[];
       startedAt?: string;
       finishedAt?: string;
+      penalty?: number;
     }
   ): Promise<Team> {
     return this.prisma.team.update({
@@ -65,6 +66,7 @@ export class TeamService {
         ...(updates.finishedAt
           ? { finishedAt: new Date(updates.finishedAt) }
           : {}),
+        penalty: updates.penalty,
       },
     });
   }

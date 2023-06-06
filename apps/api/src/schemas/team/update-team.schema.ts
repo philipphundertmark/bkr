@@ -6,6 +6,7 @@ export interface UpdateTeamSchema {
   members?: string[];
   startedAt?: string;
   finishedAt?: string;
+  penalty?: number;
 }
 
 export const UpdateTeamSchema: joi.ObjectSchema<UpdateTeamSchema> = joi
@@ -15,5 +16,6 @@ export const UpdateTeamSchema: joi.ObjectSchema<UpdateTeamSchema> = joi
     members: joi.array().items(joi.string().min(3)),
     startedAt: joi.string().isoDate(),
     finishedAt: joi.string().isoDate(),
+    penalty: joi.number().min(0),
   })
   .xor('startedAt', 'finishedAt');
