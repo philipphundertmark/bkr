@@ -15,6 +15,57 @@ export function ResultController(
 ): Router {
   const router = Router();
 
+  /**
+   * @openapi
+   *
+   * /stations/{stationId}/results:
+   *   post:
+   *     description: Create a new result
+   *     tags:
+   *       - Result
+   *     security:
+   *       - bearerAuth: []
+   *     parameters:
+   *       - $ref: '#/components/parameters/stationId'
+   *     requestBody:
+   *       description: The result to create
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/CreateResultSchema'
+   *     responses:
+   *       201:
+   *         description: The created result
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Result'
+   *       400:
+   *         description: Invalid request body
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/BadRequest'
+   *       401:
+   *         description: You are not authenticated
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Unauthorized'
+   *       403:
+   *         description: You are not authorized to access this resource
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Forbidden'
+   *       500:
+   *         description: An unexpected error occurred
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/InternalServerError'
+   */
   router.post(
     '/stations/:stationId/results',
     hasRole(Role.ADMIN, Role.STATION),
@@ -50,6 +101,64 @@ export function ResultController(
     })
   );
 
+  /**
+   * @openapi
+   *
+   * /stations/{stationId}/results/{teamId}:
+   *   put:
+   *     description: Update a result
+   *     tags:
+   *       - Result
+   *     security:
+   *       - bearerAuth: []
+   *     parameters:
+   *       - $ref: '#/components/parameters/stationId'
+   *       - $ref: '#/components/parameters/teamId'
+   *     requestBody:
+   *       description: Result updates
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/UpdateResultSchema'
+   *     responses:
+   *       200:
+   *         description: The updated result
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Result'
+   *       400:
+   *         description: Invalid request body
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/BadRequest'
+   *       401:
+   *         description: You are not authenticated
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Unauthorized'
+   *       403:
+   *         description: You are not authorized to access this resource
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Forbidden'
+   *       404:
+   *         description: The result does not exist
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/NotFound'
+   *       500:
+   *         description: An unexpected error occurred
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/InternalServerError'
+   */
   router.put(
     '/stations/:stationId/results/:teamId',
     hasRole(Role.ADMIN, Role.STATION),
@@ -84,6 +193,47 @@ export function ResultController(
     })
   );
 
+  /**
+   * @openapi
+   *
+   * /stations/{stationId}/results/{teamId}:
+   *   delete:
+   *     description: Delete a result
+   *     tags:
+   *       - Result
+   *     security:
+   *       - bearerAuth: []
+   *     parameters:
+   *       - $ref: '#/components/parameters/stationId'
+   *       - $ref: '#/components/parameters/teamId'
+   *     responses:
+   *       200:
+   *         description: Successfully deleted the result
+   *       401:
+   *         description: You are not authenticated
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Unauthorized'
+   *       403:
+   *         description: You are not authorized to access this resource
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Forbidden'
+   *       404:
+   *         description: The result does not exist
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/NotFound'
+   *       500:
+   *         description: An unexpected error occurred
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/InternalServerError'
+   */
   router.delete(
     '/stations/:stationId/results/:teamId',
     hasRole(Role.ADMIN, Role.STATION),

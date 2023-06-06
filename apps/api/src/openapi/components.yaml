@@ -113,6 +113,11 @@ components:
           description: The order in which to rank the teams.
           type: string
           enum: [ASC, DESC]
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Result'
+          default: []
 
     CreateStationSchema:
       type: object
@@ -183,6 +188,11 @@ components:
           type: integer
           minimum: 0
           default: 0
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Result'
+          default: []
 
     CreateTeamSchema:
       type: object
