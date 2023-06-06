@@ -39,6 +39,47 @@ components:
           example: Internal Server Error
 
     #-------------------------------
+    # Result schemas
+    #-------------------------------
+    Result:
+      type: object
+      properties:
+        stationId:
+          type: string
+          format: uuid
+        teamId:
+          type: string
+          format: uuid
+        checkIn:
+          type: string
+          format: date-time
+        checkOut:
+          type: string
+          format: date-time
+        points:
+          type: integer
+          minimum: 0
+          default: 0
+
+    CreateResultSchema:
+      type: object
+      required:
+        - teamId
+      properties:
+        teamId:
+          $ref: '#/components/schemas/Result/properties/teamId'
+
+    UpdateResultSchema:
+      type: object
+      properties:
+        checkIn:
+          $ref: '#/components/schemas/Result/properties/checkIn'
+        checkOut:
+          $ref: '#/components/schemas/Result/properties/checkOut'
+        points:
+          $ref: '#/components/schemas/Result/properties/points'
+
+    #-------------------------------
     # Station schemas
     #-------------------------------
     Station:
