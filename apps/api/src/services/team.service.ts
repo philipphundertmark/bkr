@@ -1,5 +1,7 @@
 import { PrismaClient, Team } from '@prisma/client';
 
+import { ResultService } from './result.service';
+
 export class TeamService {
   constructor(private prisma: PrismaClient) {}
 
@@ -9,6 +11,11 @@ export class TeamService {
         name: name,
         number: number,
         members: members,
+      },
+      include: {
+        results: {
+          select: ResultService.RESULT_SELECT,
+        },
       },
     });
   }
@@ -22,13 +29,24 @@ export class TeamService {
   }
 
   getAll(): Promise<Team[]> {
-    return this.prisma.team.findMany();
+    return this.prisma.team.findMany({
+      include: {
+        results: {
+          select: ResultService.RESULT_SELECT,
+        },
+      },
+    });
   }
 
   getTeamById(id: string): Promise<Team | null> {
     return this.prisma.team.findUnique({
       where: {
         id: id,
+      },
+      include: {
+        results: {
+          select: ResultService.RESULT_SELECT,
+        },
       },
     });
   }
@@ -37,6 +55,11 @@ export class TeamService {
     return this.prisma.team.findUnique({
       where: {
         number: number,
+      },
+      include: {
+        results: {
+          select: ResultService.RESULT_SELECT,
+        },
       },
     });
   }
@@ -67,6 +90,11 @@ export class TeamService {
           ? { finishedAt: new Date(updates.finishedAt) }
           : {}),
         penalty: updates.penalty,
+      },
+      include: {
+        results: {
+          select: ResultService.RESULT_SELECT,
+        },
       },
     });
   }

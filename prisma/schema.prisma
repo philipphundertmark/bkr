@@ -29,20 +29,21 @@ model Station {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  results   Result[]
 
   name    String
   number  Int      @unique
   members String[]
 
-  code   String   @unique
-  order  Order
-  Result Result[]
+  code  String @unique
+  order Order
 }
 
 model Team {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  results   Result[]
 
   name    String
   number  Int      @unique
@@ -51,5 +52,4 @@ model Team {
   startedAt  DateTime?
   finishedAt DateTime?
   penalty    Int       @default(0)
-  Result     Result[]
 }

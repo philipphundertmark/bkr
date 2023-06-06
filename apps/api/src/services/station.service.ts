@@ -1,5 +1,7 @@
 import { Order, PrismaClient, Station } from '@prisma/client';
 
+import { ResultService } from './result.service';
+
 export class StationService {
   constructor(private prisma: PrismaClient) {}
 
@@ -18,6 +20,11 @@ export class StationService {
         members: members,
         order: order,
       },
+      include: {
+        results: {
+          select: ResultService.RESULT_SELECT,
+        },
+      },
     });
   }
 
@@ -30,13 +37,24 @@ export class StationService {
   }
 
   getAll(): Promise<Station[]> {
-    return this.prisma.station.findMany();
+    return this.prisma.station.findMany({
+      include: {
+        results: {
+          select: ResultService.RESULT_SELECT,
+        },
+      },
+    });
   }
 
   getStationById(id: string): Promise<Station | null> {
     return this.prisma.station.findUnique({
       where: {
         id: id,
+      },
+      include: {
+        results: {
+          select: ResultService.RESULT_SELECT,
+        },
       },
     });
   }
@@ -46,6 +64,11 @@ export class StationService {
       where: {
         number: number,
       },
+      include: {
+        results: {
+          select: ResultService.RESULT_SELECT,
+        },
+      },
     });
   }
 
@@ -53,6 +76,11 @@ export class StationService {
     return this.prisma.station.findUnique({
       where: {
         code: code,
+      },
+      include: {
+        results: {
+          select: ResultService.RESULT_SELECT,
+        },
       },
     });
   }
@@ -77,6 +105,11 @@ export class StationService {
         members: updates.members,
         code: updates.code,
         order: updates.order,
+      },
+      include: {
+        results: {
+          select: ResultService.RESULT_SELECT,
+        },
       },
     });
   }
