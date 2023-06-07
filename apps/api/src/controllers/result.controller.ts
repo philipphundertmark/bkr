@@ -3,7 +3,7 @@ import { Router } from 'express';
 import { Role } from '@bkr/api-interface';
 
 import { BadRequestException, NotFoundException } from '../errors';
-import { hasRole } from '../middleware/has-role';
+import { authorize } from '../middleware/authorize';
 import { CreateResultSchema, UpdateResultSchema } from '../schemas';
 import { ResultService } from '../services/result.service';
 import { TeamService } from '../services/team.service';
@@ -68,7 +68,7 @@ export function ResultController(
    */
   router.post(
     '/stations/:stationId/results',
-    hasRole(Role.ADMIN, Role.STATION),
+    authorize(Role.ADMIN, Role.STATION),
     handler(async (req, res) => {
       const stationId = req.params.stationId;
 
@@ -161,7 +161,7 @@ export function ResultController(
    */
   router.put(
     '/stations/:stationId/results/:teamId',
-    hasRole(Role.ADMIN, Role.STATION),
+    authorize(Role.ADMIN, Role.STATION),
     handler(async (req, res) => {
       const stationId = req.params.stationId;
       const teamId = req.params.teamId;
@@ -236,7 +236,7 @@ export function ResultController(
    */
   router.delete(
     '/stations/:stationId/results/:teamId',
-    hasRole(Role.ADMIN, Role.STATION),
+    authorize(Role.ADMIN, Role.STATION),
     handler(async (req, res) => {
       const stationId = req.params.stationId;
       const teamId = req.params.teamId;

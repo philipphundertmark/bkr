@@ -34,6 +34,40 @@ describe('StationController', () => {
   });
 
   describe('POST /stations', () => {
+    it('creates a new station', async () => {
+      const station = mockStation({
+        name: 'Station 1',
+        number: 1,
+        members: [],
+        code: '123456',
+        order: 'ASC',
+      });
+
+      stationServiceMock.getStationByCode.mockResolvedValueOnce(null);
+      stationServiceMock.getStationByNumber.mockResolvedValueOnce(null);
+      stationServiceMock.createStation.mockResolvedValueOnce(station);
+
+      const response = await client.post(
+        '/stations',
+        {
+          name: 'Station 1',
+          number: 1,
+          code: '123456',
+          order: 'ASC',
+        },
+        {
+          headers: mockAuthorizationHeaderForAdmin(),
+        }
+      );
+
+      expect(response.status).toEqual(201);
+      expect(response.data).toEqual({
+        ...station,
+        createdAt: station.createdAt.toISOString(),
+        updatedAt: station.updatedAt.toISOString(),
+      });
+    });
+
     it('returns 400 if the "name" is missing', async () => {
       const response = await client.post(
         '/stations',
@@ -275,7 +309,55 @@ describe('StationController', () => {
       expect(response.data).toEqual([]);
     });
 
-    it('returns all sessions', async () => {
+    it('returns all sessions with "code" for admin users', async () => {
+      const stations = [
+        mockStation({
+          name: 'Station 1',
+          number: 1,
+        }),
+        mockStation({
+          name: 'Station 2',
+          number: 2,
+        }),
+      ];
+
+      stationServiceMock.getAll.mockResolvedValueOnce(stations);
+
+      const response = await client.get('/stations', {
+        headers: mockAuthorizationHeaderForAdmin(),
+      });
+
+      expect(response.status).toEqual(200);
+      expect(response.data).toHaveLength(stations.length);
+      expect(response.data[0]).toHaveProperty('code');
+      expect(response.data[1]).toHaveProperty('code');
+    });
+
+    it('returns all sessions without "code" for station users', async () => {
+      const stations = [
+        mockStation({
+          name: 'Station 1',
+          number: 1,
+        }),
+        mockStation({
+          name: 'Station 2',
+          number: 2,
+        }),
+      ];
+
+      stationServiceMock.getAll.mockResolvedValueOnce(stations);
+
+      const response = await client.get('/stations', {
+        headers: mockAuthorizationHeaderForStation(),
+      });
+
+      expect(response.status).toEqual(200);
+      expect(response.data).toHaveLength(stations.length);
+      expect(response.data[0]).not.toHaveProperty('code');
+      expect(response.data[1]).not.toHaveProperty('code');
+    });
+
+    it('returns all sessions without "code" for default users', async () => {
       const stations = [
         mockStation({
           name: 'Station 1',
@@ -293,6 +375,8 @@ describe('StationController', () => {
 
       expect(response.status).toEqual(200);
       expect(response.data).toHaveLength(stations.length);
+      expect(response.data[0]).not.toHaveProperty('code');
+      expect(response.data[1]).not.toHaveProperty('code');
     });
   });
 });

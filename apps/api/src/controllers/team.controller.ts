@@ -3,7 +3,7 @@ import { Router } from 'express';
 import { Role } from '@bkr/api-interface';
 
 import { BadRequestException, NotFoundException } from '../errors';
-import { hasRole } from '../middleware/has-role';
+import { authorize } from '../middleware/authorize';
 import { CreateTeamSchema, UpdateTeamSchema } from '../schemas';
 import { TeamService } from '../services/team.service';
 import { handler } from './handler';
@@ -62,7 +62,7 @@ export function TeamController(teamService: TeamService): Router {
    */
   router.post(
     '/teams',
-    hasRole(Role.ADMIN),
+    authorize(Role.ADMIN),
     handler(async (req, res) => {
       const { value, error } = CreateTeamSchema.validate(req.body);
 
@@ -178,7 +178,7 @@ export function TeamController(teamService: TeamService): Router {
    */
   router.put(
     '/teams/:teamId',
-    hasRole(Role.ADMIN),
+    authorize(Role.ADMIN),
     handler(async (req, res) => {
       const teamId = req.params.teamId;
 
@@ -251,7 +251,7 @@ export function TeamController(teamService: TeamService): Router {
    */
   router.delete(
     '/teams/:teamId',
-    hasRole(Role.ADMIN),
+    authorize(Role.ADMIN),
     handler(async (req, res) => {
       const teamId = req.params.teamId;
 

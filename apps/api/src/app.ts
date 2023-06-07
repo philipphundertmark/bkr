@@ -4,6 +4,7 @@ import helmet from 'helmet';
 
 import { errorHandler } from './errors/error-handler';
 import { logger } from './logger';
+import { authenticate } from './middleware/authenticate';
 
 export interface AppConfig {
   origin: string;
@@ -27,6 +28,9 @@ export const createApp = (
   app.use(express.json());
   app.use(helmet());
   app.use(logger);
+
+  // Authentication
+  app.use(authenticate);
 
   // Request handlers
   app.use(...handlers);

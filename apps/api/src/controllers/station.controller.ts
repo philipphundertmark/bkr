@@ -5,7 +5,7 @@ import { SetOptional } from 'type-fest';
 import { Role, isAdmin } from '@bkr/api-interface';
 
 import { BadRequestException, NotFoundException } from '../errors';
-import { hasRole } from '../middleware/has-role';
+import { authorize } from '../middleware/authorize';
 import { CreateStationSchema, UpdateStationSchema } from '../schemas';
 import { StationService } from '../services/station.service';
 import { handler } from './handler';
@@ -64,7 +64,7 @@ export function StationController(stationService: StationService): Router {
    */
   router.post(
     '/stations',
-    hasRole(Role.ADMIN),
+    authorize(Role.ADMIN),
     handler(async (req, res) => {
       const { value, error } = CreateStationSchema.validate(req.body);
 
@@ -198,7 +198,7 @@ export function StationController(stationService: StationService): Router {
    */
   router.put(
     '/stations/:stationId',
-    hasRole(Role.ADMIN),
+    authorize(Role.ADMIN),
     handler(async (req, res) => {
       const stationId = req.params.stationId;
 
@@ -280,7 +280,7 @@ export function StationController(stationService: StationService): Router {
    */
   router.delete(
     '/stations/:stationId',
-    hasRole(Role.ADMIN),
+    authorize(Role.ADMIN),
     handler(async (req, res) => {
       const stationId = req.params.stationId;
 
