@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Result as PrismaResult } from '@prisma/client';
 import dayjs from 'dayjs';
 
 import { Result } from '@bkr/api-interface';
@@ -23,11 +23,7 @@ export class ResultService {
       select: ResultService.RESULT_SELECT,
     });
 
-    return {
-      ...result,
-      checkIn: dayjs(result.checkIn),
-      checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
-    };
+    return this.toResult(result);
   }
 
   async deleteResult(stationId: string, teamId: string): Promise<void> {
@@ -55,13 +51,7 @@ export class ResultService {
       select: ResultService.RESULT_SELECT,
     });
 
-    return result
-      ? {
-          ...result,
-          checkIn: dayjs(result.checkIn),
-          checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
-        }
-      : null;
+    return result ? this.toResult(result) : null;
   }
 
   async updateResult(
@@ -84,6 +74,10 @@ export class ResultService {
       select: ResultService.RESULT_SELECT,
     });
 
+    return this.toResult(result);
+  }
+
+  private toResult(result: PrismaResult): Result {
     return {
       ...result,
       checkIn: dayjs(result.checkIn),

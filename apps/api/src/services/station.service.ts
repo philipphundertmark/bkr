@@ -1,4 +1,4 @@
-import { Order, PrismaClient } from '@prisma/client';
+import { Order, PrismaClient, Station as PrismaStation } from '@prisma/client';
 import dayjs from 'dayjs';
 
 import { Station } from '@bkr/api-interface';
@@ -30,16 +30,7 @@ export class StationService {
       },
     });
 
-    return {
-      ...station,
-      createdAt: dayjs(station.createdAt),
-      updatedAt: dayjs(station.updatedAt),
-      results: station.results.map((result) => ({
-        ...result,
-        checkIn: dayjs(result.checkIn),
-        checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
-      })),
-    };
+    return this.toStation(station);
   }
 
   async deleteStation(id: string): Promise<void> {
@@ -59,16 +50,7 @@ export class StationService {
       },
     });
 
-    return stations.map((station) => ({
-      ...station,
-      createdAt: dayjs(station.createdAt),
-      updatedAt: dayjs(station.updatedAt),
-      results: station.results.map((result) => ({
-        ...result,
-        checkIn: dayjs(result.checkIn),
-        checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
-      })),
-    }));
+    return stations.map((station) => this.toStation(station));
   }
 
   async getStationById(id: string): Promise<Station | null> {
@@ -83,18 +65,7 @@ export class StationService {
       },
     });
 
-    return station
-      ? {
-          ...station,
-          createdAt: dayjs(station.createdAt),
-          updatedAt: dayjs(station.updatedAt),
-          results: station.results.map((result) => ({
-            ...result,
-            checkIn: dayjs(result.checkIn),
-            checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
-          })),
-        }
-      : null;
+    return station ? this.toStation(station) : null;
   }
 
   async getStationByNumber(number: number): Promise<Station | null> {
@@ -109,18 +80,7 @@ export class StationService {
       },
     });
 
-    return station
-      ? {
-          ...station,
-          createdAt: dayjs(station.createdAt),
-          updatedAt: dayjs(station.updatedAt),
-          results: station.results.map((result) => ({
-            ...result,
-            checkIn: dayjs(result.checkIn),
-            checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
-          })),
-        }
-      : null;
+    return station ? this.toStation(station) : null;
   }
 
   async getStationByCode(code: string): Promise<Station | null> {
@@ -135,18 +95,7 @@ export class StationService {
       },
     });
 
-    return station
-      ? {
-          ...station,
-          createdAt: dayjs(station.createdAt),
-          updatedAt: dayjs(station.updatedAt),
-          results: station.results.map((result) => ({
-            ...result,
-            checkIn: dayjs(result.checkIn),
-            checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
-          })),
-        }
-      : null;
+    return station ? this.toStation(station) : null;
   }
 
   async updateStation(
@@ -177,6 +126,20 @@ export class StationService {
       },
     });
 
+    return this.toStation(station);
+  }
+
+  private toStation(
+    station: PrismaStation & {
+      results: {
+        stationId: string;
+        teamId: string;
+        checkIn: Date;
+        checkOut: Date | null;
+        points: number;
+      }[];
+    }
+  ): Station {
     return {
       ...station,
       createdAt: dayjs(station.createdAt),
