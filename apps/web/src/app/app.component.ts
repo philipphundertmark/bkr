@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+import { AuthService } from './services/auth.service';
+
 @Component({
   standalone: true,
   imports: [RouterModule],
@@ -8,4 +10,10 @@ import { RouterModule } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {}
+export class AppComponent {
+  constructor(private readonly authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.authService.restore();
+  }
+}

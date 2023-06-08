@@ -5,6 +5,8 @@
   "scripts": {
     "build:api": "nx build api",
     "build:api:prod": "nx build api -c production",
+    "build:web": "nx build web",
+    "build:web:prod": "nx build web -c production",
     "format:check": "nx format:check",
     "format:check:all": "nx format:check --all",
     "format:write": "nx format:write",
@@ -12,8 +14,9 @@
     "lint": "nx affected:lint",
     "lint:all": "nx run-many -t lint",
     "migrate:reset": "prisma migrate reset --force",
-    "start:all": "nx run-many --target=serve --projects=api --parallel",
+    "start:all": "nx run-many --target=serve --projects=api,web --parallel",
     "start:api": "nx serve api",
+    "start:web": "nx serve web",
     "start": "npm run start:all",
     "test:api": "nx test api",
     "test:api:coverage": "nx test api --codeCoverage --coverageReporters=\"text,text-summary\""
@@ -36,6 +39,7 @@
     "helmet": "6.1.5",
     "joi": "17.9.2",
     "jsonwebtoken": "9.0.0",
+    "jwt-decode": "^3.1.2",
     "rxjs": "~7.8.0",
     "swagger-jsdoc": "6.2.8",
     "swagger-ui-express": "4.6.2",
