@@ -1,5 +1,7 @@
 import * as dayjs from 'dayjs';
 
+import { Result } from './result';
+
 export interface Team {
   id: string;
   createdAt: dayjs.Dayjs;
@@ -10,4 +12,5 @@ export interface Team {
   startedAt?: dayjs.Dayjs;
   finishedAt?: dayjs.Dayjs;
   penalty: number;
+  results: Result[];
 }
