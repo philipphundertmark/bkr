@@ -21,7 +21,7 @@ const tokenService = new TokenService();
 
 const app = createApp(
   [
-    ResultController(resultService, teamService),
+    ResultController(resultService, stationService, teamService),
     StationController(stationService),
     TeamController(teamService),
     TokenController(tokenService, stationService),

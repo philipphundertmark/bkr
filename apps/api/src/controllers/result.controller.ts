@@ -6,11 +6,13 @@ import { BadRequestException, NotFoundException } from '../errors';
 import { authorize } from '../middleware/authorize';
 import { CreateResultSchema, UpdateResultSchema } from '../schemas';
 import { ResultService } from '../services/result.service';
+import { StationService } from '../services/station.service';
 import { TeamService } from '../services/team.service';
 import { handler } from './handler';
 
 export function ResultController(
   resultService: ResultService,
+  stationService: StationService,
   teamService: TeamService
 ): Router {
   const router = Router();
@@ -72,6 +74,12 @@ export function ResultController(
     handler(async (req, res) => {
       const stationId = req.params.stationId;
 
+      const station = await stationService.getStationById(stationId);
+
+      if (station === null) {
+        throw new NotFoundException(`Station ${stationId} does not exist`);
+      }
+
       const { value, error } = CreateResultSchema.validate(req.body);
 
       if (error) {
@@ -83,7 +91,7 @@ export function ResultController(
       const team = await teamService.getTeamById(teamId);
 
       if (team === null) {
-        throw new NotFoundException(`Team ${teamId} does not exist`);
+        throw new BadRequestException(`Team ${teamId} does not exist`);
       }
 
       let result = await resultService.getResultById(stationId, teamId);

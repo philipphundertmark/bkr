@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { Team } from '@prisma/client';
+
 import { MockType } from '../test-utils';
 import { TeamService } from './team.service';
 
@@ -22,3 +24,16 @@ export const teamServiceMock: MockType<TeamService> = {
     throw new Error('updateTeam not implemented');
   }),
 };
+
+export const mockTeam = (updates: Partial<Team>): Team => ({
+  id: '00000000-0000-0000-0000-000000000000',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  name: 'mock-team',
+  number: 1,
+  members: [],
+  finishedAt: null,
+  startedAt: null,
+  penalty: 0,
+  ...updates,
+});
