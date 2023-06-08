@@ -378,9 +378,50 @@ describe('StationController', () => {
       expect(response.data[0]).not.toHaveProperty('code');
       expect(response.data[1]).not.toHaveProperty('code');
     });
+
+    it('returns 500 if an unexpected error occurs', async () => {
+      stationServiceMock.getAll.mockRejectedValueOnce(new Error());
+
+      const response = await client.get('/stations');
+
+      expect(response.status).toEqual(500);
+    });
   });
 
   describe('PUT /stations/:stationId', () => {
+    it('returns the updated station', async () => {
+      const station = mockStation({
+        name: 'Station 1',
+        number: 1,
+      });
+
+      stationServiceMock.getStationById.mockResolvedValueOnce(station);
+      stationServiceMock.getStationByNumber.mockResolvedValueOnce(null);
+      stationServiceMock.getStationByCode.mockResolvedValueOnce(null);
+      stationServiceMock.updateStation.mockResolvedValueOnce(station);
+
+      const response = await client.put(
+        '/stations/1',
+        {
+          name: 'Station 1',
+          number: 1,
+          members: [],
+          code: '123456',
+          order: 'ASC',
+        },
+        {
+          headers: mockAuthorizationHeaderForAdmin(),
+        }
+      );
+
+      expect(response.status).toEqual(200);
+      expect(response.data).toEqual({
+        ...station,
+        createdAt: station.createdAt.toISOString(),
+        updatedAt: station.updatedAt.toISOString(),
+      });
+    });
+
     it('returns 400 if the "name" is too short', async () => {
       const response = await client.put(
         '/stations/1',
@@ -526,6 +567,86 @@ describe('StationController', () => {
       );
 
       expect(response.status).toEqual(403);
+    });
+
+    it('returns 404 if the station does not exist', async () => {
+      stationServiceMock.getStationById.mockResolvedValueOnce(null);
+
+      const response = await client.put(
+        '/stations/1',
+        {},
+        {
+          headers: mockAuthorizationHeaderForAdmin(),
+        }
+      );
+
+      expect(response.status).toEqual(404);
+    });
+
+    it('returns 500 if an unexpected error occurs', async () => {
+      stationServiceMock.getStationById.mockRejectedValueOnce(new Error());
+
+      const response = await client.put(
+        '/stations/1',
+        {},
+        {
+          headers: mockAuthorizationHeaderForAdmin(),
+        }
+      );
+
+      expect(response.status).toEqual(500);
+    });
+  });
+
+  describe('DELETE /stations/:stationId', () => {
+    it('deletes the station', async () => {
+      const station = mockStation({
+        name: 'Station 1',
+        number: 1,
+      });
+
+      stationServiceMock.getStationById.mockResolvedValueOnce(station);
+      stationServiceMock.deleteStation.mockResolvedValueOnce();
+
+      const response = await client.delete('/stations/1', {
+        headers: mockAuthorizationHeaderForAdmin(),
+      });
+
+      expect(response.status).toEqual(200);
+    });
+
+    it('returns 401 if the user is not authenticated', async () => {
+      const response = await client.delete('/stations/1');
+
+      expect(response.status).toEqual(401);
+    });
+
+    it('returns 403 if the user is not authorized', async () => {
+      const response = await client.delete('/stations/1', {
+        headers: mockAuthorizationHeaderForStation(),
+      });
+
+      expect(response.status).toEqual(403);
+    });
+
+    it('returns 404 if the station does not exist', async () => {
+      stationServiceMock.getStationById.mockResolvedValueOnce(null);
+
+      const response = await client.delete('/stations/1', {
+        headers: mockAuthorizationHeaderForAdmin(),
+      });
+
+      expect(response.status).toEqual(404);
+    });
+
+    it('returns 500 if an unexpected error occurs', async () => {
+      stationServiceMock.getStationById.mockRejectedValueOnce(new Error());
+
+      const response = await client.delete('/stations/1', {
+        headers: mockAuthorizationHeaderForAdmin(),
+      });
+
+      expect(response.status).toEqual(500);
     });
   });
 });
