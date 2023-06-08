@@ -1,10 +1,9 @@
 import { Router } from 'express';
 
-import { Role } from '@bkr/api-interface';
+import { CreateTeamSchema, Role, UpdateTeamSchema } from '@bkr/api-interface';
 
 import { BadRequestException, NotFoundException } from '../errors';
 import { authorize } from '../middleware/authorize';
-import { CreateTeamSchema, UpdateTeamSchema } from '../schemas';
 import { TeamService } from '../services/team.service';
 import { handler } from './handler';
 

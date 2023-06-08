@@ -1,10 +1,13 @@
 import { Router } from 'express';
 
-import { Role } from '@bkr/api-interface';
+import {
+  CreateResultSchema,
+  Role,
+  UpdateResultSchema,
+} from '@bkr/api-interface';
 
 import { BadRequestException, NotFoundException } from '../errors';
 import { authorize } from '../middleware/authorize';
-import { CreateResultSchema, UpdateResultSchema } from '../schemas';
 import { ResultService } from '../services/result.service';
 import { StationService } from '../services/station.service';
 import { TeamService } from '../services/team.service';

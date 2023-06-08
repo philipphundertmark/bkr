@@ -2,11 +2,15 @@ import { Station } from '@prisma/client';
 import { Router } from 'express';
 import { SetOptional } from 'type-fest';
 
-import { Role, isAdmin } from '@bkr/api-interface';
+import {
+  CreateStationSchema,
+  Role,
+  UpdateStationSchema,
+  isAdmin,
+} from '@bkr/api-interface';
 
 import { BadRequestException, NotFoundException } from '../errors';
 import { authorize } from '../middleware/authorize';
-import { CreateStationSchema, UpdateStationSchema } from '../schemas';
 import { StationService } from '../services/station.service';
 import { handler } from './handler';
 

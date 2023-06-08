@@ -1,10 +1,9 @@
 import { Router } from 'express';
 
-import { Role } from '@bkr/api-interface';
+import { CreateTokenSchema, Role } from '@bkr/api-interface';
 
 import { config } from '../config';
 import { BadRequestException } from '../errors';
-import { CreateTokenSchema } from '../schemas';
 import { StationService } from '../services/station.service';
 import { TokenService } from '../services/token.service';
 import { handler } from './handler';
