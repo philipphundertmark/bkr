@@ -1,6 +1,11 @@
 import { Router } from 'express';
 
-import { CreateTeamSchema, Role, UpdateTeamSchema } from '@bkr/api-interface';
+import {
+  CreateTeamSchema,
+  Role,
+  TeamUtils,
+  UpdateTeamSchema,
+} from '@bkr/api-interface';
 
 import { BadRequestException, NotFoundException } from '../errors';
 import { authorize } from '../middleware/authorize';
@@ -80,7 +85,7 @@ export function TeamController(teamService: TeamService): Router {
       team = await teamService.createTeam(name, number, members);
 
       res.status(201);
-      res.json(team);
+      res.json(TeamUtils.serialize(team));
     })
   );
 
@@ -114,7 +119,7 @@ export function TeamController(teamService: TeamService): Router {
       const teams = await teamService.getAll();
 
       res.status(200);
-      res.json(teams);
+      res.json(teams.map(TeamUtils.serialize));
     })
   );
 
@@ -204,7 +209,7 @@ export function TeamController(teamService: TeamService): Router {
       });
 
       res.status(200);
-      res.json(team);
+      res.json(TeamUtils.serialize(team));
     })
   );
 

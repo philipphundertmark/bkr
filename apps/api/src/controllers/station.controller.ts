@@ -1,7 +1,7 @@
-import { Station } from '@prisma/client';
 import { Router } from 'express';
 import { SetOptional } from 'type-fest';
 
+import { Station, StationUtils } from '@bkr/api-interface';
 import {
   CreateStationSchema,
   Role,
@@ -100,7 +100,7 @@ export function StationController(stationService: StationService): Router {
       );
 
       res.status(201);
-      res.json(station);
+      res.json(StationUtils.serialize(station));
     })
   );
 
@@ -139,7 +139,7 @@ export function StationController(stationService: StationService): Router {
       }
 
       res.status(200);
-      res.json(stations);
+      res.json(stations.map(StationUtils.serialize));
     })
   );
 
@@ -247,7 +247,7 @@ export function StationController(stationService: StationService): Router {
       });
 
       res.status(200);
-      res.json(station);
+      res.json(StationUtils.serialize(station));
     })
   );
 

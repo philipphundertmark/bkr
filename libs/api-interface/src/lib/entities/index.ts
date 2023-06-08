@@ -4,7 +4,7 @@ export * from './result.utils';
 
 export * from './station';
 export * from './station.dto';
-export * from './result.utils';
+export * from './station.utils';
 
 export * from './team';
 export * from './team.dto';

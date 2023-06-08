@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import {
   CreateResultSchema,
+  ResultUtils,
   Role,
   UpdateResultSchema,
 } from '@bkr/api-interface';
@@ -108,7 +109,7 @@ export function ResultController(
       result = await resultService.createResult(stationId, teamId);
 
       res.status(201);
-      res.json(result);
+      res.json(ResultUtils.serialize(result));
     })
   );
 
@@ -200,7 +201,7 @@ export function ResultController(
       });
 
       res.status(200);
-      res.json(result);
+      res.json(ResultUtils.serialize(result));
     })
   );
 
