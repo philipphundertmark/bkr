@@ -1,4 +1,7 @@
-import { PrismaClient, Result } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
+import dayjs from 'dayjs';
+
+import { Result } from '@bkr/api-interface';
 
 export class ResultService {
   static readonly RESULT_SELECT = {
@@ -11,14 +14,20 @@ export class ResultService {
 
   constructor(private prisma: PrismaClient) {}
 
-  createResult(stationId: string, teamId: string): Promise<Result> {
-    return this.prisma.result.create({
+  async createResult(stationId: string, teamId: string): Promise<Result> {
+    const result = await this.prisma.result.create({
       data: {
         stationId: stationId,
         teamId: teamId,
       },
       select: ResultService.RESULT_SELECT,
     });
+
+    return {
+      ...result,
+      checkIn: dayjs(result.checkIn),
+      checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
+    };
   }
 
   async deleteResult(stationId: string, teamId: string): Promise<void> {
@@ -32,8 +41,11 @@ export class ResultService {
     });
   }
 
-  getResultById(stationId: string, teamId: string): Promise<Result | null> {
-    return this.prisma.result.findUnique({
+  async getResultById(
+    stationId: string,
+    teamId: string
+  ): Promise<Result | null> {
+    const result = await this.prisma.result.findUnique({
       where: {
         teamId_stationId: {
           stationId: stationId,
@@ -42,14 +54,22 @@ export class ResultService {
       },
       select: ResultService.RESULT_SELECT,
     });
+
+    return result
+      ? {
+          ...result,
+          checkIn: dayjs(result.checkIn),
+          checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
+        }
+      : null;
   }
 
-  updateResult(
+  async updateResult(
     stationId: string,
     teamId: string,
     updates: { points?: number; checkIn?: string; checkOut?: string }
   ): Promise<Result> {
-    return this.prisma.result.update({
+    const result = await this.prisma.result.update({
       where: {
         teamId_stationId: {
           stationId: stationId,
@@ -63,5 +83,11 @@ export class ResultService {
       },
       select: ResultService.RESULT_SELECT,
     });
+
+    return {
+      ...result,
+      checkIn: dayjs(result.checkIn),
+      checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
+    };
   }
 }

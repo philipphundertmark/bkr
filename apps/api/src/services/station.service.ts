@@ -1,18 +1,21 @@
-import { Order, PrismaClient, Station } from '@prisma/client';
+import { Order, PrismaClient } from '@prisma/client';
+import dayjs from 'dayjs';
+
+import { Station } from '@bkr/api-interface';
 
 import { ResultService } from './result.service';
 
 export class StationService {
   constructor(private prisma: PrismaClient) {}
 
-  createStation(
+  async createStation(
     name: string,
     number: number,
     members: string[],
     code: string,
     order: Order
   ): Promise<Station> {
-    return this.prisma.station.create({
+    const station = await this.prisma.station.create({
       data: {
         name: name,
         number: number,
@@ -26,6 +29,17 @@ export class StationService {
         },
       },
     });
+
+    return {
+      ...station,
+      createdAt: dayjs(station.createdAt),
+      updatedAt: dayjs(station.updatedAt),
+      results: station.results.map((result) => ({
+        ...result,
+        checkIn: dayjs(result.checkIn),
+        checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
+      })),
+    };
   }
 
   async deleteStation(id: string): Promise<void> {
@@ -36,18 +50,29 @@ export class StationService {
     });
   }
 
-  getAll(): Promise<Station[]> {
-    return this.prisma.station.findMany({
+  async getAll(): Promise<Station[]> {
+    const stations = await this.prisma.station.findMany({
       include: {
         results: {
           select: ResultService.RESULT_SELECT,
         },
       },
     });
+
+    return stations.map((station) => ({
+      ...station,
+      createdAt: dayjs(station.createdAt),
+      updatedAt: dayjs(station.updatedAt),
+      results: station.results.map((result) => ({
+        ...result,
+        checkIn: dayjs(result.checkIn),
+        checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
+      })),
+    }));
   }
 
-  getStationById(id: string): Promise<Station | null> {
-    return this.prisma.station.findUnique({
+  async getStationById(id: string): Promise<Station | null> {
+    const station = await this.prisma.station.findUnique({
       where: {
         id: id,
       },
@@ -57,10 +82,23 @@ export class StationService {
         },
       },
     });
+
+    return station
+      ? {
+          ...station,
+          createdAt: dayjs(station.createdAt),
+          updatedAt: dayjs(station.updatedAt),
+          results: station.results.map((result) => ({
+            ...result,
+            checkIn: dayjs(result.checkIn),
+            checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
+          })),
+        }
+      : null;
   }
 
-  getStationByNumber(number: number): Promise<Station | null> {
-    return this.prisma.station.findUnique({
+  async getStationByNumber(number: number): Promise<Station | null> {
+    const station = await this.prisma.station.findUnique({
       where: {
         number: number,
       },
@@ -70,10 +108,23 @@ export class StationService {
         },
       },
     });
+
+    return station
+      ? {
+          ...station,
+          createdAt: dayjs(station.createdAt),
+          updatedAt: dayjs(station.updatedAt),
+          results: station.results.map((result) => ({
+            ...result,
+            checkIn: dayjs(result.checkIn),
+            checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
+          })),
+        }
+      : null;
   }
 
-  getStationByCode(code: string): Promise<Station | null> {
-    return this.prisma.station.findUnique({
+  async getStationByCode(code: string): Promise<Station | null> {
+    const station = await this.prisma.station.findUnique({
       where: {
         code: code,
       },
@@ -83,9 +134,22 @@ export class StationService {
         },
       },
     });
+
+    return station
+      ? {
+          ...station,
+          createdAt: dayjs(station.createdAt),
+          updatedAt: dayjs(station.updatedAt),
+          results: station.results.map((result) => ({
+            ...result,
+            checkIn: dayjs(result.checkIn),
+            checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
+          })),
+        }
+      : null;
   }
 
-  updateStation(
+  async updateStation(
     id: string,
     updates: {
       name?: string;
@@ -95,7 +159,7 @@ export class StationService {
       order?: Order;
     }
   ): Promise<Station> {
-    return this.prisma.station.update({
+    const station = await this.prisma.station.update({
       where: {
         id: id,
       },
@@ -112,5 +176,16 @@ export class StationService {
         },
       },
     });
+
+    return {
+      ...station,
+      createdAt: dayjs(station.createdAt),
+      updatedAt: dayjs(station.updatedAt),
+      results: station.results.map((result) => ({
+        ...result,
+        checkIn: dayjs(result.checkIn),
+        checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
+      })),
+    };
   }
 }

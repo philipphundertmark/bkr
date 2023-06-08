@@ -1,12 +1,19 @@
-import { PrismaClient, Team } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
+import dayjs from 'dayjs';
+
+import { Team } from '@bkr/api-interface';
 
 import { ResultService } from './result.service';
 
 export class TeamService {
   constructor(private prisma: PrismaClient) {}
 
-  createTeam(name: string, number: number, members: string[]): Promise<Team> {
-    return this.prisma.team.create({
+  async createTeam(
+    name: string,
+    number: number,
+    members: string[]
+  ): Promise<Team> {
+    const team = await this.prisma.team.create({
       data: {
         name: name,
         number: number,
@@ -18,6 +25,19 @@ export class TeamService {
         },
       },
     });
+
+    return {
+      ...team,
+      createdAt: dayjs(team.createdAt),
+      updatedAt: dayjs(team.updatedAt),
+      startedAt: team.startedAt ? dayjs(team.startedAt) : undefined,
+      finishedAt: team.finishedAt ? dayjs(team.finishedAt) : undefined,
+      results: team.results.map((result) => ({
+        ...result,
+        checkIn: dayjs(result.checkIn),
+        checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
+      })),
+    };
   }
 
   async deleteTeam(id: string): Promise<void> {
@@ -28,18 +48,31 @@ export class TeamService {
     });
   }
 
-  getAll(): Promise<Team[]> {
-    return this.prisma.team.findMany({
+  async getAll(): Promise<Team[]> {
+    const teams = await this.prisma.team.findMany({
       include: {
         results: {
           select: ResultService.RESULT_SELECT,
         },
       },
     });
+
+    return teams.map((team) => ({
+      ...team,
+      createdAt: dayjs(team.createdAt),
+      updatedAt: dayjs(team.updatedAt),
+      startedAt: team.startedAt ? dayjs(team.startedAt) : undefined,
+      finishedAt: team.finishedAt ? dayjs(team.finishedAt) : undefined,
+      results: team.results.map((result) => ({
+        ...result,
+        checkIn: dayjs(result.checkIn),
+        checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
+      })),
+    }));
   }
 
-  getTeamById(id: string): Promise<Team | null> {
-    return this.prisma.team.findUnique({
+  async getTeamById(id: string): Promise<Team | null> {
+    const team = await this.prisma.team.findUnique({
       where: {
         id: id,
       },
@@ -49,10 +82,25 @@ export class TeamService {
         },
       },
     });
+
+    return team
+      ? {
+          ...team,
+          createdAt: dayjs(team.createdAt),
+          updatedAt: dayjs(team.updatedAt),
+          startedAt: team.startedAt ? dayjs(team.startedAt) : undefined,
+          finishedAt: team.finishedAt ? dayjs(team.finishedAt) : undefined,
+          results: team.results.map((result) => ({
+            ...result,
+            checkIn: dayjs(result.checkIn),
+            checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
+          })),
+        }
+      : null;
   }
 
-  getTeamByNumber(number: number): Promise<Team | null> {
-    return this.prisma.team.findUnique({
+  async getTeamByNumber(number: number): Promise<Team | null> {
+    const team = await this.prisma.team.findUnique({
       where: {
         number: number,
       },
@@ -62,9 +110,24 @@ export class TeamService {
         },
       },
     });
+
+    return team
+      ? {
+          ...team,
+          createdAt: dayjs(team.createdAt),
+          updatedAt: dayjs(team.updatedAt),
+          startedAt: team.startedAt ? dayjs(team.startedAt) : undefined,
+          finishedAt: team.finishedAt ? dayjs(team.finishedAt) : undefined,
+          results: team.results.map((result) => ({
+            ...result,
+            checkIn: dayjs(result.checkIn),
+            checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
+          })),
+        }
+      : null;
   }
 
-  updateTeam(
+  async updateTeam(
     id: string,
     updates: {
       name?: string;
@@ -75,7 +138,7 @@ export class TeamService {
       penalty?: number;
     }
   ): Promise<Team> {
-    return this.prisma.team.update({
+    const team = await this.prisma.team.update({
       where: {
         id: id,
       },
@@ -97,5 +160,18 @@ export class TeamService {
         },
       },
     });
+
+    return {
+      ...team,
+      createdAt: dayjs(team.createdAt),
+      updatedAt: dayjs(team.updatedAt),
+      startedAt: team.startedAt ? dayjs(team.startedAt) : undefined,
+      finishedAt: team.finishedAt ? dayjs(team.finishedAt) : undefined,
+      results: team.results.map((result) => ({
+        ...result,
+        checkIn: dayjs(result.checkIn),
+        checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
+      })),
+    };
   }
 }
