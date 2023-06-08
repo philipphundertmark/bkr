@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Team } from '@prisma/client';
+import dayjs from 'dayjs';
+
+import { Team } from '@bkr/api-interface';
 
 import { MockType } from '../test-utils';
 import { TeamService } from './team.service';
@@ -27,13 +29,12 @@ export const teamServiceMock: MockType<TeamService> = {
 
 export const mockTeam = (updates: Partial<Team>): Team => ({
   id: '00000000-0000-0000-0000-000000000000',
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  createdAt: dayjs(),
+  updatedAt: dayjs(),
   name: 'mock-team',
   number: 1,
   members: [],
-  finishedAt: null,
-  startedAt: null,
   penalty: 0,
+  results: [],
   ...updates,
 });

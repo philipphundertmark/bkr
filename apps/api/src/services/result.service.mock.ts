@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Result } from '@prisma/client';
+import dayjs from 'dayjs';
+
+import { Result } from '@bkr/api-interface';
 
 import { MockType } from '../test-utils';
 import { ResultService } from './result.service';
@@ -22,8 +24,8 @@ export const resultServiceMock: MockType<ResultService> = {
 export const mockResult = (updates: Partial<Result>): Result => ({
   stationId: '00000000-0000-0000-0000-000000000000',
   teamId: '00000000-0000-0000-0000-000000000000',
-  checkIn: new Date(),
-  checkOut: new Date(),
+  checkIn: dayjs(),
+  checkOut: dayjs(),
   points: 0,
   ...updates,
 });

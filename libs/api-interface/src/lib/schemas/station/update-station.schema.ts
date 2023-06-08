@@ -1,5 +1,6 @@
-import { Order } from '@prisma/client';
 import * as joi from 'joi';
+
+import { Order } from '../../order';
 
 export interface UpdateStationSchema {
   name?: string;

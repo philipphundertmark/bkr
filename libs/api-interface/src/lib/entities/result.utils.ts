@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 import { Result } from './result';
 import { ResultDTO } from './result.dto';

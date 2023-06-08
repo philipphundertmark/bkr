@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 import { ResultUtils } from './result.utils';
 import { Station } from './station';

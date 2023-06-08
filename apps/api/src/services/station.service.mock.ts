@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Order, Station } from '@prisma/client';
+import dayjs from 'dayjs';
+
+import { Order, Station } from '@bkr/api-interface';
 
 import { MockType } from '../test-utils';
 import { StationService } from './station.service';
@@ -30,12 +32,13 @@ export const stationServiceMock: MockType<StationService> = {
 
 export const mockStation = (updates: Partial<Station>): Station => ({
   id: '00000000-0000-0000-0000-000000000000',
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  createdAt: dayjs(),
+  updatedAt: dayjs(),
   name: 'mock-station',
   number: 1,
   members: [],
   code: '000000',
   order: Order.ASC,
+  results: [],
   ...updates,
 });
