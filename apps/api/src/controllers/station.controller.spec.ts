@@ -379,4 +379,153 @@ describe('StationController', () => {
       expect(response.data[1]).not.toHaveProperty('code');
     });
   });
+
+  describe('PUT /stations/:stationId', () => {
+    it('returns 400 if the "name" is too short', async () => {
+      const response = await client.put(
+        '/stations/1',
+        {
+          name: 'St',
+        },
+        {
+          headers: mockAuthorizationHeaderForAdmin(),
+        }
+      );
+
+      expect(response.status).toEqual(400);
+      expect(response.data).toEqual({
+        error: '"name" length must be at least 3 characters long',
+      });
+    });
+
+    it('returns 400 if the "number" is below the minimum', async () => {
+      const response = await client.put(
+        '/stations/1',
+        {
+          number: 0,
+        },
+        {
+          headers: mockAuthorizationHeaderForAdmin(),
+        }
+      );
+
+      expect(response.status).toEqual(400);
+      expect(response.data).toEqual({
+        error: '"number" must be greater than or equal to 1',
+      });
+    });
+
+    it('returns 400 if the "number" is already in use', async () => {
+      stationServiceMock.getStationById.mockResolvedValueOnce(
+        mockStation({
+          name: 'Station 1',
+          number: 1,
+        })
+      );
+      stationServiceMock.getStationByNumber.mockResolvedValueOnce(
+        mockStation({
+          name: 'Station 2',
+          number: 1,
+        })
+      );
+
+      const response = await client.put(
+        '/stations/1',
+        {
+          number: 1,
+        },
+        {
+          headers: mockAuthorizationHeaderForAdmin(),
+        }
+      );
+
+      expect(response.status).toEqual(400);
+      expect(response.data).toEqual({
+        error: '"number" must be unique',
+      });
+    });
+
+    it('returns 400 if the "code" is too short', async () => {
+      const response = await client.put(
+        '/stations/1',
+        {
+          code: '123',
+        },
+        {
+          headers: mockAuthorizationHeaderForAdmin(),
+        }
+      );
+
+      expect(response.status).toEqual(400);
+      expect(response.data).toEqual({
+        error: '"code" length must be 6 characters long',
+      });
+    });
+
+    it('returns 400 if the "code" is already in use', async () => {
+      stationServiceMock.getStationById.mockResolvedValueOnce(
+        mockStation({
+          name: 'Station 1',
+          number: 1,
+        })
+      );
+      stationServiceMock.getStationByCode.mockResolvedValueOnce(
+        mockStation({
+          name: 'Station 2',
+          number: 2,
+          code: '123456',
+        })
+      );
+
+      const response = await client.put(
+        '/stations/1',
+        {
+          code: '123456',
+        },
+        {
+          headers: mockAuthorizationHeaderForAdmin(),
+        }
+      );
+
+      expect(response.status).toEqual(400);
+      expect(response.data).toEqual({
+        error: '"code" must be unique',
+      });
+    });
+
+    it('returns 400 if the "order" is invalid', async () => {
+      const response = await client.put(
+        '/stations/1',
+        {
+          order: 'INVALID',
+        },
+        {
+          headers: mockAuthorizationHeaderForAdmin(),
+        }
+      );
+
+      expect(response.status).toEqual(400);
+      expect(response.data).toEqual({
+        error: '"order" must be one of [ASC, DESC]',
+      });
+    });
+
+    it('returns 401 if the user is not authenticated', async () => {
+      const response = await client.put('/stations/1');
+
+      expect(response.status).toEqual(401);
+    });
+
+    it('returns 403 if the user is not authorized', async () => {
+      const response = await client.put(
+        '/stations/1',
+        {},
+        {
+          headers: mockAuthorizationHeaderForStation(),
+        }
+      );
+
+      expect(response.status).toEqual(403);
+    });
+  });
 });

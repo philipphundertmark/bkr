@@ -4,15 +4,15 @@ import { ResultService } from './result.service';
 
 export const resultServiceMock: MockType<ResultService> = {
   createResult: jest.fn((...args) => {
-    throw new Error('Not implemented');
+    throw new Error('createResult not implemented');
   }),
   deleteResult: jest.fn((...args) => {
-    throw new Error('Not implemented');
+    throw new Error('deleteResult not implemented');
   }),
   getResultById: jest.fn((...args) => {
-    throw new Error('Not implemented');
+    throw new Error('getResultById not implemented');
   }),
   updateResult: jest.fn((...args) => {
-    throw new Error('Not implemented');
+    throw new Error('updateResult not implemented');
   }),
 };

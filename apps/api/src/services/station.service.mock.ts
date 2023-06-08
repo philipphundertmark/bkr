@@ -6,25 +6,25 @@ import { StationService } from './station.service';
 
 export const stationServiceMock: MockType<StationService> = {
   createStation: jest.fn(async (...args) => {
-    throw new Error('Not implemented');
+    throw new Error('createStation not implemented');
   }),
   deleteStation: jest.fn(async (...args) => {
-    throw new Error('Not implemented');
+    throw new Error('deleteStation not implemented');
   }),
   getAll: jest.fn(async (...args) => {
-    throw new Error('Not implemented');
+    throw new Error('getAll not implemented');
   }),
   getStationByCode: jest.fn(async (...args) => {
-    throw new Error('Not implemented');
+    throw new Error('getStationByCode not implemented');
   }),
   getStationById: jest.fn(async (...args) => {
-    throw new Error('Not implemented');
+    throw new Error('getStationById not implemented');
   }),
   getStationByNumber: jest.fn(async (...args) => {
-    throw new Error('Not implemented');
+    throw new Error('getStationByNumber not implemented');
   }),
   updateStation: jest.fn(async (...args) => {
-    throw new Error('Not implemented');
+    throw new Error('updateStation not implemented');
   }),
 };
 

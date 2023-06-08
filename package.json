@@ -16,7 +16,7 @@
     "start:api": "nx serve api",
     "start": "npm run start:all",
     "test:api": "nx test api",
-    "test:api:coverage": "nx test api --codeCoverage --coverageReporters=\"text-summary\""
+    "test:api:coverage": "nx test api --codeCoverage --coverageReporters=\"text,text-summary\""
   },
   "private": true,
   "dependencies": {

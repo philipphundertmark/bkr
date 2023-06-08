@@ -4,6 +4,6 @@ import { TokenService } from './token.service';
 
 export const tokenServiceMock: MockType<TokenService> = {
   createToken: jest.fn((...args) => {
-    throw new Error('Not implemented');
+    throw new Error('createToken not implemented');
   }),
 };

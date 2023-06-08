@@ -225,6 +225,15 @@ export function StationController(stationService: StationService): Router {
         throw new BadRequestException('"code" must be unique');
       }
 
+      station =
+        typeof number !== 'undefined'
+          ? await stationService.getStationByNumber(number)
+          : null;
+
+      if (typeof number !== 'undefined' && station !== null) {
+        throw new BadRequestException('"number" must be unique');
+      }
+
       station = await stationService.updateStation(stationId, {
         name: name,
         number: number,
