@@ -3,3 +3,8 @@
 @tailwind utilities;
 
 /* You can add global styles to this file, and also import other style files */
+@layer base {
+  body {
+    @apply text-gray-900 selection:bg-indigo-500 selection:text-white;
+  }
+}
