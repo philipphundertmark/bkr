@@ -16,11 +16,6 @@
         "tsConfig": "apps/api/tsconfig.app.json",
         "assets": [
           {
-            "glob": "run.sh",
-            "input": "apps/api",
-            "output": "/run.sh"
-          },
-          {
             "glob": "**/*",
             "input": "apps/api/src/assets",
             "output": "/assets/"
