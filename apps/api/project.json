@@ -14,7 +14,24 @@
         "outputPath": "dist/apps/api",
         "main": "apps/api/src/main.ts",
         "tsConfig": "apps/api/tsconfig.app.json",
-        "assets": ["apps/api/src/assets"],
+        "assets": [
+          {
+            "glob": "run.sh",
+            "input": "apps/api",
+            "output": "/run.sh"
+          },
+          {
+            "glob": "**/*",
+            "input": "apps/api/src/assets",
+            "output": "/assets/"
+          },
+          {
+            "glob": "**/*",
+            "input": "prisma",
+            "output": "/prisma/"
+          }
+        ],
+        "generatePackageJson": true,
         "isolatedConfig": true,
         "webpackConfig": "apps/api/webpack.config.js"
       },
