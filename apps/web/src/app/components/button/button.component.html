@@ -1,5 +1,11 @@
-<bkr-chevron-left-icon *ngIf="isBackward"></bkr-chevron-left-icon>
+<bkr-chevron-left-icon
+  class="-ml-1.5"
+  *ngIf="isBackward"
+></bkr-chevron-left-icon>
 
 <ng-content></ng-content>
 
-<bkr-chevron-right-icon *ngIf="isForward"></bkr-chevron-right-icon>
+<bkr-chevron-right-icon
+  class="-mr-1.5"
+  *ngIf="isForward"
+></bkr-chevron-right-icon>
