@@ -16,7 +16,7 @@ export type ButtonType = 'primary' | 'default' | 'danger';
 
 @Component({
   selector:
-    'a[bkr-backward-button], a[bkr-forward-button], a[bkr-icon-button], button[bkr-button], button[bkr-icon-button]',
+    'a[bkr-button], a[bkr-backward-button], a[bkr-forward-button], a[bkr-icon-button], button[bkr-button], button[bkr-icon-button]',
   standalone: true,
   imports: [ChevronLeftIconComponent, ChevronRightIconComponent, CommonModule],
   templateUrl: './button.component.html',
