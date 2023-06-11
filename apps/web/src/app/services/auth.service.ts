@@ -49,12 +49,12 @@ export class AuthService {
       );
   }
 
-  logout() {
+  logout(): void {
     localStorage.removeItem('token');
     this._token$.next(null);
   }
 
-  restore() {
+  restore(): void {
     const token = localStorage.getItem('token');
     this._token$.next(token);
   }

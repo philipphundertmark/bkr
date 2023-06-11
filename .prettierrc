@@ -1,6 +1,6 @@
 {
   "importOrder": ["<THIRD_PARTY_MODULES>", "^@bkr/(.*)$", "^[./]"],
-  "importOrderParserPlugins": ["typescript", "decorators"],
+  "importOrderParserPlugins": ["typescript", "decorators-legacy"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
   "singleQuote": true

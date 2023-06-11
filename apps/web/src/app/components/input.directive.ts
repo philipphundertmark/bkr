@@ -9,7 +9,7 @@ export class InputDirective {
   @HostBinding('class.input') input = true;
 
   @HostBinding('class.invalid') get invalid(): boolean {
-    return ( this.ngControl?.touched && this.ngControl?.invalid ) ?? false;
+    return (this.ngControl?.touched && this.ngControl?.invalid) ?? false;
   }
 
   constructor(@Optional() private readonly ngControl: NgControl) {}
