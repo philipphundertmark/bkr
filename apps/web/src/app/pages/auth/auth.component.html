@@ -1,4 +1,4 @@
-<div class="space-y-1 px-6">
+<div class="space-y-1 px-6" *ngIf="!isAuthenticated(); else authenticated">
   <h2 class="subtitle">Login</h2>
   <p class="text-gray-500">
     Hier kannst du dich als Organisator mit dem
@@ -8,10 +8,25 @@
   </p>
 </div>
 
+<ng-template #authenticated>
+  <div class="space-y-1 px-6">
+    <h2 class="subtitle">Account</h2>
+    <p class="text-gray-500" *ngIf="isAdmin()">
+      Du bist als
+      <span class="font-semibold text-indigo-500">Organisator</span> eingeloggt.
+    </p>
+    <p class="text-gray-500" *ngIf="isStation()">
+      Du bist als
+      <span class="font-semibold text-indigo-500">Station</span> eingeloggt.
+    </p>
+  </div>
+</ng-template>
+
 <form
   class="flex flex-col gap-4 px-6"
   [formGroup]="form"
   (ngSubmit)="handleSubmit($event)"
+  *ngIf="!isAuthenticated(); else logout"
 >
   <input
     bkrInput
@@ -30,3 +45,16 @@
     Einloggen
   </button>
 </form>
+
+<ng-template #logout>
+  <div class="px-6">
+    <button
+      bkr-button
+      bkrType="primary"
+      class="w-full"
+      (click)="handleLogout()"
+    >
+      Ausloggen
+    </button>
+  </div>
+</ng-template>

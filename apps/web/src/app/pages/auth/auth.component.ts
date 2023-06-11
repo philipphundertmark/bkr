@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, Input, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
   FormControl,
   FormGroup,
@@ -30,12 +30,21 @@ export class AuthComponent {
   });
   loading = false;
 
+  isAuthenticated = toSignal(this.authService.isAuthenticated$);
+  isAdmin = toSignal(this.authService.isAdmin$);
+  isStation = toSignal(this.authService.isStation$);
+
   private readonly destroyRef = inject(DestroyRef);
 
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router
   ) {}
+
+  handleLogout(): void {
+    this.authService.logout();
+    this.router.navigateByUrl('/');
+  }
 
   handleSubmit(event: Event): void {
     event.preventDefault();
