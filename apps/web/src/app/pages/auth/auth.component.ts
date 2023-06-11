@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 import { ButtonComponent, InputDirective } from '../../components';
 
@@ -13,6 +18,14 @@ import { ButtonComponent, InputDirective } from '../../components';
 })
 export class AuthComponent {
   form = new FormGroup({
-    code: new FormControl<string>(''),
+    code: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(6)],
+    }),
   });
+
+  handleSubmit(event: Event): void {
+    event.preventDefault();
+    console.log(this.form.value);
+  }
 }

@@ -8,7 +8,11 @@
   </p>
 </div>
 
-<form class="flex flex-col gap-4 px-6" [formGroup]="form">
+<form
+  class="flex flex-col gap-4 px-6"
+  [formGroup]="form"
+  (ngSubmit)="handleSubmit($event)"
+>
   <input
     bkrInput
     formControlName="code"
@@ -16,7 +20,13 @@
     type="password"
   />
 
-  <button bkr-button class="w-full" bkrType="primary" type="submit">
+  <button
+    bkr-button
+    bkrType="primary"
+    class="w-full"
+    [disabled]="form.invalid"
+    type="submit"
+  >
     Einloggen
   </button>
 </form>
