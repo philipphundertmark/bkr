@@ -1,0 +1,27 @@
+:host {
+  @apply inline-flex items-center gap-x-1.5 rounded-lg text-sm font-semibold shadow-sm transition duration-100 focus-visible:outline focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+:host(:not(.icon)) {
+  @apply px-3.5 py-2.5;
+}
+
+:host(.icon) {
+  @apply p-2.5;
+}
+
+:host(.anchor) {
+  @apply text-center;
+}
+
+:host(.primary) {
+  @apply bg-indigo-500 text-white hover:bg-indigo-400 focus-visible:outline-indigo-500 disabled:bg-indigo-500;
+}
+
+:host(.default) {
+  @apply bg-white ring-1 ring-inset ring-gray-200 hover:bg-gray-50 focus-visible:outline-indigo-500 disabled:bg-white;
+}
+
+:host(.forward) {
+  @apply justify-between;
+}
