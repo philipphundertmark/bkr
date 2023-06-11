@@ -10,7 +10,7 @@
   @apply p-3;
 }
 
-:host(.anchor:not(.backward):not(.forward)) {
+:host(:not(.backward):not(.forward)) {
   @apply justify-center;
 }
 
@@ -20,6 +20,10 @@
 
 :host(.default) {
   @apply bg-white ring-1 ring-inset ring-gray-200 hover:bg-gray-50 focus-visible:outline-indigo-500 disabled:bg-white;
+}
+
+:host(.danger) {
+  @apply bg-red-500 text-white hover:bg-red-400 focus-visible:outline-red-500 disabled:bg-red-500;
 }
 
 :host(.forward) {

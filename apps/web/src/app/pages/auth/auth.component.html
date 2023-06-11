@@ -1,6 +1,6 @@
-<div class="px-6">
+<div class="space-y-1 px-6">
   <h2 class="subtitle">Login</h2>
-  <p class="mt-2 text-gray-500">
+  <p class="text-gray-500">
     Hier kannst du dich als Organisator mit dem
     <span class="font-semibold text-indigo-500">Master-Passwort</span> oder als
     Station mit eurem
@@ -10,10 +10,8 @@
 
 <form class="flex flex-col gap-4 px-6" [formGroup]="form">
   <input
-    class="block w-full rounded-lg border-0 px-4 py-3 shadow-sm ring-1 ring-inset ring-gray-200 transition placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+    bkrInput
     formControlName="code"
-    id="password"
-    name="password"
     placeholder="Master-Passwort oder Stationscode"
     type="password"
   />
