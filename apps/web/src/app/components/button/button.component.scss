@@ -1,13 +1,13 @@
 :host {
-  @apply inline-flex items-center gap-x-1.5 rounded-lg text-sm font-semibold shadow-sm transition duration-100 focus-visible:outline focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  @apply inline-flex items-center gap-x-1.5 rounded-lg font-semibold shadow-sm transition duration-100 focus-visible:outline focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
 }
 
 :host(:not(.icon)) {
-  @apply px-3.5 py-2.5;
+  @apply px-4 py-3;
 }
 
 :host(.icon) {
-  @apply p-2.5;
+  @apply p-3;
 }
 
 :host(.anchor) {
