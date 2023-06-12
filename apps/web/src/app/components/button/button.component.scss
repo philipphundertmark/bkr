@@ -15,7 +15,7 @@
 }
 
 :host(.primary) {
-  @apply bg-indigo-500 text-white hover:bg-indigo-400 focus-visible:outline-indigo-500 disabled:bg-indigo-500;
+  @apply bg-indigo-500 text-white hover:bg-indigo-600 focus-visible:outline-indigo-500 disabled:bg-indigo-500;
 }
 
 :host(.default) {
@@ -23,7 +23,7 @@
 }
 
 :host(.danger) {
-  @apply bg-red-500 text-white hover:bg-red-400 focus-visible:outline-red-500 disabled:bg-red-500;
+  @apply bg-red-500 text-white hover:bg-red-600 focus-visible:outline-red-500 disabled:bg-red-500;
 }
 
 :host(.forward) {

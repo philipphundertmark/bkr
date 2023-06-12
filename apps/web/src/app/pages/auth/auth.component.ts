@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 
 import { ButtonComponent, InputDirective } from '../../components';
 import { AuthService } from '../../services/auth.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'bkr-auth',
@@ -38,11 +39,14 @@ export class AuthComponent {
 
   constructor(
     private readonly authService: AuthService,
+    private readonly notificationService: NotificationService,
     private readonly router: Router
   ) {}
 
   handleLogout(): void {
     this.authService.logout();
+    this.notificationService.success('Du bist jetzt ausgeloggt.');
+
     this.router.navigateByUrl('/');
   }
 
@@ -61,10 +65,15 @@ export class AuthComponent {
       .subscribe({
         next: () => {
           this.loading = false;
+          this.form.reset();
+          this.notificationService.success('Du bist jetzt eingeloggt.');
+
           this.router.navigateByUrl(this.returnUrl);
         },
         error: () => {
           this.loading = false;
+          this.form.reset();
+          this.notificationService.error('Das hat leider nicht geklappt.');
         },
       });
   }

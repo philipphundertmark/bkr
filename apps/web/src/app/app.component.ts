@@ -17,6 +17,9 @@ export class AppComponent implements OnInit {
     private readonly router: Router
   ) {}
 
+  /**
+   * @implements {OnInit}
+   */
   ngOnInit(): void {
     this.authService.restore();
   }

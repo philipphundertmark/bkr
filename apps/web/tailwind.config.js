@@ -18,6 +18,7 @@ module.exports = {
       gray: colors.slate,
       indigo: colors.indigo,
       red: colors.rose,
+      green: colors.emerald,
     },
     extend: {
       fontFamily: {

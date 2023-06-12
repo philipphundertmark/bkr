@@ -1,0 +1,13 @@
+<div class="flex w-full flex-col items-center space-y-4">
+  <bkr-notification
+    *ngFor="let notification of notifications"
+    [notification]="notification"
+    [@notificationMotion]="{
+      value: true,
+      params: {
+        enterTranslateXFrom: this.enterTranslateXFrom,
+        enterTranslateYFrom: this.enterTranslateYFrom
+      }
+    }"
+  ></bkr-notification>
+</div>
