@@ -10,8 +10,7 @@ import {
 import { Router } from '@angular/router';
 
 import { ButtonComponent, InputDirective } from '../../components';
-import { AuthService } from '../../services/auth.service';
-import { NotificationService } from '../../services/notification.service';
+import { AuthService, NotificationService } from '../../services';
 
 @Component({
   selector: 'bkr-auth',

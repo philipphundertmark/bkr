@@ -1,1 +1,22 @@
-<p>team-new works!</p>
+<header class="grid grid-cols-2 gap-4 px-6">
+  <a bkr-button class="col-span-1" routerLink="/teams">Abbrechen</a>
+  <button bkr-button bkrType="primary" class="col-span-1">Speichern</button>
+</header>
+
+<form class="flex flex-col gap-4 px-6">
+  <div class="flex flex-col gap-2">
+    <label class="label" for="number">Nummer</label>
+    <input
+      bkrInput
+      id="number"
+      type="number"
+      placeholder="Nummer"
+      name="nummer"
+    />
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <label class="label" for="name">Name</label>
+    <input bkrInput id="name" type="text" placeholder="Name" name="name" />
+  </div>
+</form>

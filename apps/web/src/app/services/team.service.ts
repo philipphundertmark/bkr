@@ -6,6 +6,7 @@ import {
   catchError,
   map,
   of,
+  shareReplay,
   tap,
   throwError,
 } from 'rxjs';
@@ -23,7 +24,10 @@ import {
 })
 export class TeamService {
   private readonly _teams$ = new BehaviorSubject<Team[]>([]);
-  readonly teams$ = this._teams$.pipe();
+  readonly teams$ = this._teams$.pipe(
+    map((teams) => teams.sort((a, b) => a.number - b.number)),
+    shareReplay(1)
+  );
 
   constructor(private readonly http: HttpClient) {}
 

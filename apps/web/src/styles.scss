@@ -20,6 +20,10 @@
     @apply font-title text-lg font-semibold;
   }
 
+  .label {
+    @apply font-title text-base font-semibold;
+  }
+
   .input {
     @apply block w-full rounded-lg border-0 px-4 py-3 shadow-sm ring-1 ring-inset transition placeholder:text-gray-400 focus:ring-2 focus:ring-inset;
   }

@@ -6,7 +6,7 @@ import {
   ExclamationCircleIconComponent,
   XMarkIconComponent,
 } from '../../icons/mini';
-import { Notification } from '../../services/notification.service';
+import { Notification } from '../../services';
 import { NotificationContainerComponent } from '../notification-container/notification-container.component';
 
 @Component({

@@ -9,7 +9,7 @@ import { inject } from '@angular/core';
 import { Observable, switchMap, take, tap } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../services';
 
 export const AuthHttpInterceptorFn: HttpInterceptorFn = (
   req: HttpRequest<unknown>,

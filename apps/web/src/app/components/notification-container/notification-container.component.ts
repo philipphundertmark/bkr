@@ -4,8 +4,7 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { HostBinding } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { MediaService, ScreenSize } from '../../services/media.service';
-import { Notification } from '../../services/notification.service';
+import { MediaService, Notification, ScreenSize } from '../../services';
 import { NotificationComponent } from '../notification/notification.component';
 
 const notificationMotion = trigger('notificationMotion', [
