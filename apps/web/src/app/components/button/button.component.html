@@ -3,7 +3,13 @@
   *ngIf="isBackward"
 ></bkr-chevron-left-icon>
 
-<ng-content></ng-content>
+<ng-container *ngIf="!bkrLoading; else loading">
+  <ng-content></ng-content>
+</ng-container>
+
+<ng-template #loading>
+  <bkr-spinner *ngIf="bkrLoading"></bkr-spinner>
+</ng-template>
 
 <bkr-chevron-right-icon
   class="-mr-1.5"

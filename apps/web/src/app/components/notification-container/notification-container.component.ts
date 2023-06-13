@@ -16,7 +16,7 @@ const notificationMotion = trigger('notificationMotion', [
         'translateX({{enterTranslateXFrom}}rem) translateY({{enterTranslateYFrom}}rem)',
     }),
     animate(
-      '150ms 150ms ease-out',
+      '150ms ease-out',
       style({
         opacity: 1,
         transform: 'translateX(0px) translateY(0px)',

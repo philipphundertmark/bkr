@@ -11,6 +11,7 @@ import {
   ChevronLeftIconComponent,
   ChevronRightIconComponent,
 } from '../../icons/mini';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 export type ButtonType = 'primary' | 'default' | 'danger';
 
@@ -18,12 +19,18 @@ export type ButtonType = 'primary' | 'default' | 'danger';
   selector:
     'a[bkr-button], a[bkr-backward-button], a[bkr-forward-button], a[bkr-icon-button], button[bkr-button], button[bkr-icon-button]',
   standalone: true,
-  imports: [ChevronLeftIconComponent, ChevronRightIconComponent, CommonModule],
+  imports: [
+    ChevronLeftIconComponent,
+    ChevronRightIconComponent,
+    CommonModule,
+    SpinnerComponent,
+  ],
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonComponent {
+  @Input() bkrLoading = false;
   @Input() bkrType: ButtonType = 'default';
 
   @HostBinding('class.primary') get typePrimary(): boolean {

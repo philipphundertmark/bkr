@@ -37,9 +37,10 @@
 
   <button
     bkr-button
+    [bkrLoading]="loading"
     bkrType="primary"
     class="w-full"
-    [disabled]="form.invalid"
+    [disabled]="form.invalid || loading"
     type="submit"
   >
     Einloggen

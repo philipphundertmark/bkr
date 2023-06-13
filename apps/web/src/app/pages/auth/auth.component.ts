@@ -59,6 +59,8 @@ export class AuthComponent {
       return this.form.reset();
     }
 
+    this.loading = true;
+
     this.authService
       .login(code)
       .pipe(takeUntilDestroyed(this.destroyRef))

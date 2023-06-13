@@ -21,9 +21,18 @@ module.exports = {
       green: colors.emerald,
     },
     extend: {
+      animation: {
+        zoom: 'zoom 1s infinite ease-in-out',
+      },
       fontFamily: {
         sans: ['Open Sans', ...defaultTheme.fontFamily.sans],
         title: ['Poppins', ...defaultTheme.fontFamily.sans],
+      },
+      keyframes: {
+        zoom: {
+          '0%, 100%': { transform: 'scale(0)' },
+          '50%': { transform: 'scale(1)' },
+        },
       },
     },
   },

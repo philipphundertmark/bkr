@@ -1,0 +1,13 @@
+:host {
+  @apply relative h-6 w-6 animate-spin text-center;
+}
+
+.dot1,
+.dot2 {
+  @apply animate-zoom absolute top-0 inline-block h-3/5 w-3/5 rounded-full bg-current;
+}
+
+.dot2 {
+  @apply bottom-0 top-auto;
+  animation-delay: -0.5s;
+}
