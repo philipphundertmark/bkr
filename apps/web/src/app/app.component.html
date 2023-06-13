@@ -3,10 +3,18 @@
     <h1 class="title">BKR 2023</h1>
   </a>
 
-  <bkr-user-icon
-    class="p-1 text-gray-500"
+  <button
+    class="rounded-full p-1 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
     (click)="handleAuth()"
-  ></bkr-user-icon>
+    [ngClass]="{
+      'bg-gray-300': !isAdmin() && !isStation(),
+      'bg-indigo-500': isAdmin() || isStation()
+    }"
+  >
+    <bkr-star-icon *ngIf="isAdmin()"></bkr-star-icon>
+    <bkr-flag-icon *ngIf="isStation()"></bkr-flag-icon>
+    <bkr-user-icon *ngIf="!isAdmin() && !isStation()"></bkr-user-icon>
+  </button>
 </nav>
 
 <router-outlet></router-outlet>
