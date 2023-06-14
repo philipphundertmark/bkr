@@ -1,6 +1,12 @@
 <header class="grid grid-cols-2 gap-4 px-6">
   <a bkr-backward-button class="col-span-1" routerLink="/">Zurück</a>
-  <a bkr-button bkrType="primary" class="col-span-1" routerLink="/teams/new">
+  <a
+    bkr-button
+    bkrType="primary"
+    class="col-span-1"
+    *ngIf="isAdmin()"
+    routerLink="/teams/new"
+  >
     Neues Team
   </a>
 </header>

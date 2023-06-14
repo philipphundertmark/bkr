@@ -1,5 +1,8 @@
 import { Route } from '@angular/router';
 
+import { Role } from '@bkr/api-interface';
+
+import { roleCanActivateFn } from './guards/role.guard';
 import {
   AuthComponent,
   HomeComponent,
@@ -34,6 +37,10 @@ export const appRoutes: Route[] = [
   {
     path: 'stations/new',
     component: StationNewComponent,
+    canActivate: [roleCanActivateFn],
+    data: {
+      roles: [Role.ADMIN],
+    },
   },
   {
     path: 'stations/:stationId',
@@ -42,6 +49,10 @@ export const appRoutes: Route[] = [
   {
     path: 'stations/:stationId/edit',
     component: StationEditComponent,
+    canActivate: [roleCanActivateFn],
+    data: {
+      roles: [Role.ADMIN],
+    },
   },
   {
     path: 'teams',
@@ -50,6 +61,10 @@ export const appRoutes: Route[] = [
   {
     path: 'teams/new',
     component: TeamNewComponent,
+    canActivate: [roleCanActivateFn],
+    data: {
+      roles: [Role.ADMIN],
+    },
   },
   {
     path: 'teams/:teamId',
@@ -58,6 +73,10 @@ export const appRoutes: Route[] = [
   {
     path: 'teams/:teamId/edit',
     component: TeamEditComponent,
+    canActivate: [roleCanActivateFn],
+    data: {
+      roles: [Role.ADMIN],
+    },
   },
   {
     path: '**',

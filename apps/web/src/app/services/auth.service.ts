@@ -26,6 +26,10 @@ export class AuthService {
     map((token) => (token !== null ? jwtDecode<JwtPayload>(token) : null))
   );
 
+  readonly role$ = this.user$.pipe(
+    map((user) => (user !== null ? user.role : null))
+  );
+
   readonly isAuthenticated$ = this.user$.pipe(
     map((user) => user !== null),
     distinctUntilChanged()

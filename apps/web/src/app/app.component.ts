@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterModule } from '@angular/router';
 
 import {
@@ -8,6 +8,7 @@ import {
   StarIconComponent,
   UserIconComponent,
 } from './icons/mini';
+import { TeamService } from './services';
 import { AuthService } from './services/auth.service';
 
 @Component({
@@ -27,9 +28,12 @@ export class AppComponent implements OnInit {
   isAdmin = toSignal(this.authService.isAdmin$);
   isStation = toSignal(this.authService.isStation$);
 
+  private readonly destroyRef = inject(DestroyRef);
+
   constructor(
     private readonly authService: AuthService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly teamService: TeamService
   ) {}
 
   /**
@@ -37,6 +41,11 @@ export class AppComponent implements OnInit {
    */
   ngOnInit(): void {
     this.authService.restore();
+
+    this.teamService
+      .getTeams()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
 
   handleAuth(): void {

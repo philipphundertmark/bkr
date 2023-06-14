@@ -2,7 +2,13 @@
   <a bkr-forward-button class="col-span-2" routerLink="/rules">Regeln</a>
   <a bkr-forward-button class="col-span-1" routerLink="/teams">Teams</a>
   <a bkr-forward-button class="col-span-1" routerLink="/stations">Stationen</a>
-  <a bkr-forward-button bkrType="primary" class="col-span-2" routerLink="">
+  <a
+    bkr-forward-button
+    bkrType="primary"
+    class="col-span-2"
+    *ngIf="isStation()"
+    routerLink=""
+  >
     Meine Station
   </a>
 </header>
