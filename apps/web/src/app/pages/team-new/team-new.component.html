@@ -10,20 +10,28 @@
   </button>
 </header>
 
-<form class="flex flex-col gap-4 px-6">
+<form class="flex flex-col gap-4 px-6" [formGroup]="form">
   <div class="flex flex-col gap-2">
     <label class="label" for="number">Nummer</label>
     <input
       bkrInput
+      formControlName="number"
       id="number"
+      name="nummer"
       type="number"
       placeholder="Nummer"
-      name="nummer"
     />
   </div>
 
   <div class="flex flex-col gap-2">
     <label class="label" for="name">Name</label>
-    <input bkrInput id="name" type="text" placeholder="Name" name="name" />
+    <input
+      bkrInput
+      formControlName="name"
+      id="name"
+      name="name"
+      type="text"
+      placeholder="Name"
+    />
   </div>
 </form>
