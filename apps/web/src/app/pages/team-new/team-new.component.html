@@ -5,6 +5,8 @@
     bkrType="primary"
     class="col-span-1"
     (click)="handleSave()"
+    [disabled]="form.invalid || loading"
+    [bkrLoading]="loading"
   >
     Speichern
   </button>
@@ -33,5 +35,33 @@
       type="text"
       placeholder="Name"
     />
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <label class="label" for="name">Mitglieder</label>
+
+    <div
+      class="flex gap-2"
+      *ngFor="let memberFormControl of members.controls; let i = index"
+    >
+      <input
+        bkrInput
+        [formControl]="memberFormControl"
+        (keydown.enter)="handleEnterAt($event, i)"
+        id="name"
+        name="name"
+        type="text"
+        placeholder="Name"
+        #memberInput
+      />
+
+      <button bkr-icon-button (click)="handleRemoveMemberAt(i)" *ngIf="i > 0">
+        <bkr-x-mark-icon class="px-0.5 text-gray-500"></bkr-x-mark-icon>
+      </button>
+    </div>
+
+    <button bkr-button bkrType="primary" (click)="handleAddMember()">
+      Mitglied hinzufügen
+    </button>
   </div>
 </form>

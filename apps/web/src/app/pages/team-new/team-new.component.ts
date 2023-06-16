@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  ElementRef,
+  QueryList,
+  ViewChildren,
+  inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormArray,
@@ -11,6 +18,7 @@ import {
 import { Router, RouterModule } from '@angular/router';
 
 import { ButtonComponent, InputDirective } from '../../components';
+import { XMarkIconComponent } from '../../icons/mini';
 import { NotificationService, TeamService } from '../../services';
 
 @Component({
@@ -22,11 +30,14 @@ import { NotificationService, TeamService } from '../../services';
     InputDirective,
     ReactiveFormsModule,
     RouterModule,
+    XMarkIconComponent,
   ],
   templateUrl: './team-new.component.html',
   styleUrls: ['./team-new.component.scss'],
 })
 export class TeamNewComponent {
+  @ViewChildren('memberInput') memberInputs?: QueryList<ElementRef>;
+
   form = new FormGroup({
     name: new FormControl<string>('', {
       nonNullable: true,
@@ -51,12 +62,37 @@ export class TeamNewComponent {
     private readonly teamService: TeamService
   ) {}
 
-  handleAddScope(): void {
+  handleAddMember(): void {
     this.members.push(this.buildMemberControl());
+
+    setTimeout(() => this.focusMemberInputAt(this.members.length - 1), 0);
   }
 
-  handleRemoveScopeAt(index: number): void {
+  handleEnterAt(event: Event, index: number): void {
+    event.preventDefault();
+
+    if (index >= this.members.length) {
+      // Invalid index
+      return;
+    }
+
+    if (index === this.members.length - 1) {
+      this.handleAddMember();
+    }
+
+    this.focusMemberInputAt(index + 1);
+  }
+
+  handleRemoveMemberAt(index: number): void {
     this.members.removeAt(index);
+
+    setTimeout(() => {
+      if (index >= this.members.length) {
+        index = this.members.length - 1;
+      }
+
+      this.focusMemberInputAt(index);
+    }, 0);
   }
 
   handleSave(): void {
@@ -101,5 +137,9 @@ export class TeamNewComponent {
     return new FormControl<string>('', {
       nonNullable: true,
     });
+  }
+
+  private focusMemberInputAt(index: number): void {
+    this.memberInputs?.get(index)?.nativeElement.focus();
   }
 }
