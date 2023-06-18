@@ -1,13 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import jwtDecode from 'jwt-decode';
-import {
-  BehaviorSubject,
-  Observable,
-  distinctUntilChanged,
-  map,
-  tap,
-} from 'rxjs';
+import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 
 import { JwtPayload, Role } from '@bkr/api-interface';
 
@@ -16,7 +10,7 @@ import { JwtPayload, Role } from '@bkr/api-interface';
 })
 export class AuthService {
   private readonly _token$ = new BehaviorSubject<string | null>(null);
-  readonly token$ = this._token$.pipe(distinctUntilChanged());
+  readonly token$ = this._token$.asObservable();
 
   /**
    * Observable that emits information about the current user.
@@ -30,21 +24,16 @@ export class AuthService {
     map((user) => (user !== null ? user.role : null))
   );
 
-  readonly isAuthenticated$ = this.user$.pipe(
-    map((user) => user !== null),
-    distinctUntilChanged()
-  );
+  readonly isAuthenticated$ = this.user$.pipe(map((user) => user !== null));
 
-  readonly isAdmin$ = this.user$.pipe(
-    map((user) => user?.role === Role.ADMIN),
-    distinctUntilChanged()
-  );
+  readonly isAdmin$ = this.user$.pipe(map((user) => user?.role === Role.ADMIN));
   readonly isStation$ = this.user$.pipe(
-    map((user) => user?.role === Role.STATION),
-    distinctUntilChanged()
+    map((user) => user?.role === Role.STATION)
   );
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {
+    this.restore();
+  }
 
   login(code: string): Observable<string> {
     return this.http

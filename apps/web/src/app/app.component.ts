@@ -40,8 +40,6 @@ export class AppComponent implements OnInit {
    * @implements {OnInit}
    */
   ngOnInit(): void {
-    this.authService.restore();
-
     this.teamService
       .getTeams()
       .pipe(takeUntilDestroyed(this.destroyRef))
