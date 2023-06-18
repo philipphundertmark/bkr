@@ -59,7 +59,7 @@ export function TokenController(
       const { code } = value;
 
       if (code === config.ADMIN_CODE) {
-        const token = tokenService.createToken('Admin', 'Admin', Role.ADMIN);
+        const token = tokenService.createToken('Admin', Role.ADMIN);
 
         res.status(201);
         res.json({
@@ -75,11 +75,7 @@ export function TokenController(
         throw new BadRequestException('"code" is invalid');
       }
 
-      const token = tokenService.createToken(
-        station.id,
-        `Station ${station.id}`,
-        Role.STATION
-      );
+      const token = tokenService.createToken(station.id, Role.STATION);
 
       res.status(201);
       res.json({

@@ -5,7 +5,11 @@ import { RouterModule } from '@angular/router';
 
 import { Team } from '@bkr/api-interface';
 
-import { ButtonComponent } from '../../components';
+import {
+  ButtonComponent,
+  EmptyComponent,
+  LoadingComponent,
+} from '../../components';
 import { ChevronRightIconComponent } from '../../icons/mini';
 import { AuthService, TeamService } from '../../services';
 
@@ -16,6 +20,8 @@ import { AuthService, TeamService } from '../../services';
     ButtonComponent,
     ChevronRightIconComponent,
     CommonModule,
+    EmptyComponent,
+    LoadingComponent,
     RouterModule,
   ],
   templateUrl: './team-list.component.html',
@@ -23,6 +29,7 @@ import { AuthService, TeamService } from '../../services';
 })
 export class TeamListComponent {
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
+  loading = toSignal(this.teamService.loading$, { initialValue: false });
   teams = toSignal(this.teamService.teams$, { initialValue: [] as Team[] });
 
   constructor(

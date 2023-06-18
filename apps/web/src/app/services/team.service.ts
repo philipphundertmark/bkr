@@ -4,6 +4,7 @@ import {
   BehaviorSubject,
   Observable,
   catchError,
+  distinctUntilChanged,
   map,
   of,
   shareReplay,
@@ -29,6 +30,9 @@ export class TeamService {
     shareReplay(1)
   );
 
+  private readonly _loading$ = new BehaviorSubject<boolean>(false);
+  readonly loading$ = this._loading$.pipe(distinctUntilChanged());
+
   constructor(private readonly http: HttpClient) {}
 
   createTeam(dto: CreateTeamSchema): Observable<Team> {
@@ -39,9 +43,12 @@ export class TeamService {
   }
 
   getTeams(): Observable<Team[]> {
+    this._loading$.next(true);
+
     return this.http.get<TeamDTO[]>('/teams').pipe(
       map((teamDtos) => teamDtos.map(TeamUtils.deserialize)),
-      tap((teams) => this._teams$.next(teams))
+      tap((teams) => this._teams$.next(teams)),
+      tap(() => this._loading$.next(false))
     );
   }
 

@@ -19,7 +19,6 @@ export const mockAuthorizationHeaderForAdmin = (): {
   const token = jwt.sign(
     {
       sub: 'Admin',
-      username: 'Admin',
       role: Role.ADMIN,
     },
     process.env.SECRET ?? '',
@@ -43,7 +42,6 @@ export const mockAuthorizationHeaderForStation = (): {
   const token = jwt.sign(
     {
       sub: '00000000-0000-0000-0000-000000000000',
-      username: 'Test Station',
       role: Role.STATION,
     },
     process.env.SECRET ?? '',

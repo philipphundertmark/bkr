@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
 
 import { config } from '../config';
+import { UnauthorizedException } from '../errors';
 
 export function authenticate(
   req: express.Request,
@@ -23,14 +24,20 @@ export function authenticate(
     return next();
   }
 
-  if (typeof payload === 'string') {
-    return next();
+  if (
+    typeof payload === 'string' ||
+    typeof payload.sub !== 'string' ||
+    typeof payload.iat !== 'number' ||
+    typeof payload.exp !== 'number'
+  ) {
+    throw new UnauthorizedException();
   }
 
   req.user = {
-    sub: payload.sub ?? '',
-    username: payload.username,
+    sub: payload.sub,
     role: payload.role,
+    iat: payload.iat,
+    exp: payload.exp,
   };
 
   return next();

@@ -7,14 +7,12 @@ import { config } from '../config';
 export class TokenService {
   createToken(
     sub: string,
-    username: string,
     role: Role,
-    expiresIn: string | number = '1d'
+    expiresIn: string | number = '7d'
   ): string {
     return jwt.sign(
       {
         sub: sub,
-        username: username,
         role: role,
       },
       config.SECRET,
