@@ -14,7 +14,7 @@ import { AuthService } from '../../services';
   styleUrls: ['./station-list.component.scss'],
 })
 export class StationListComponent {
-  isAdmin = toSignal(this.authService.isAdmin$);
+  isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
 
   constructor(private readonly authService: AuthService) {}
 }

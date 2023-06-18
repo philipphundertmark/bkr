@@ -20,6 +20,14 @@
     @apply font-title text-lg font-semibold;
   }
 
+  .name {
+    @apply font-title text-base font-semibold text-indigo-500;
+  }
+
+  .number {
+    @apply font-title text-sm font-semibold text-gray-300;
+  }
+
   .label {
     @apply font-title text-base font-semibold;
   }
