@@ -54,6 +54,13 @@ export class AuthService {
 
   restore(): void {
     const token = localStorage.getItem('token');
-    this._token$.next(token);
+
+    if (token === null) {
+      return;
+    }
+
+    const { exp } = jwtDecode<JwtPayload>(token);
+
+    return Date.now() < exp * 1000 ? this._token$.next(token) : this.logout();
   }
 }
