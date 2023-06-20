@@ -9,5 +9,5 @@ export interface CreateTeamSchema {
 export const CreateTeamSchema: joi.ObjectSchema<CreateTeamSchema> = joi.object({
   name: joi.string().min(3).required(),
   number: joi.number().min(1).required(),
-  members: joi.array().items(joi.string().min(3)).default([]),
+  members: joi.array().items(joi.string()).required(),
 });

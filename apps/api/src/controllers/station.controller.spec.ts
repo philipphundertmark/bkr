@@ -52,6 +52,7 @@ describe('StationController', () => {
         {
           name: 'Station 1',
           number: 1,
+          members: [],
           code: '123456',
           order: 'ASC',
         },
@@ -73,6 +74,7 @@ describe('StationController', () => {
         '/stations',
         {
           number: 1,
+          members: [],
           code: '123456',
           order: 'ASC',
         },
@@ -93,6 +95,7 @@ describe('StationController', () => {
         {
           name: 'St',
           number: 1,
+          members: [],
           code: '123456',
           order: 'ASC',
         },
@@ -112,6 +115,7 @@ describe('StationController', () => {
         '/stations',
         {
           name: 'Station 1',
+          members: [],
           code: '123456',
           order: 'ASC',
         },
@@ -132,6 +136,7 @@ describe('StationController', () => {
         {
           name: 'Station 1',
           number: 0,
+          members: [],
           code: '123456',
           order: 'ASC',
         },
@@ -160,6 +165,7 @@ describe('StationController', () => {
         {
           name: 'Station 2',
           number: 1,
+          members: [],
           code: '123456',
           order: 'ASC',
         },
@@ -181,6 +187,27 @@ describe('StationController', () => {
           name: 'Station 1',
           number: 1,
           order: 'ASC',
+          code: '123456',
+        },
+        {
+          headers: mockAuthorizationHeaderForAdmin(),
+        }
+      );
+
+      expect(response.status).toEqual(400);
+      expect(response.data).toEqual({
+        error: '"members" is required',
+      });
+    });
+
+    it('returns 400 if the "code" is missing', async () => {
+      const response = await client.post(
+        '/stations',
+        {
+          name: 'Station 1',
+          number: 1,
+          members: [],
+          order: 'ASC',
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
@@ -199,6 +226,7 @@ describe('StationController', () => {
         {
           name: 'Station 1',
           number: 1,
+          members: [],
           code: '123',
           order: 'ASC',
         },
@@ -227,6 +255,7 @@ describe('StationController', () => {
         {
           name: 'Station 2',
           number: 2,
+          members: [],
           code: '123456',
           order: 'ASC',
         },
@@ -247,6 +276,7 @@ describe('StationController', () => {
         {
           name: 'Station 1',
           number: 1,
+          members: [],
           code: '123456',
         },
         {
@@ -266,6 +296,7 @@ describe('StationController', () => {
         {
           name: 'Station 1',
           number: 1,
+          members: [],
           code: '123456',
           order: 'INVALID',
         },
