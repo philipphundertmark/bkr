@@ -8,7 +8,7 @@ import {
   StarIconComponent,
   UserIconComponent,
 } from './icons/mini';
-import { TeamService } from './services';
+import { StationService, TeamService } from './services';
 import { AuthService } from './services/auth.service';
 
 @Component({
@@ -33,6 +33,7 @@ export class AppComponent implements OnInit {
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
+    private readonly stationService: StationService,
     private readonly teamService: TeamService
   ) {}
 
@@ -40,6 +41,11 @@ export class AppComponent implements OnInit {
    * @implements {OnInit}
    */
   ngOnInit(): void {
+    this.stationService
+      .getStations()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
+
     this.teamService
       .getTeams()
       .pipe(takeUntilDestroyed(this.destroyRef))
