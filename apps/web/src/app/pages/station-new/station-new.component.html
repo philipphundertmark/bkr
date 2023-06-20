@@ -1,1 +1,85 @@
-<p>station-new works!</p>
+<header class="grid grid-cols-2 gap-4 px-6">
+  <a bkr-button class="col-span-1" routerLink="/stations">Abbrechen</a>
+  <button
+    bkr-button
+    bkrType="primary"
+    class="col-span-1"
+    (click)="handleSave()"
+    [disabled]="form.invalid || loading"
+    [bkrLoading]="loading"
+  >
+    Speichern
+  </button>
+</header>
+
+<form class="flex flex-col gap-4 px-6" [formGroup]="form">
+  <div class="flex flex-col gap-2">
+    <label class="label" for="number">
+      Nummer<span class="text-indigo-500">*</span>
+    </label>
+    <input
+      bkrInput
+      formControlName="number"
+      id="number"
+      name="nummer"
+      type="number"
+      placeholder="Nummer"
+    />
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <label class="label" for="name">
+      Name<span class="text-indigo-500">*</span>
+    </label>
+    <input
+      bkrInput
+      formControlName="name"
+      id="name"
+      name="name"
+      type="text"
+      placeholder="Name"
+    />
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <label class="label" for="code">
+      Code<span class="text-indigo-500">*</span>
+    </label>
+    <input
+      bkrInput
+      formControlName="code"
+      id="code"
+      name="code"
+      type="text"
+      placeholder="123-456"
+    />
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <label class="label" for="name">Mitglieder</label>
+
+    <div
+      class="flex gap-2"
+      *ngFor="let memberFormControl of members.controls; let i = index"
+    >
+      <input
+        bkrInput
+        [formControl]="memberFormControl"
+        (keydown.enter)="handleEnterAt($event, i)"
+        id="name"
+        name="name"
+        type="text"
+        placeholder="Name"
+        #memberInput
+      />
+
+      <button bkr-icon-button (click)="handleRemoveMemberAt(i)" *ngIf="i > 0">
+        <bkr-x-mark-icon class="px-0.5 text-gray-500"></bkr-x-mark-icon>
+      </button>
+    </div>
+
+    <button bkr-button bkrType="primary" (click)="handleAddMember()">
+      Mitglied hinzufügen
+    </button>
+  </div>
+</form>
