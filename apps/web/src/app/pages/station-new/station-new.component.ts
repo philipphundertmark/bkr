@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   Component,
   DestroyRef,
@@ -50,7 +51,7 @@ export class StationNewComponent {
     }),
     code: new FormControl<string>('', {
       nonNullable: true,
-      validators: [Validators.minLength(6)],
+      validators: [Validators.minLength(6), Validators.maxLength(6)],
     }),
     order: new FormControl<Order>(Order.ASC, {
       nonNullable: true,
@@ -140,11 +141,24 @@ export class StationNewComponent {
 
           this.router.navigate(['/stations']);
         },
-        error: () => {
+        error: (err: HttpErrorResponse) => {
           this.loading = false;
-          this.notificationService.error(
-            'Station konnte nicht erstellt werden.'
-          );
+
+          const error = err.error?.error;
+
+          if (error === '"number" must be unique') {
+            this.notificationService.error(
+              'Es gibt bereits eine Station mit dieser Nummer.'
+            );
+          } else if (error === '"code" must be unique') {
+            this.notificationService.error(
+              'Es gibt bereits eine Station mit diesem Code.'
+            );
+          } else {
+            this.notificationService.error(
+              'Station konnte nicht erstellt werden.'
+            );
+          }
         },
       });
   }

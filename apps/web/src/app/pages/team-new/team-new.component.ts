@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   Component,
   DestroyRef,
@@ -126,9 +127,20 @@ export class TeamNewComponent {
 
           this.router.navigate(['/teams']);
         },
-        error: () => {
+        error: (err: HttpErrorResponse) => {
           this.loading = false;
-          this.notificationService.error('Team konnte nicht erstellt werden.');
+
+          const error = err.error?.error;
+
+          if (error === '"number" must be unique') {
+            this.notificationService.error(
+              'Es gibt bereits ein Team mit dieser Nummer.'
+            );
+          } else {
+            this.notificationService.error(
+              'Team konnte nicht erstellt werden.'
+            );
+          }
         },
       });
   }
