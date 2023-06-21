@@ -30,7 +30,7 @@ export class StationService {
     shareReplay(1)
   );
 
-  private readonly _loading$ = new BehaviorSubject<boolean>(false);
+  private readonly _loading$ = new BehaviorSubject<boolean>(true);
   readonly loading$ = this._loading$.pipe(distinctUntilChanged());
 
   constructor(private readonly http: HttpClient) {}

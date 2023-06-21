@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { combineLatest, map } from 'rxjs';
 
 import { ButtonComponent } from '../../components';
-import { AuthService } from '../../services';
+import { AuthService, StationService } from '../../services';
 
 @Component({
   selector: 'bkr-station-details',
@@ -14,9 +15,21 @@ import { AuthService } from '../../services';
   styleUrls: ['./station-details.component.scss'],
 })
 export class StationDetailsComponent {
-  @Input() stationId?: string;
-
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
+  loading = toSignal(this.stationService.loading$);
 
-  constructor(private readonly authService: AuthService) {}
+  station$ = combineLatest([
+    this.route.paramMap,
+    this.stationService.stations$,
+  ]).pipe(
+    map(([params, stations]) =>
+      stations.find((station) => station.id === params.get('stationId'))
+    )
+  );
+
+  constructor(
+    private readonly authService: AuthService,
+    private readonly route: ActivatedRoute,
+    private readonly stationService: StationService
+  ) {}
 }
