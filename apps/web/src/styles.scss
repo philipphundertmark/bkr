@@ -20,6 +20,10 @@
     @apply font-title text-lg font-semibold;
   }
 
+  .subtitle.danger {
+    @apply text-red-500;
+  }
+
   .name {
     @apply font-title text-base font-semibold text-indigo-500;
   }
