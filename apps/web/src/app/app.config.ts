@@ -1,3 +1,4 @@
+import { DialogModule } from '@angular/cdk/dialog';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
@@ -14,7 +15,7 @@ import { AuthHttpInterceptorFn } from './interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    importProvidersFrom([OverlayModule]),
+    importProvidersFrom([DialogModule, OverlayModule]),
     provideAnimations(),
     provideHttpClient(
       withInterceptors([ApiHttpInterceptorFn, AuthHttpInterceptorFn])
