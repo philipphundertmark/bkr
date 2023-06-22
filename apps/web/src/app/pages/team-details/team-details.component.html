@@ -1,6 +1,5 @@
 <header class="grid grid-cols-2 gap-4 px-6">
   <a bkr-backward-button class="col-span-1" routerLink="/teams">Zurück</a>
-
   <ng-container *ngIf="team$ | async as team">
     <a
       bkr-button
@@ -10,40 +9,62 @@
     >
       Bearbeiten
     </a>
-  </ng-container>
 
-  <a bkr-button bkrType="primary" class="col-span-2" *ngIf="isAdmin()">
-    Start
-  </a>
+    <a bkr-button bkrType="primary" class="col-span-2" *ngIf="isAdmin()">
+      Start
+    </a>
+  </ng-container>
 </header>
 
-<div class="flex flex-col gap-4 px-6">
-  <div class="flex flex-col gap-2">
-    <label class="label">Nummer</label>
-    <p>Nummer</p>
-  </div>
+<ng-container *ngIf="!loading(); else loadingIndicator">
+  <ng-container *ngIf="team$ | async as team; else empty">
+    <div class="flex flex-col gap-4 px-6">
+      <div class="flex flex-col gap-2">
+        <label class="label">Nummer</label>
+        <p>{{ team.number }}</p>
+      </div>
 
-  <div class="flex flex-col gap-2">
-    <label class="label">Name</label>
-    <p>Name</p>
-  </div>
+      <div class="flex flex-col gap-2">
+        <label class="label">Name</label>
+        <p>{{ team.name }}</p>
+      </div>
 
-  <div class="flex flex-col gap-2">
-    <label class="label">Code</label>
-    <p>Code</p>
-  </div>
+      <div class="flex flex-col gap-2">
+        <label class="label">Gestartet um</label>
+        <p>{{ team.startedAt ?? '-' }}</p>
+      </div>
 
-  <div class="flex flex-col gap-2">
-    <label class="label" for="name">Mitglieder</label>
-    <p>Mitglieder</p>
-  </div>
-</div>
+      <div class="flex flex-col gap-2">
+        <label class="label">Angekommen um</label>
+        <p>{{ team.finishedAt ?? '-' }}</p>
+      </div>
 
-<div class="space-y-1 px-6">
-  <h2 class="subtitle danger">Danger Zone</h2>
-  <p class="text-gray-500">Hier wird's gefährlich.</p>
-</div>
+      <div class="flex flex-col gap-2">
+        <label class="label">Strafminuten</label>
+        <p>{{ team.penalty }}</p>
+      </div>
 
-<div class="px-6">
-  <button bkr-button bkrType="danger" class="w-full">Team löschen</button>
-</div>
+      <div class="flex flex-col gap-2">
+        <label class="label" for="name">Mitglieder</label>
+        <p>{{ formatTeamMembers(team) }}</p>
+      </div>
+    </div>
+
+    <div class="space-y-1 px-6">
+      <h2 class="subtitle danger">Danger Zone</h2>
+      <p class="text-gray-500">Hier wird's gefährlich.</p>
+    </div>
+
+    <div class="px-6">
+      <button bkr-button bkrType="danger" class="w-full">Team löschen</button>
+    </div>
+  </ng-container>
+
+  <ng-template #empty>
+    <bkr-empty>Team nicht gefunden.</bkr-empty>
+  </ng-template>
+</ng-container>
+
+<ng-template #loadingIndicator>
+  <bkr-loading></bkr-loading>
+</ng-template>
