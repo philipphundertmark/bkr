@@ -2,12 +2,6 @@
   <bkr-notification
     *ngFor="let notification of notifications"
     [notification]="notification"
-    [@notificationMotion]="{
-      value: true,
-      params: {
-        enterTranslateXFrom: this.enterTranslateXFrom,
-        enterTranslateYFrom: this.enterTranslateYFrom
-      }
-    }"
+    @notificationMotion
   ></bkr-notification>
 </div>
