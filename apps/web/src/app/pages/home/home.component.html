@@ -17,3 +17,32 @@
   <h2 class="subtitle">Bestenliste</h2>
   <p class="text-gray-500">Das aktuelle Ranking aller Teams.</p>
 </div>
+
+<ng-container *ngIf="loading() === false; else loadingIndicator">
+  <ul
+    class="divide-y divide-gray-200 border-y border-gray-200"
+    *ngIf="teams().length > 0; else empty"
+  >
+    <li class="flex items-center gap-4 p-6" *ngFor="let team of teams()">
+      <div>1.</div>
+
+      <div class="flex flex-1 flex-col gap-1">
+        <div class="flex justify-between gap-2">
+          <h3 class="name">{{ team.name }}</h3>
+
+          <div class="flex items-center gap-2">
+            <span class="font-mono"> 00:00:00 </span>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+  <ng-template #empty>
+    <bkr-empty>Es gibt noch keine Teams.</bkr-empty>
+  </ng-template>
+</ng-container>
+
+<ng-template #loadingIndicator>
+  <bkr-loading></bkr-loading>
+</ng-template>
