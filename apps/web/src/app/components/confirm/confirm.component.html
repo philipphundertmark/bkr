@@ -1,0 +1,13 @@
+<div class="p-4 pt-5">TODO</div>
+
+<div class="flex flex-row-reverse gap-4 bg-gray-50 p-4">
+  <button
+    bkr-button
+    [bkrType]="data.type === ConfirmType.INFO ? 'primary' : 'danger'"
+    (click)="handleConfirm()"
+  >
+    Ok
+  </button>
+
+  <button bkr-button (click)="handleCancel()">Abbrechen</button>
+</div>
