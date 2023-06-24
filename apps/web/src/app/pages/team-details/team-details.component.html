@@ -10,9 +10,29 @@
       Bearbeiten
     </a>
 
-    <a bkr-button bkrType="primary" class="col-span-2" *ngIf="isAdmin()">
+    <button
+      bkr-button
+      [bkrLoading]="startTeamLoading()"
+      bkrType="primary"
+      class="col-span-2"
+      (click)="handleStartTeam(team.id)"
+      *ngIf="isAdmin() && !team.startedAt"
+    >
+      <bkr-play-icon></bkr-play-icon>
       Start
-    </a>
+    </button>
+
+    <button
+      bkr-button
+      [bkrLoading]="stopTeamLoading()"
+      bkrType="primary"
+      class="col-span-2"
+      (click)="handleStopTeam(team.id)"
+      *ngIf="isAdmin() && team.startedAt && !team.finishedAt"
+    >
+      <bkr-pause-icon></bkr-pause-icon>
+      Stop
+    </button>
   </ng-container>
 </header>
 
