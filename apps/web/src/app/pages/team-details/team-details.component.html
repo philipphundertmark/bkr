@@ -56,7 +56,14 @@
     </div>
 
     <div class="px-6">
-      <button bkr-button bkrType="danger" class="w-full">Team löschen</button>
+      <button
+        bkr-button
+        bkrType="danger"
+        class="w-full"
+        (click)="handleDeleteTeam(team.id)"
+      >
+        Team löschen
+      </button>
     </div>
   </ng-container>
 

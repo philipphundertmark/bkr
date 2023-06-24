@@ -47,4 +47,12 @@
   .input:not(.invalid) {
     @apply ring-gray-200 focus:ring-indigo-500;
   }
+
+  .backdrop {
+    @apply bg-gray-600 bg-opacity-75;
+  }
+
+  .dialog {
+    @apply w-full self-start px-6 py-20;
+  }
 }

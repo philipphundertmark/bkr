@@ -1,13 +1,36 @@
-<div class="p-4 pt-5">TODO</div>
+<div class="p-4 pt-5">
+  <div
+    class="mx-auto flex h-12 w-12 items-center justify-center rounded-full"
+    [ngClass]="{
+      'bg-indigo-100 text-indigo-500': data.type === ConfirmType.INFO,
+      'bg-red-100 text-red-500': data.type === ConfirmType.DELETE
+    }"
+    [ngSwitch]="data.type"
+  >
+    <bkr-information-circle-icon
+      *ngSwitchCase="ConfirmType.INFO"
+    ></bkr-information-circle-icon>
+    <bkr-exclamation-circle-icon
+      *ngSwitchCase="ConfirmType.DELETE"
+    ></bkr-exclamation-circle-icon>
+  </div>
+
+  <div class="mt-3 text-center">
+    <h3 class="subtitle">{{ data.title }}</h3>
+    <div class="mt-2">
+      <p class="text-gray-500">
+        {{ data.message }}
+      </p>
+    </div>
+  </div>
+</div>
 
 <div class="flex flex-row-reverse gap-4 bg-gray-50 p-4">
-  <button
-    bkr-button
-    [bkrType]="data.type === ConfirmType.INFO ? 'primary' : 'danger'"
-    (click)="handleConfirm()"
-  >
-    Ok
+  <button bkr-button [bkrType]="buttonType" (click)="handleConfirm()">
+    {{ confirmText }}
   </button>
 
-  <button bkr-button (click)="handleCancel()">Abbrechen</button>
+  <button bkr-button (click)="handleCancel()">
+    {{ cancelText }}
+  </button>
 </div>
