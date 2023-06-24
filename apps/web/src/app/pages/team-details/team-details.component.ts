@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { EMPTY, combineLatest, map, switchMap } from 'rxjs';
 
 import { Team } from '@bkr/api-interface';
@@ -45,6 +45,7 @@ export class TeamDetailsComponent {
     private readonly confirmService: ConfirmService,
     private readonly notificationService: NotificationService,
     private readonly route: ActivatedRoute,
+    private readonly router: Router,
     private readonly teamService: TeamService
   ) {}
 
@@ -76,6 +77,8 @@ export class TeamDetailsComponent {
         next: () => {
           this.deleteTeamLoading.set(false);
           this.notificationService.success('Team gelöscht.');
+
+          this.router.navigate(['/teams']);
         },
         error: () => {
           this.deleteTeamLoading.set(false);
