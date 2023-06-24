@@ -73,8 +73,8 @@ export class StationDetailsComponent {
   handleDeleteStation(stationId: string): void {
     this.confirmService
       .delete({
-        title: 'Team löschen',
-        message: 'Möchtest du das Team wirklich löschen?',
+        title: 'Station löschen',
+        message: 'Möchtest du das Station wirklich löschen?',
       })
       .pipe(
         switchMap((confirmed) => {
