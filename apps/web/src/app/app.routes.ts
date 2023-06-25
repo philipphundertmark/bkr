@@ -5,8 +5,10 @@ import { Role } from '@bkr/api-interface';
 import { roleCanActivateFn } from './guards/role.guard';
 import {
   AuthComponent,
+  CheckInComponent,
   HomeComponent,
   RulesComponent,
+  StationComponent,
   StationDetailsComponent,
   StationEditComponent,
   StationListComponent,
@@ -27,8 +29,24 @@ export const appRoutes: Route[] = [
     component: AuthComponent,
   },
   {
+    path: 'check-in',
+    component: CheckInComponent,
+    canActivate: [roleCanActivateFn],
+    data: {
+      roles: [Role.STATION],
+    },
+  },
+  {
     path: 'rules',
     component: RulesComponent,
+  },
+  {
+    path: 'station',
+    component: StationComponent,
+    canActivate: [roleCanActivateFn],
+    data: {
+      roles: [Role.STATION],
+    },
   },
   {
     path: 'stations',
