@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   BehaviorSubject,
   Observable,
@@ -20,6 +21,8 @@ import {
   UpdateStationSchema,
 } from '@bkr/api-interface';
 
+import { ResultService } from './result.service';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -33,7 +36,41 @@ export class StationService {
   private readonly _loading$ = new BehaviorSubject<boolean>(true);
   readonly loading$ = this._loading$.pipe(distinctUntilChanged());
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient,
+    private readonly resultService: ResultService
+  ) {
+    this.resultService.newResult$
+      .pipe(takeUntilDestroyed())
+      .subscribe((result) => {
+        this._stations$.next(
+          this._stations$.value.map((station) =>
+            station.id === result.stationId
+              ? { ...station, results: [...station.results, result] }
+              : station
+          )
+        );
+      });
+
+    this.resultService.updatedResult$
+      .pipe(takeUntilDestroyed())
+      .subscribe((result) => {
+        this._stations$.next(
+          this._stations$.value.map((station) =>
+            station.id === result.stationId
+              ? {
+                  ...station,
+                  results: station.results.map((stationResult) =>
+                    stationResult.teamId === result.teamId
+                      ? result
+                      : stationResult
+                  ),
+                }
+              : station
+          )
+        );
+      });
+  }
 
   createStation(dto: CreateStationSchema): Observable<Station> {
     return this.http.post<StationDTO>('/stations', dto).pipe(

@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { SetRequired } from 'type-fest';
 
 import { ResultUtils } from './result.utils';
 import { Team } from './team';
@@ -34,5 +35,21 @@ export const TeamUtils = {
       penalty: team.penalty,
       results: team.results.map((result) => ResultUtils.serialize(result)),
     };
+  },
+  isStarted(team: Team): team is SetRequired<Team, 'startedAt'> {
+    return typeof team.startedAt !== 'undefined';
+  },
+  isFinished(team: Team): team is SetRequired<Team, 'finishedAt'> {
+    return typeof team.finishedAt !== 'undefined';
+  },
+  isRunning(team: Team): boolean {
+    return TeamUtils.isStarted(team) && !TeamUtils.isFinished(team);
+  },
+  formatTeamMembers(team: Team): string {
+    if (!team.members.length) {
+      return 'Keine Mitglieder';
+    }
+
+    return team.members.join(', ');
   },
 };

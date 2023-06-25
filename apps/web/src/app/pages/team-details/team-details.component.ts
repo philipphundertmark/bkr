@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
 import { EMPTY, combineLatest, map, switchMap } from 'rxjs';
 
-import { Team } from '@bkr/api-interface';
+import { TeamUtils } from '@bkr/api-interface';
 
 import {
   ButtonComponent,
@@ -32,6 +32,8 @@ import { ConfirmService } from '../../services/confirm.service';
   styleUrls: ['./team-details.component.scss'],
 })
 export class TeamDetailsComponent {
+  readonly TeamUtils = TeamUtils;
+
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
   loading = toSignal(this.teamService.loading$, { initialValue: false });
   deleteTeamLoading = signal(false);
@@ -54,14 +56,6 @@ export class TeamDetailsComponent {
     private readonly router: Router,
     private readonly teamService: TeamService
   ) {}
-
-  formatTeamMembers(team: Team): string {
-    if (!team.members.length) {
-      return 'Keine Mitglieder';
-    }
-
-    return team.members.join(', ');
-  }
 
   handleDeleteTeam(teamId: string): void {
     this.confirmService

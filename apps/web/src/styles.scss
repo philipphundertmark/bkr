@@ -55,4 +55,8 @@
   .dialog {
     @apply w-full self-start px-6 py-20;
   }
+
+  .radio {
+    @apply h-5 w-5 border-gray-200 text-indigo-500 focus:ring-indigo-500;
+  }
 }

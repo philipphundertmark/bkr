@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   BehaviorSubject,
   Observable,
@@ -20,6 +21,8 @@ import {
   UpdateTeamSchema,
 } from '@bkr/api-interface';
 
+import { ResultService } from './result.service';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -33,7 +36,41 @@ export class TeamService {
   private readonly _loading$ = new BehaviorSubject<boolean>(true);
   readonly loading$ = this._loading$.pipe(distinctUntilChanged());
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient,
+    private readonly resultService: ResultService
+  ) {
+    this.resultService.newResult$
+      .pipe(takeUntilDestroyed())
+      .subscribe((result) => {
+        this._teams$.next(
+          this._teams$.value.map((team) =>
+            team.id === result.teamId
+              ? { ...team, results: [...team.results, result] }
+              : team
+          )
+        );
+      });
+
+    this.resultService.updatedResult$
+      .pipe(takeUntilDestroyed())
+      .subscribe((result) => {
+        this._teams$.next(
+          this._teams$.value.map((team) =>
+            team.id === result.teamId
+              ? {
+                  ...team,
+                  results: team.results.map((teamResult) =>
+                    teamResult.stationId === result.stationId
+                      ? result
+                      : teamResult
+                  ),
+                }
+              : team
+          )
+        );
+      });
+  }
 
   createTeam(dto: CreateTeamSchema): Observable<Team> {
     return this.http.post<TeamDTO>('/teams', dto).pipe(

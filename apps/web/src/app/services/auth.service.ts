@@ -30,6 +30,7 @@ export class AuthService {
   readonly isStation$ = this.user$.pipe(
     map((user) => user?.role === Role.STATION)
   );
+  readonly sub$ = this.user$.pipe(map((user) => user?.sub ?? null));
 
   constructor(private readonly http: HttpClient) {
     this.restore();
