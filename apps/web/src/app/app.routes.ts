@@ -6,6 +6,7 @@ import { roleCanActivateFn } from './guards/role.guard';
 import {
   AuthComponent,
   CheckInComponent,
+  CheckOutComponent,
   HomeComponent,
   RulesComponent,
   StationComponent,
@@ -31,6 +32,14 @@ export const appRoutes: Route[] = [
   {
     path: 'check-in',
     component: CheckInComponent,
+    canActivate: [roleCanActivateFn],
+    data: {
+      roles: [Role.STATION],
+    },
+  },
+  {
+    path: 'check-out',
+    component: CheckOutComponent,
     canActivate: [roleCanActivateFn],
     data: {
       roles: [Role.STATION],

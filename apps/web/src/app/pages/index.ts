@@ -1,5 +1,6 @@
 export * from './auth/auth.component';
 export * from './check-in/check-in.component';
+export * from './check-out/check-out.component';
 export * from './home/home.component';
 export * from './rules/rules.component';
 export * from './station/station.component';

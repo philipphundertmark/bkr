@@ -1,14 +1,50 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, computed } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 
-import { ButtonComponent } from '../../components';
+import { TeamUtils } from '@bkr/api-interface';
+
+import {
+  ButtonComponent,
+  EmptyComponent,
+  LoadingComponent,
+} from '../../components';
+import { ChevronRightIconComponent } from '../../icons/mini';
+import { AuthService, TeamService } from '../../services';
 
 @Component({
   selector: 'bkr-station',
   standalone: true,
-  imports: [ButtonComponent, CommonModule, RouterModule],
+  imports: [
+    ButtonComponent,
+    ChevronRightIconComponent,
+    CommonModule,
+    EmptyComponent,
+    LoadingComponent,
+    RouterModule,
+  ],
   templateUrl: './station.component.html',
   styleUrls: ['./station.component.scss'],
 })
-export class StationComponent {}
+export class StationComponent {
+  readonly TeamUtils = TeamUtils;
+
+  readonly loading = toSignal(this.teamService.loading$, {
+    initialValue: false,
+  });
+  readonly stationId = toSignal(this.authService.sub$, { initialValue: null });
+  readonly teams = toSignal(this.teamService.teams$, { initialValue: [] });
+
+  readonly checkedInTeams = computed(() => {
+    return this.teams().filter((team) =>
+      team.results.some(
+        (result) => result.stationId === this.stationId() && !result.checkOut
+      )
+    );
+  });
+  constructor(
+    private readonly authService: AuthService,
+    private readonly teamService: TeamService
+  ) {}
+}
