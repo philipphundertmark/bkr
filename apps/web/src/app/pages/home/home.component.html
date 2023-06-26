@@ -19,24 +19,35 @@
 </div>
 
 <ng-container *ngIf="loading() === false; else loadingIndicator">
-  <ul
-    class="divide-y divide-gray-200 border-y border-gray-200"
-    *ngIf="teams().length > 0; else empty"
-  >
-    <li class="flex items-center gap-4 p-6" *ngFor="let team of teams()">
-      <div>1.</div>
+  <ng-container *ngIf="rankingItems$ | async as rankingItems">
+    <ul
+      class="divide-y divide-gray-200 border-y border-gray-200"
+      *ngIf="rankingItems.length > 0; else empty"
+    >
+      <li
+        class="flex items-center gap-4 p-6"
+        *ngFor="let rankingItem of rankingItems; let i = index"
+      >
+        <div>{{ i + 1 }}.</div>
 
-      <div class="flex flex-1 flex-col gap-1">
-        <div class="flex justify-between gap-2">
-          <h3 class="name">{{ team.name }}</h3>
+        <div class="flex flex-1 flex-col gap-1">
+          <div class="flex justify-between gap-2">
+            <h3 class="name">{{ rankingItem.name }}</h3>
 
-          <div class="flex items-center gap-2">
-            <span class="font-mono"> 00:00:00 </span>
+            <div class="flex items-center gap-2">
+              <bkr-check-circle-icon
+                class="text-indigo-500"
+                *ngIf="rankingItem.finished"
+              ></bkr-check-circle-icon>
+              <span class="font-mono">{{
+                formatDuration(rankingItem.time)
+              }}</span>
+            </div>
           </div>
         </div>
-      </div>
-    </li>
-  </ul>
+      </li>
+    </ul>
+  </ng-container>
 
   <ng-template #empty>
     <bkr-empty>Es gibt noch keine Teams.</bkr-empty>

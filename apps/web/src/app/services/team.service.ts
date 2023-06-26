@@ -36,6 +36,16 @@ export class TeamService {
   private readonly _loading$ = new BehaviorSubject<boolean>(true);
   readonly loading$ = this._loading$.pipe(distinctUntilChanged());
 
+  readonly isRaceOver$ = this.teams$.pipe(
+    map((teams) =>
+      teams.every(
+        (team) =>
+          typeof team.startedAt !== 'undefined' &&
+          typeof team.finishedAt !== 'undefined'
+      )
+    )
+  );
+
   constructor(
     private readonly http: HttpClient,
     private readonly resultService: ResultService
