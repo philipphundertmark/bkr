@@ -19,60 +19,58 @@
 </div>
 
 <ng-container *ngIf="loading() === false; else loadingIndicator">
-  <ng-container *ngIf="rankingItems$ | async as rankingItems">
-    <ul
-      class="divide-y divide-gray-200 border-y border-gray-200"
-      *ngIf="rankingItems.length > 0; else empty"
+  <ul
+    class="divide-y divide-gray-200 border-y border-gray-200"
+    *ngIf="rankingItems().length > 0; else empty"
+  >
+    <li
+      class="flex gap-4 p-6"
+      *ngFor="let rankingItem of rankingItems(); let i = index"
     >
-      <li
-        class="flex gap-4 p-6"
-        *ngFor="let rankingItem of rankingItems; let i = index"
-      >
-        <div class="font-bold">{{ i + 1 }}.</div>
+      <div class="font-bold">{{ i + 1 }}.</div>
 
-        <div class="flex flex-1 flex-col gap-2">
-          <div class="flex justify-between gap-2">
-            <h3 class="name">{{ rankingItem.name }}</h3>
+      <div class="flex flex-1 flex-col gap-2">
+        <div class="flex justify-between gap-2">
+          <h3 class="name">{{ rankingItem.name }}</h3>
 
-            <div class="flex items-center gap-2">
-              <bkr-check-circle-icon
-                class="text-indigo-500"
-                *ngIf="rankingItem.finished"
-              ></bkr-check-circle-icon>
-              <span class="font-mono">{{
-                formatDuration(rankingItem.time)
-              }}</span>
-            </div>
-          </div>
-
-          <div class="relative px-2.5 py-1.5">
-            <div class="h-2 rounded-full bg-gray-200"></div>
-            <!-- Start -->
-            <div
-              class="absolute left-0 top-0 z-10 h-5 w-5 rounded-full p-1.5"
-              [ngClass]="{
-                'bg-gray-200': !rankingItem.started,
-                'bg-indigo-500': rankingItem.started
-              }"
-            >
-              <div class="h-2 w-2 rounded-full bg-white"></div>
-            </div>
-
-            <!-- End -->
-            <div
-              class="absolute right-0 top-0 z-10 h-5 w-5 rounded-full p-1.5"
-              [ngClass]="{
-                'bg-gray-200': !rankingItem.finished,
-                'bg-indigo-500': rankingItem.finished
-              }"
-            >
-              <div class="h-2 w-2 rounded-full bg-white"></div>
-            </div>
+          <div class="flex items-center gap-2">
+            <bkr-check-circle-icon
+              class="text-indigo-500"
+              *ngIf="rankingItem.finished"
+            ></bkr-check-circle-icon>
+            <span class="font-mono">{{
+              formatDuration(times()[rankingItem.teamId])
+            }}</span>
           </div>
         </div>
-      </li>
-    </ul>
-  </ng-container>
+
+        <div class="relative px-2.5 py-1.5">
+          <div class="h-2 rounded-full bg-gray-200"></div>
+          <!-- Start -->
+          <div
+            class="absolute left-0 top-0 z-10 h-5 w-5 rounded-full p-1.5"
+            [ngClass]="{
+              'bg-gray-200': !rankingItem.started,
+              'bg-indigo-500': rankingItem.started
+            }"
+          >
+            <div class="h-2 w-2 rounded-full bg-white"></div>
+          </div>
+
+          <!-- End -->
+          <div
+            class="absolute right-0 top-0 z-10 h-5 w-5 rounded-full p-1.5"
+            [ngClass]="{
+              'bg-gray-200': !rankingItem.finished,
+              'bg-indigo-500': rankingItem.finished
+            }"
+          >
+            <div class="h-2 w-2 rounded-full bg-white"></div>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
 
   <ng-template #empty>
     <bkr-empty>Es gibt noch keine Teams.</bkr-empty>

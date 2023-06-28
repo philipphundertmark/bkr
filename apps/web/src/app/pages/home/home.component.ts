@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { Observable, combineLatest, map, timer } from 'rxjs';
+import { map, timer } from 'rxjs';
 
-import { Team } from '@bkr/api-interface';
+import { Station, Team } from '@bkr/api-interface';
 
 import {
   ButtonComponent,
@@ -14,7 +14,7 @@ import {
   LoadingComponent,
 } from '../../components';
 import { CheckCircleIconComponent } from '../../icons/mini';
-import { AuthService, TeamService } from '../../services';
+import { AuthService, StationService, TeamService } from '../../services';
 
 dayjs.extend(duration);
 
@@ -23,7 +23,6 @@ export interface RankingItem {
   name: string;
   started: boolean;
   teamId: string;
-  time: number;
 }
 
 @Component({
@@ -44,39 +43,53 @@ export class HomeComponent {
   isRaceOver = toSignal(this.teamService.isRaceOver$);
   isStation = toSignal(this.authService.isStation$);
   loading = toSignal(this.teamService.loading$, { initialValue: false });
-  teams = toSignal(this.teamService.teams$, { initialValue: [] as Team[] });
+
+  stations$ = this.stationService.stations$;
+  stations = toSignal(this.stations$, { initialValue: [] as Station[] });
 
   teams$ = this.teamService.teams$;
-  timer$ = timer(0, 1000).pipe(map(() => dayjs()));
+  teams = toSignal(this.teams$, { initialValue: [] as Team[] });
 
-  rankingItems$: Observable<RankingItem[]> = combineLatest([
-    this.teams$,
-    this.timer$,
-  ]).pipe(
-    map(([teams, now]) =>
-      teams.map((team) => {
-        return {
-          finished: typeof team.finishedAt !== 'undefined',
-          name: team.name,
-          started: typeof team.startedAt !== 'undefined',
-          teamId: team.id,
-          time:
-            typeof team.startedAt !== 'undefined'
-              ? typeof team.finishedAt !== 'undefined'
-                ? team.finishedAt.diff(team.startedAt, 'seconds')
-                : now.diff(team.startedAt, 'seconds')
-              : 0,
-        };
-      })
-    )
-  );
+  timer$ = timer(0, 1000).pipe(map(() => dayjs()));
+  timer = toSignal(this.timer$, { initialValue: dayjs() });
+
+  times = computed(() => {
+    const now = this.timer();
+
+    return this.teams().reduce<Record<string, number>>((times, team) => {
+      return {
+        ...times,
+        [team.id]: this.calculateTeamTime(team, now),
+      };
+    }, {});
+  });
+
+  rankingItems = computed(() => {
+    return this.teams().map((team) => {
+      return {
+        finished: typeof team.finishedAt !== 'undefined',
+        name: team.name,
+        started: typeof team.startedAt !== 'undefined',
+        teamId: team.id,
+      };
+    });
+  });
 
   constructor(
     private readonly authService: AuthService,
+    private readonly stationService: StationService,
     private readonly teamService: TeamService
   ) {}
 
   formatDuration(seconds: number): string {
     return dayjs.duration(seconds, 'seconds').format('HH:mm:ss');
+  }
+
+  private calculateTeamTime(team: Team, now: dayjs.Dayjs): number {
+    return typeof team.startedAt !== 'undefined'
+      ? typeof team.finishedAt !== 'undefined'
+        ? team.finishedAt.diff(team.startedAt, 'seconds')
+        : now.diff(team.startedAt, 'seconds')
+      : 0;
   }
 }
