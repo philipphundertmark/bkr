@@ -44,28 +44,46 @@
           </div>
         </div>
 
-        <div class="relative px-2.5 py-1.5">
+        <!-- Progress Bar -->
+        <div class="relative py-1.5">
+          <!-- Background -->
           <div class="h-2 rounded-full bg-gray-200"></div>
-          <!-- Start -->
-          <div
-            class="absolute left-0 top-0 z-10 h-5 w-5 rounded-full p-1.5"
-            [ngClass]="{
-              'bg-gray-200': !rankingItem.started,
-              'bg-indigo-500': rankingItem.started
-            }"
-          >
-            <div class="h-2 w-2 rounded-full bg-white"></div>
-          </div>
 
-          <!-- End -->
-          <div
-            class="absolute right-0 top-0 z-10 h-5 w-5 rounded-full p-1.5"
-            [ngClass]="{
-              'bg-gray-200': !rankingItem.finished,
-              'bg-indigo-500': rankingItem.finished
-            }"
-          >
-            <div class="h-2 w-2 rounded-full bg-white"></div>
+          <!-- Dots -->
+          <div class="absolute inset-x-0 top-0 z-10 flex justify-between">
+            <!-- Start -->
+            <div
+              class="h-5 w-5 rounded-full p-1.5"
+              [ngClass]="{
+                'bg-gray-200': !rankingItem.started,
+                'bg-indigo-500': rankingItem.started
+              }"
+            >
+              <div class="h-2 w-2 rounded-full bg-white"></div>
+            </div>
+
+            <!-- Station -->
+            <div
+              class="h-5 w-5 rounded-full p-1.5"
+              [ngClass]="{
+                'bg-gray-200': true,
+                'bg-indigo-500': false
+              }"
+              *ngFor="let station of stations()"
+            >
+              <div class="h-2 w-2 rounded-full bg-white"></div>
+            </div>
+
+            <!-- End -->
+            <div
+              class="h-5 w-5 rounded-full p-1.5"
+              [ngClass]="{
+                'bg-gray-200': !rankingItem.finished,
+                'bg-indigo-500': rankingItem.finished
+              }"
+            >
+              <div class="h-2 w-2 rounded-full bg-white"></div>
+            </div>
           </div>
         </div>
       </div>
