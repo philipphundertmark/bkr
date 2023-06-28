@@ -21,6 +21,7 @@ dayjs.extend(duration);
 export interface RankingItem {
   finished: boolean;
   name: string;
+  started: boolean;
   teamId: string;
   time: number;
 }
@@ -57,6 +58,7 @@ export class HomeComponent {
         return {
           finished: typeof team.finishedAt !== 'undefined',
           name: team.name,
+          started: typeof team.startedAt !== 'undefined',
           teamId: team.id,
           time:
             typeof team.startedAt !== 'undefined'
