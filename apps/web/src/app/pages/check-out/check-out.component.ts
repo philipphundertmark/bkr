@@ -47,8 +47,7 @@ export class CheckOutComponent {
 
   checkOutLoading = signal(false);
   form = new FormGroup({
-    points: new FormControl<number>(0, {
-      nonNullable: true,
+    points: new FormControl<number | null>(null, {
       validators: [Validators.required, Validators.min(0)],
     }),
   });
@@ -77,7 +76,7 @@ export class CheckOutComponent {
     const { points } = this.form.value;
     const stationId = this.stationId();
 
-    if (!stationId || !points) {
+    if (!stationId || typeof points !== 'number') {
       return;
     }
 

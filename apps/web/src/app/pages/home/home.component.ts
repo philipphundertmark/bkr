@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { map, timer } from 'rxjs';
 
-import { Station, Team } from '@bkr/api-interface';
+import { Result, Station, Team, TeamUtils } from '@bkr/api-interface';
 
 import {
   ButtonComponent,
@@ -46,10 +46,14 @@ export class HomeComponent {
   isStation = toSignal(this.authService.isStation$);
   loading = toSignal(this.teamService.loading$, { initialValue: false });
 
-  stations$ = this.stationService.stations$;
+  stations$ = this.stationService.stations$.pipe(
+    map((stations) => stations.sort((a, b) => a.number - b.number))
+  );
   stations = toSignal(this.stations$, { initialValue: [] as Station[] });
 
-  teams$ = this.teamService.teams$;
+  teams$ = this.teamService.teams$.pipe(
+    map((teams) => teams.sort((a, b) => a.number - b.number))
+  );
   teams = toSignal(this.teams$, { initialValue: [] as Team[] });
 
   timer$ = timer(0, 1000).pipe(map(() => dayjs()));
@@ -67,13 +71,27 @@ export class HomeComponent {
   });
 
   rankingItems = computed((): RankingItem[] => {
+    const stations = this.stations();
+
+    const segment = 100 / (stations.length + 1);
+    const halfSegment = segment / 2;
+
     return this.teams().map((team) => {
+      const latestResult = this.getLatestResult(team, stations);
+
       return {
-        finished: typeof team.finishedAt !== 'undefined',
+        finished: TeamUtils.isFinished(team),
         name: team.name,
-        progress: 50,
+        progress: TeamUtils.isFinished(team)
+          ? 100
+          : team.results.length
+          ? team.results.length * segment +
+            (typeof latestResult?.checkOut !== 'undefined' ? halfSegment : 0)
+          : TeamUtils.isStarted(team)
+          ? halfSegment
+          : 0,
         stationIds: team.results.map((result) => result.stationId),
-        started: typeof team.startedAt !== 'undefined',
+        started: TeamUtils.isStarted(team),
         teamId: team.id,
       };
     });
@@ -99,5 +117,19 @@ export class HomeComponent {
         ? team.finishedAt.diff(team.startedAt, 'seconds')
         : now.diff(team.startedAt, 'seconds')
       : 0;
+  }
+  private getLatestResult(team: Team, stations: Station[]): Result | undefined {
+    const stationNumbers = team.results
+      .map(({ stationId }) => stations.find(({ id }) => id === stationId))
+      .filter((station): station is Station => typeof station !== 'undefined')
+      .map((station) => station.number);
+    const maxStationNumber = Math.max(...stationNumbers);
+    const latestStation = stations.find(
+      ({ number }) => number === maxStationNumber
+    );
+
+    return team.results.find(
+      ({ stationId }) => stationId === latestStation?.id
+    );
   }
 }
