@@ -21,7 +21,9 @@ dayjs.extend(duration);
 export interface RankingItem {
   finished: boolean;
   name: string;
+  progress: number;
   started: boolean;
+  stationIds: string[];
   teamId: string;
 }
 
@@ -64,11 +66,13 @@ export class HomeComponent {
     }, {});
   });
 
-  rankingItems = computed(() => {
+  rankingItems = computed((): RankingItem[] => {
     return this.teams().map((team) => {
       return {
         finished: typeof team.finishedAt !== 'undefined',
         name: team.name,
+        progress: 50,
+        stationIds: team.results.map((result) => result.stationId),
         started: typeof team.startedAt !== 'undefined',
         teamId: team.id,
       };
@@ -83,6 +87,10 @@ export class HomeComponent {
 
   formatDuration(seconds: number): string {
     return dayjs.duration(seconds, 'seconds').format('HH:mm:ss');
+  }
+
+  hasStationId(rankingItem: RankingItem, stationId: string): boolean {
+    return rankingItem.stationIds.includes(stationId);
   }
 
   private calculateTeamTime(team: Team, now: dayjs.Dayjs): number {

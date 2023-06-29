@@ -47,27 +47,30 @@
         <!-- Progress Bar -->
         <div class="relative py-1.5">
           <!-- Background -->
-          <div class="h-2 rounded-full bg-gray-200"></div>
+          <div class="h-1 rounded-full bg-gray-200"></div>
 
-          <!-- Dots -->
-          <div class="absolute inset-x-0 top-0 z-10 flex justify-between">
+          <!-- Foreground -->
+          <div
+            class="absolute left-0 right-24 top-1.5 z-10 h-1 rounded-full bg-indigo-500"
+          ></div>
+
+          <!-- Marker -->
+          <div class="absolute inset-x-0 top-0 z-20 flex justify-between">
             <!-- Start -->
             <div
-              class="h-5 w-5 rounded-full p-1.5"
+              class="h-4 w-1 rounded-sm"
               [ngClass]="{
                 'bg-gray-200': !rankingItem.started,
                 'bg-indigo-500': rankingItem.started
               }"
-            >
-              <div class="h-2 w-2 rounded-full bg-white"></div>
-            </div>
+            ></div>
 
             <!-- Station -->
             <div
-              class="h-5 w-5 rounded-full p-1.5"
+              class="h-4 w-4 rounded-full p-1"
               [ngClass]="{
-                'bg-gray-200': true,
-                'bg-indigo-500': false
+                'bg-gray-200': !hasStationId(rankingItem, station.id),
+                'bg-indigo-500': hasStationId(rankingItem, station.id)
               }"
               *ngFor="let station of stations()"
             >
@@ -76,14 +79,12 @@
 
             <!-- End -->
             <div
-              class="h-5 w-5 rounded-full p-1.5"
+              class="h-4 w-1 rounded-sm"
               [ngClass]="{
                 'bg-gray-200': !rankingItem.finished,
                 'bg-indigo-500': rankingItem.finished
               }"
-            >
-              <div class="h-2 w-2 rounded-full bg-white"></div>
-            </div>
+            ></div>
           </div>
         </div>
       </div>
