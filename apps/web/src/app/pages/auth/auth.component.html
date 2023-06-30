@@ -18,8 +18,18 @@
     </p>
     <p class="text-gray-500" *ngIf="isStation()">
       Du bist als
-      <span class="font-semibold text-indigo-500">Station</span> eingeloggt.
+      <span class="font-semibold text-indigo-500">
+        {{ station()?.name ?? 'Station' }}
+      </span>
+      eingeloggt.
     </p>
+  </div>
+
+  <div class="flex flex-col gap-4 px-6">
+    <div class="flex flex-col gap-2">
+      <label class="label">Login gültig bis</label>
+      <p>{{ exp() ?? '?' }}</p>
+    </div>
   </div>
 </ng-template>
 

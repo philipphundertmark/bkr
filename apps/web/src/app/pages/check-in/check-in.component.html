@@ -14,7 +14,11 @@
 
 <div class="space-y-1 px-6">
   <h2 class="subtitle">Team auswählen</h2>
-  <p class="text-gray-500">Wähle das Team aus, das du einchecken möchtest.</p>
+  <p class="text-gray-500">
+    Wähle das Team aus, das du einchecken möchtest. Es werden nur Teams
+    angezeigt, die bereits im Rennen sind und noch nicht an deiner Station
+    waren.
+  </p>
 </div>
 
 <form [formGroup]="form" *ngIf="loading() === false; else loadingIndicator">

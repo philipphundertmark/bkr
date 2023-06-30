@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import dayjs from 'dayjs';
 import jwtDecode from 'jwt-decode';
 import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 
@@ -20,9 +21,16 @@ export class AuthService {
     map((token) => (token !== null ? jwtDecode<JwtPayload>(token) : null))
   );
 
+  readonly exp$ = this.user$.pipe(
+    map((user) => (user?.exp ? dayjs(user.exp * 1000) : null))
+  );
+  readonly iat$ = this.user$.pipe(
+    map((user) => (user?.iat ? dayjs(user.iat * 1000) : null))
+  );
   readonly role$ = this.user$.pipe(
     map((user) => (user !== null ? user.role : null))
   );
+  readonly sub$ = this.user$.pipe(map((user) => user?.sub ?? null));
 
   readonly isAuthenticated$ = this.user$.pipe(map((user) => user !== null));
 
@@ -30,7 +38,6 @@ export class AuthService {
   readonly isStation$ = this.user$.pipe(
     map((user) => user?.role === Role.STATION)
   );
-  readonly sub$ = this.user$.pipe(map((user) => user?.sub ?? null));
 
   constructor(private readonly http: HttpClient) {
     this.restore();
