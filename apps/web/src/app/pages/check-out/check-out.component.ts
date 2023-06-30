@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
-import { combineLatest, map } from 'rxjs';
+import { EMPTY, combineLatest, map, switchMap } from 'rxjs';
 
 import {
   ButtonComponent,
@@ -23,6 +23,7 @@ import {
   ResultService,
   TeamService,
 } from '../../services';
+import { ConfirmService } from '../../services/confirm.service';
 
 @Component({
   selector: 'bkr-check-out',
@@ -40,12 +41,16 @@ import {
   styleUrls: ['./check-out.component.scss'],
 })
 export class CheckOutComponent {
+  readonly isStation = toSignal(this.authService.isStation$, {
+    initialValue: false,
+  });
   readonly loading = toSignal(this.teamService.loading$, {
     initialValue: false,
   });
   readonly stationId = toSignal(this.authService.sub$, { initialValue: null });
 
   checkOutLoading = signal(false);
+  deleteResultLoading = signal(false);
   form = new FormGroup({
     points: new FormControl<number | null>(null, {
       validators: [Validators.required, Validators.min(0)],
@@ -65,6 +70,7 @@ export class CheckOutComponent {
 
   constructor(
     private readonly authService: AuthService,
+    private readonly confirmService: ConfirmService,
     private readonly notificationService: NotificationService,
     private readonly resultService: ResultService,
     private readonly route: ActivatedRoute,
@@ -99,6 +105,44 @@ export class CheckOutComponent {
           this.checkOutLoading.set(false);
           this.notificationService.error(
             'Team konnte nicht ausgecheckt werden.'
+          );
+        },
+      });
+  }
+
+  handleDeleteResult(teamId: string): void {
+    const stationId = this.stationId();
+
+    if (!stationId) {
+      return;
+    }
+
+    this.confirmService
+      .delete({
+        title: 'Check-in löschen',
+        message: 'Möchtest du den Check-in wirklich löschen?',
+      })
+      .pipe(
+        switchMap((confirmed) => {
+          if (!confirmed) return EMPTY;
+
+          this.deleteResultLoading.set(true);
+
+          return this.resultService.deleteResult(stationId, teamId);
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: () => {
+          this.deleteResultLoading.set(false);
+          this.notificationService.success('Check-in gelöscht.');
+
+          this.router.navigate(['/station']);
+        },
+        error: () => {
+          this.deleteResultLoading.set(false);
+          this.notificationService.error(
+            'Check-in konnte nicht gelöscht werden.'
           );
         },
       });

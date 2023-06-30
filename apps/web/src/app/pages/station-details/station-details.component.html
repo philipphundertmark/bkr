@@ -60,24 +60,22 @@
       </div>
     </div>
 
-    <ng-container *ngIf="isAdmin()">
-      <div class="space-y-1 px-6">
+    <div class="flex flex-col gap-6 border-t p-6" *ngIf="isAdmin()">
+      <div class="space-y-1">
         <h2 class="subtitle danger">Danger Zone</h2>
         <p class="text-gray-500">Hier wird's gefährlich.</p>
       </div>
 
-      <div class="px-6">
-        <button
-          bkr-button
-          [bkrLoading]="deleteStationLoading()"
-          bkrType="danger"
-          class="w-full"
-          (click)="handleDeleteStation(station.id)"
-        >
-          Station löschen
-        </button>
-      </div>
-    </ng-container>
+      <button
+        bkr-button
+        [bkrLoading]="deleteStationLoading()"
+        bkrType="danger"
+        class="w-full"
+        (click)="handleDeleteStation(station.id)"
+      >
+        Station löschen
+      </button>
+    </div>
   </ng-container>
 
   <ng-template #empty>
