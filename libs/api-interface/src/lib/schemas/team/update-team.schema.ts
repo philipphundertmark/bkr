@@ -18,4 +18,4 @@ export const UpdateTeamSchema: joi.ObjectSchema<UpdateTeamSchema> = joi
     finishedAt: joi.string().isoDate(),
     penalty: joi.number().min(0),
   })
-  .xor('startedAt', 'finishedAt');
+  .nand('startedAt', 'finishedAt');

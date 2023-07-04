@@ -1,1 +1,72 @@
-<p>team-edit works!</p>
+<header class="grid grid-cols-2 gap-4 px-6" *ngIf="team$ | async as team">
+  <a bkr-button class="col-span-1" [routerLink]="['/teams', team.id]">
+    Abbrechen
+  </a>
+
+  <button
+    bkr-button
+    bkrType="primary"
+    class="col-span-1"
+    (click)="handleSave(team.id)"
+    [disabled]="form.invalid || saveLoading()"
+    [bkrLoading]="saveLoading()"
+  >
+    Speichern
+  </button>
+</header>
+
+<ng-container *ngIf="!loading(); else loadingIndicator">
+  <form
+    class="flex flex-col gap-4 px-6"
+    [formGroup]="form"
+    *ngIf="team$ | async as team; else empty"
+  >
+    <div class="flex flex-col gap-2">
+      <label class="label" for="number">
+        Nummer<span class="text-indigo-500">*</span>
+      </label>
+      <input
+        bkrInput
+        formControlName="number"
+        id="number"
+        name="nummer"
+        type="number"
+        placeholder="Nummer"
+      />
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label class="label" for="name">
+        Name<span class="text-indigo-500">*</span>
+      </label>
+      <input
+        bkrInput
+        formControlName="name"
+        id="name"
+        name="name"
+        type="text"
+        placeholder="Name"
+      />
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label class="label" for="penalty"> Strafminuten </label>
+      <input
+        bkrInput
+        formControlName="penalty"
+        id="penalty"
+        name="penalty"
+        type="text"
+        placeholder="Strafminuten"
+      />
+    </div>
+  </form>
+
+  <ng-template #empty>
+    <bkr-empty>Team nicht gefunden.</bkr-empty>
+  </ng-template>
+</ng-container>
+
+<ng-template #loadingIndicator>
+  <bkr-loading></bkr-loading>
+</ng-template>
