@@ -70,6 +70,23 @@ export class StationService {
           )
         );
       });
+
+    this.resultService.deletedResult$
+      .pipe(takeUntilDestroyed())
+      .subscribe(({ stationId, teamId }) => {
+        this._stations$.next(
+          this._stations$.value.map((station) =>
+            station.id === stationId
+              ? {
+                  ...station,
+                  results: station.results.filter(
+                    (stationResult) => stationResult.teamId !== teamId
+                  ),
+                }
+              : station
+          )
+        );
+      });
   }
 
   createStation(dto: CreateStationSchema): Observable<Station> {

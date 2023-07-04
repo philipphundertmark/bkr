@@ -80,6 +80,23 @@ export class TeamService {
           )
         );
       });
+
+    this.resultService.deletedResult$
+      .pipe(takeUntilDestroyed())
+      .subscribe(({ stationId, teamId }) => {
+        this._teams$.next(
+          this._teams$.value.map((team) =>
+            team.id === teamId
+              ? {
+                  ...team,
+                  results: team.results.filter(
+                    (teamResult) => teamResult.stationId !== stationId
+                  ),
+                }
+              : team
+          )
+        );
+      });
   }
 
   createTeam(dto: CreateTeamSchema): Observable<Team> {

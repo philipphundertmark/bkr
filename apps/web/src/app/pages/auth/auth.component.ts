@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { Station } from '@bkr/api-interface';
 
 import { ButtonComponent, InputDirective } from '../../components';
+import { DatePipe } from '../../pipes';
 import {
   AuthService,
   NotificationService,
@@ -21,7 +22,13 @@ import {
 @Component({
   selector: 'bkr-auth',
   standalone: true,
-  imports: [ButtonComponent, CommonModule, InputDirective, ReactiveFormsModule],
+  imports: [
+    ButtonComponent,
+    CommonModule,
+    DatePipe,
+    InputDirective,
+    ReactiveFormsModule,
+  ],
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
 })

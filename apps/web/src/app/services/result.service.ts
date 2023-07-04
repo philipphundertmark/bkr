@@ -19,6 +19,12 @@ export class ResultService {
   private readonly _updatedResult$ = new Subject<Result>();
   readonly updatedResult$ = this._updatedResult$.asObservable();
 
+  private readonly _deletedResult$ = new Subject<{
+    stationId: string;
+    teamId: string;
+  }>();
+  readonly deletedResult$ = this._deletedResult$.asObservable();
+
   constructor(private readonly http: HttpClient) {}
 
   createResult(stationId: string, teamId: string): Observable<Result> {
@@ -44,6 +50,8 @@ export class ResultService {
   }
 
   deleteResult(stationId: string, teamId: string): Observable<void> {
-    return this.http.delete<void>(`/stations/${stationId}/results/${teamId}`);
+    return this.http
+      .delete<void>(`/stations/${stationId}/results/${teamId}`)
+      .pipe(tap(() => this._deletedResult$.next({ stationId, teamId })));
   }
 }

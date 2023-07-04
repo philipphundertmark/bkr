@@ -13,6 +13,7 @@ import {
   LoadingComponent,
 } from '../../components';
 import { PauseIconComponent, PlayIconComponent } from '../../icons/mini';
+import { DatePipe } from '../../pipes';
 import { AuthService, NotificationService, TeamService } from '../../services';
 import { ConfirmService } from '../../services/confirm.service';
 
@@ -22,6 +23,7 @@ import { ConfirmService } from '../../services/confirm.service';
   imports: [
     ButtonComponent,
     CommonModule,
+    DatePipe,
     EmptyComponent,
     LoadingComponent,
     PauseIconComponent,
