@@ -48,6 +48,8 @@ export class TeamEditComponent implements OnInit {
     number: new FormControl<number | null>(null, {
       validators: [Validators.required],
     }),
+    startedAt: new FormControl<string | null>(null),
+    finishedAt: new FormControl<string | null>(null),
     penalty: new FormControl<number>(0, {
       nonNullable: true,
     }),
@@ -76,6 +78,8 @@ export class TeamEditComponent implements OnInit {
         name: team?.name,
         number: team?.number,
         penalty: team?.penalty,
+        startedAt: team?.startedAt?.format('DD.MM.YYYY HH:mm:ss') ?? null,
+        finishedAt: team?.finishedAt?.format('DD.MM.YYYY HH:mm:ss') ?? null,
       });
     });
   }
