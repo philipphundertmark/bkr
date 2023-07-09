@@ -20,6 +20,7 @@ import {
   LoadingComponent,
 } from '../../components';
 import { AuthService, NotificationService, TeamService } from '../../services';
+import { dateTimeValidator } from '../../validators';
 
 @Component({
   selector: 'bkr-team-edit',
@@ -50,10 +51,10 @@ export class TeamEditComponent implements OnInit {
       validators: [Validators.required],
     }),
     startedAt: new FormControl<string | null>(null, {
-      validators: [],
+      validators: [dateTimeValidator()],
     }),
     finishedAt: new FormControl<string | null>(null, {
-      validators: [],
+      validators: [dateTimeValidator()],
     }),
     penalty: new FormControl<number>(0, {
       nonNullable: true,
