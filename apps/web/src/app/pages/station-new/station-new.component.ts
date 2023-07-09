@@ -41,6 +41,8 @@ import { NotificationService, StationService } from '../../services';
 export class StationNewComponent {
   @ViewChildren('memberInput') memberInputs?: QueryList<ElementRef>;
 
+  readonly Order = Order;
+
   form = new FormGroup({
     name: new FormControl<string>('', {
       nonNullable: true,

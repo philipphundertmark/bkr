@@ -63,6 +63,43 @@
   </p>
 
   <div class="flex flex-col gap-2">
+    <label class="label" for="code">
+      Wertung<span class="text-indigo-500">*</span>
+    </label>
+
+    <div class="flex items-center gap-4">
+      <input
+        class="radio"
+        formControlName="order"
+        id="order-asc"
+        type="radio"
+        [value]="Order.ASC"
+      />
+      <label for="order-asc">
+        Das Team mit dem
+        <span class="font-semibold text-indigo-500">niedrigsten</span> Wert
+        gewinnt.
+      </label>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <input
+        class="radio"
+        formControlName="order"
+        id="order-desc"
+        type="radio"
+        [value]="Order.DESC"
+      />
+
+      <label for="order-desc">
+        Das Team mit dem
+        <span class="font-semibold text-indigo-500">höchsten</span> Wert
+        gewinnt.
+      </label>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-2">
     <label class="label" for="name">Mitglieder</label>
 
     <div
