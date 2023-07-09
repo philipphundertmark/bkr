@@ -22,7 +22,7 @@
     *ngIf="team$ | async as team; else empty"
   >
     <div class="flex flex-col gap-2">
-      <label class="label" for="number">
+      <label class="label">
         Nummer<span class="text-indigo-500">*</span>
       </label>
       <input
@@ -36,9 +36,8 @@
     </div>
 
     <div class="flex flex-col gap-2">
-      <label class="label" for="name">
-        Name<span class="text-indigo-500">*</span>
-      </label>
+      <label class="label"> Name<span class="text-indigo-500">*</span> </label>
+
       <input
         bkrInput
         formControlName="name"
@@ -50,7 +49,8 @@
     </div>
 
     <div class="flex flex-col gap-2">
-      <label class="label" for="startedAt">Gestartet um</label>
+      <label class="label">Gestartet um</label>
+
       <input
         bkrInput
         formControlName="startedAt"
@@ -61,8 +61,15 @@
       />
     </div>
 
+    <p class="text-sm text-gray-500">
+      Die Zeit muss im Format
+      <span class="font-semibold text-indigo-500">DD.MM.YYYY HH:mm:ss</span>
+      angegeben werden.
+    </p>
+
     <div class="flex flex-col gap-2">
-      <label class="label" for="finishedAt">Angekommen um</label>
+      <label class="label">Angekommen um</label>
+
       <input
         bkrInput
         formControlName="finishedAt"
@@ -73,14 +80,24 @@
       />
     </div>
 
+    <p class="text-sm text-gray-500">
+      Die Zeit muss im Format
+      <span class="font-semibold text-indigo-500">DD.MM.YYYY HH:mm:ss</span>
+      angegeben werden.
+    </p>
+
     <div class="flex flex-col gap-2">
-      <label class="label" for="penalty"> Strafminuten </label>
+      <label class="label">
+        Strafminuten<span class="text-indigo-500">*</span>
+      </label>
+
       <input
         bkrInput
         formControlName="penalty"
         id="penalty"
+        min="0"
         name="penalty"
-        type="text"
+        type="number"
         placeholder="Strafminuten"
       />
     </div>

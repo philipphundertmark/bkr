@@ -4,18 +4,16 @@ export interface UpdateTeamSchema {
   name?: string;
   number?: number;
   members?: string[];
-  startedAt?: string;
-  finishedAt?: string;
+  startedAt?: string | null;
+  finishedAt?: string | null;
   penalty?: number;
 }
 
-export const UpdateTeamSchema: joi.ObjectSchema<UpdateTeamSchema> = joi
-  .object({
-    name: joi.string().min(3),
-    number: joi.number().min(1),
-    members: joi.array().items(joi.string().min(3)),
-    startedAt: joi.string().isoDate(),
-    finishedAt: joi.string().isoDate(),
-    penalty: joi.number().min(0),
-  })
-  .nand('startedAt', 'finishedAt');
+export const UpdateTeamSchema: joi.ObjectSchema<UpdateTeamSchema> = joi.object({
+  name: joi.string().min(3),
+  number: joi.number().min(1),
+  members: joi.array().items(joi.string().min(3)),
+  startedAt: joi.string().isoDate().allow(null),
+  finishedAt: joi.string().isoDate().allow(null),
+  penalty: joi.number().min(0),
+});

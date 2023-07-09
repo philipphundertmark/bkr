@@ -85,8 +85,8 @@ export class TeamService {
       name?: string;
       number?: number;
       members?: string[];
-      startedAt?: string;
-      finishedAt?: string;
+      startedAt?: string | null;
+      finishedAt?: string | null;
       penalty?: number;
     }
   ): Promise<Team> {
@@ -98,12 +98,12 @@ export class TeamService {
         name: updates.name,
         number: updates.number,
         members: updates.members,
-        ...(updates.startedAt
+        ...(typeof updates.startedAt === 'string'
           ? { startedAt: new Date(updates.startedAt) }
-          : {}),
-        ...(updates.finishedAt
+          : { startedAt: updates.startedAt }),
+        ...(typeof updates.finishedAt === 'string'
           ? { finishedAt: new Date(updates.finishedAt) }
-          : {}),
+          : { finishedAt: updates.finishedAt }),
         penalty: updates.penalty,
       },
       include: {

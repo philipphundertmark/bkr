@@ -8,7 +8,6 @@ import {
   CheckInComponent,
   CheckOutComponent,
   HomeComponent,
-  RulesComponent,
   StationComponent,
   StationDetailsComponent,
   StationEditComponent,
@@ -44,10 +43,6 @@ export const appRoutes: Route[] = [
     data: {
       roles: [Role.STATION],
     },
-  },
-  {
-    path: 'rules',
-    component: RulesComponent,
   },
   {
     path: 'station',

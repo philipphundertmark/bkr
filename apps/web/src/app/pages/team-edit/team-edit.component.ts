@@ -10,6 +10,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import dayjs from 'dayjs';
 import { combineLatest, map } from 'rxjs';
 
 import {
@@ -48,10 +49,15 @@ export class TeamEditComponent implements OnInit {
     number: new FormControl<number | null>(null, {
       validators: [Validators.required],
     }),
-    startedAt: new FormControl<string | null>(null),
-    finishedAt: new FormControl<string | null>(null),
+    startedAt: new FormControl<string | null>(null, {
+      validators: [],
+    }),
+    finishedAt: new FormControl<string | null>(null, {
+      validators: [],
+    }),
     penalty: new FormControl<number>(0, {
       nonNullable: true,
+      validators: [Validators.required, Validators.min(0)],
     }),
     members: new FormArray([this.buildMemberControl()]),
   });
@@ -85,7 +91,8 @@ export class TeamEditComponent implements OnInit {
   }
 
   handleSave(teamId: string): void {
-    const { name, number, members, penalty } = this.form.value;
+    const { name, number, members, startedAt, finishedAt, penalty } =
+      this.form.value;
 
     if (
       this.form.invalid ||
@@ -106,6 +113,12 @@ export class TeamEditComponent implements OnInit {
         name,
         number,
         members: nonEmptyMembers,
+        startedAt: startedAt
+          ? dayjs(startedAt, 'DD.MM.YYYY HH:mm:ss').toISOString()
+          : null,
+        finishedAt: finishedAt
+          ? dayjs(finishedAt, 'DD.MM.YYYY HH:mm:ss').toISOString()
+          : null,
         penalty,
       })
       .pipe(takeUntilDestroyed(this.destroyRef))
