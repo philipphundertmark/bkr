@@ -1,16 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import {
-  Component,
-  DestroyRef,
-  ElementRef,
-  QueryList,
-  ViewChildren,
-  inject,
-} from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
-  FormArray,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -18,7 +10,11 @@ import {
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
-import { ButtonComponent, InputDirective } from '../../components';
+import {
+  ButtonComponent,
+  InputDirective,
+  MembersInputComponent,
+} from '../../components';
 import { XMarkIconComponent } from '../../icons/mini';
 import { NotificationService, TeamService } from '../../services';
 
@@ -29,6 +25,7 @@ import { NotificationService, TeamService } from '../../services';
     ButtonComponent,
     CommonModule,
     InputDirective,
+    MembersInputComponent,
     ReactiveFormsModule,
     RouterModule,
     XMarkIconComponent,
@@ -37,8 +34,6 @@ import { NotificationService, TeamService } from '../../services';
   styleUrls: ['./team-new.component.scss'],
 })
 export class TeamNewComponent {
-  @ViewChildren('memberInput') memberInputs?: QueryList<ElementRef>;
-
   form = new FormGroup({
     name: new FormControl<string>('', {
       nonNullable: true,
@@ -47,54 +42,17 @@ export class TeamNewComponent {
     number: new FormControl<number | null>(null, {
       validators: [Validators.required],
     }),
-    members: new FormArray([this.buildMemberControl()]),
+    members: new FormControl<string[]>([]),
   });
   loading = false;
 
   private readonly destroyRef = inject(DestroyRef);
-
-  get members(): FormArray<FormControl<string>> {
-    return this.form.controls['members'];
-  }
 
   constructor(
     private readonly notificationService: NotificationService,
     private readonly router: Router,
     private readonly teamService: TeamService
   ) {}
-
-  handleAddMember(): void {
-    this.members.push(this.buildMemberControl());
-
-    setTimeout(() => this.focusMemberInputAt(this.members.length - 1), 0);
-  }
-
-  handleEnterAt(event: Event, index: number): void {
-    event.preventDefault();
-
-    if (index >= this.members.length) {
-      // Invalid index
-      return;
-    }
-
-    if (index === this.members.length - 1) {
-      this.handleAddMember();
-    }
-
-    this.focusMemberInputAt(index + 1);
-  }
-
-  handleRemoveMemberAt(index: number): void {
-    this.members.removeAt(index);
-
-    setTimeout(() => {
-      if (index >= this.members.length) {
-        index = this.members.length - 1;
-      }
-
-      this.focusMemberInputAt(index);
-    }, 0);
-  }
 
   handleSave(): void {
     const { name, number, members } = this.form.value;
@@ -143,15 +101,5 @@ export class TeamNewComponent {
           }
         },
       });
-  }
-
-  private buildMemberControl(): FormControl<string> {
-    return new FormControl<string>('', {
-      nonNullable: true,
-    });
-  }
-
-  private focusMemberInputAt(index: number): void {
-    this.memberInputs?.get(index)?.nativeElement.focus();
   }
 }
