@@ -77,7 +77,11 @@ export class MembersInputComponent implements ControlValueAccessor, OnInit {
    * @implements {ControlValueAccessor}
    */
   writeValue(value: string[]): void {
-    this.form.setValue({ members: value }, { emitEvent: false });
+    this.members.clear();
+
+    for (let i = 0; i < (value.length || 1); i++) {
+      this.members.push(this.buildMemberControl(value[i]));
+    }
   }
 
   /**
@@ -127,8 +131,8 @@ export class MembersInputComponent implements ControlValueAccessor, OnInit {
     }, 0);
   }
 
-  private buildMemberControl(): FormControl<string> {
-    return new FormControl<string>('', {
+  private buildMemberControl(value?: string): FormControl<string> {
+    return new FormControl<string>(value ?? '', {
       nonNullable: true,
     });
   }
