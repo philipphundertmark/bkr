@@ -3,7 +3,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
-  FormArray,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -18,6 +17,7 @@ import {
   EmptyComponent,
   InputDirective,
   LoadingComponent,
+  MembersInputComponent,
 } from '../../components';
 import { AuthService, NotificationService, TeamService } from '../../services';
 import { dateTimeValidator } from '../../validators';
@@ -31,6 +31,7 @@ import { dateTimeValidator } from '../../validators';
     EmptyComponent,
     InputDirective,
     LoadingComponent,
+    MembersInputComponent,
     ReactiveFormsModule,
     RouterModule,
   ],
@@ -60,7 +61,9 @@ export class TeamEditComponent implements OnInit {
       nonNullable: true,
       validators: [Validators.required, Validators.min(0)],
     }),
-    members: new FormArray([this.buildMemberControl()]),
+    members: new FormControl<string[]>([], {
+      nonNullable: true,
+    }),
   });
 
   team$ = combineLatest([this.route.paramMap, this.teamService.teams$]).pipe(
@@ -87,6 +90,7 @@ export class TeamEditComponent implements OnInit {
         penalty: team?.penalty,
         startedAt: team?.startedAt?.format('DD.MM.YYYY HH:mm:ss') ?? null,
         finishedAt: team?.finishedAt?.format('DD.MM.YYYY HH:mm:ss') ?? null,
+        members: team?.members ?? [],
       });
     });
   }

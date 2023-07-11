@@ -15,7 +15,6 @@ import {
   InputDirective,
   MembersInputComponent,
 } from '../../components';
-import { XMarkIconComponent } from '../../icons/mini';
 import { NotificationService, TeamService } from '../../services';
 
 @Component({
@@ -28,7 +27,6 @@ import { NotificationService, TeamService } from '../../services';
     MembersInputComponent,
     ReactiveFormsModule,
     RouterModule,
-    XMarkIconComponent,
   ],
   templateUrl: './team-new.component.html',
   styleUrls: ['./team-new.component.scss'],
@@ -42,8 +40,11 @@ export class TeamNewComponent {
     number: new FormControl<number | null>(null, {
       validators: [Validators.required],
     }),
-    members: new FormControl<string[]>([]),
+    members: new FormControl<string[]>([], {
+      nonNullable: true,
+    }),
   });
+
   loading = false;
 
   private readonly destroyRef = inject(DestroyRef);

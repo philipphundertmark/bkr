@@ -14,41 +14,30 @@
 
 <form class="flex flex-col gap-4 px-6" [formGroup]="form">
   <div class="flex flex-col gap-2">
-    <label class="label"> Nummer<span class="text-indigo-500">*</span> </label>
+    <label class="label">Nummer<span class="text-indigo-500">*</span></label>
 
     <input
       bkrInput
       formControlName="number"
-      id="number"
-      name="nummer"
-      type="number"
       placeholder="Nummer"
+      type="number"
     />
   </div>
 
   <div class="flex flex-col gap-2">
-    <label class="label"> Name<span class="text-indigo-500">*</span> </label>
+    <label class="label">Name<span class="text-indigo-500">*</span></label>
 
-    <input
-      bkrInput
-      formControlName="name"
-      id="name"
-      name="name"
-      type="text"
-      placeholder="Name"
-    />
+    <input bkrInput formControlName="name" placeholder="Name" />
   </div>
 
   <div class="flex flex-col gap-2">
-    <label class="label"> Code<span class="text-indigo-500">*</span> </label>
+    <label class="label">Code<span class="text-indigo-500">*</span></label>
 
     <input
       bkrInput
       formControlName="code"
       id="code"
       maxlength="6"
-      name="code"
-      type="text"
       placeholder="123-456"
     />
   </div>
@@ -59,7 +48,7 @@
   </p>
 
   <div class="flex flex-col gap-2">
-    <label class="label"> Wertung<span class="text-indigo-500">*</span> </label>
+    <label class="label">Wertung<span class="text-indigo-500">*</span></label>
 
     <div class="flex items-center gap-4">
       <input
@@ -94,30 +83,7 @@
   </div>
 
   <div class="flex flex-col gap-2">
-    <label class="label"> Mitglieder </label>
-
-    <div
-      class="flex gap-2"
-      *ngFor="let memberFormControl of members.controls; let i = index"
-    >
-      <input
-        bkrInput
-        [formControl]="memberFormControl"
-        (keydown.enter)="handleEnterAt($event, i)"
-        id="name"
-        name="name"
-        type="text"
-        placeholder="Name"
-        #memberInput
-      />
-
-      <button bkr-icon-button (click)="handleRemoveMemberAt(i)" *ngIf="i > 0">
-        <bkr-x-mark-icon class="px-0.5 text-gray-500"></bkr-x-mark-icon>
-      </button>
-    </div>
-
-    <button bkr-button bkrType="primary" (click)="handleAddMember()">
-      Mitglied hinzufügen
-    </button>
+    <label class="label">Mitglieder</label>
+    <bkr-members-input formControlName="members"></bkr-members-input>
   </div>
 </form>
