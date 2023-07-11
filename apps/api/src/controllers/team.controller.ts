@@ -192,7 +192,7 @@ export function TeamController(teamService: TeamService): Router {
         throw new BadRequestException(error.message);
       }
 
-      const { name, members, startedAt, finishedAt, penalty } = value;
+      const { name, number, members, startedAt, finishedAt, penalty } = value;
 
       let team = await teamService.getTeamById(teamId);
 
@@ -200,8 +200,22 @@ export function TeamController(teamService: TeamService): Router {
         throw new NotFoundException(`Team ${teamId} does not exist`);
       }
 
+      team =
+        typeof number !== 'undefined'
+          ? await teamService.getTeamByNumber(number)
+          : null;
+
+      if (
+        typeof number !== 'undefined' &&
+        team !== null &&
+        teamId !== team.id
+      ) {
+        throw new BadRequestException('"number" must be unique');
+      }
+
       team = await teamService.updateTeam(teamId, {
         name,
+        number,
         members,
         startedAt,
         finishedAt,

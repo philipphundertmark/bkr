@@ -225,7 +225,11 @@ export function StationController(stationService: StationService): Router {
           ? await stationService.getStationByNumber(number)
           : null;
 
-      if (typeof number !== 'undefined' && station !== null) {
+      if (
+        typeof number !== 'undefined' &&
+        station !== null &&
+        stationId !== station.id
+      ) {
         throw new BadRequestException('"number" must be unique');
       }
 
@@ -234,7 +238,11 @@ export function StationController(stationService: StationService): Router {
           ? await stationService.getStationByCode(code)
           : null;
 
-      if (typeof code !== 'undefined' && station !== null) {
+      if (
+        typeof code !== 'undefined' &&
+        station !== null &&
+        stationId !== station.id
+      ) {
         throw new BadRequestException('"code" must be unique');
       }
 
