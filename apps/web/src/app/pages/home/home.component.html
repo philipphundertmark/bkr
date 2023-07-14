@@ -10,6 +10,15 @@
   >
     Meine Station
   </a>
+  <a
+    bkr-forward-button
+    bkrType="primary"
+    class="col-span-2"
+    *ngIf="isAdmin() && isRaceOver()"
+    routerLink="/endresult"
+  >
+    Endergebnis
+  </a>
 </header>
 
 <div class="space-y-1 px-6">

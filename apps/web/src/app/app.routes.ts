@@ -7,6 +7,7 @@ import {
   AuthComponent,
   CheckInComponent,
   CheckOutComponent,
+  EndresultComponent,
   HomeComponent,
   StationComponent,
   StationDetailsComponent,
@@ -42,6 +43,14 @@ export const appRoutes: Route[] = [
     canActivate: [roleCanActivateFn],
     data: {
       roles: [Role.STATION],
+    },
+  },
+  {
+    path: 'endresult',
+    component: EndresultComponent,
+    canActivate: [roleCanActivateFn],
+    data: {
+      roles: [Role.ADMIN],
     },
   },
   {

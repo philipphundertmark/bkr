@@ -1,0 +1,13 @@
+<div
+  class="flex gap-4 p-6"
+  *ngFor="let rankingItem of rankingItems(); let i = index"
+>
+  <div class="font-bold">{{ i + 1 }}.</div>
+
+  <div class="flex flex-1 flex-col gap-2">
+    <div class="flex justify-between gap-2">
+      <h3 class="name">{{ rankingItem.name }}</h3>
+      <span class="font-mono">{{ formatDuration(rankingItem.time) }}</span>
+    </div>
+  </div>
+</div>

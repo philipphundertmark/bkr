@@ -37,12 +37,14 @@ export class TeamService {
   readonly loading$ = this._loading$.pipe(distinctUntilChanged());
 
   readonly isRaceOver$ = this.teams$.pipe(
-    map((teams) =>
-      teams.every(
-        (team) =>
-          typeof team.startedAt !== 'undefined' &&
-          typeof team.finishedAt !== 'undefined'
-      )
+    map(
+      (teams) =>
+        teams.length > 0 &&
+        teams.every(
+          (team) =>
+            typeof team.startedAt !== 'undefined' &&
+            typeof team.finishedAt !== 'undefined'
+        )
     )
   );
 

@@ -42,6 +42,7 @@ export interface RankingItem {
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
+  isAdmin = toSignal(this.authService.isAdmin$);
   isRaceOver = toSignal(this.teamService.isRaceOver$);
   isStation = toSignal(this.authService.isStation$);
   loading = toSignal(this.teamService.loading$, { initialValue: false });
