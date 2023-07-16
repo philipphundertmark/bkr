@@ -12,6 +12,10 @@
 }
 
 @layer components {
+  .page {
+    @apply flex flex-col gap-6 pb-16;
+  }
+
   .title {
     @apply font-title text-2xl font-bold;
   }
