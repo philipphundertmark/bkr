@@ -1,6 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  HostBinding,
+  OnInit,
+  inject,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
   FormControl,
@@ -43,6 +50,8 @@ import {
   styleUrls: ['./station-edit.component.scss'],
 })
 export class StationEditComponent implements OnInit {
+  @HostBinding('class.page') page = true;
+
   readonly Order = Order;
 
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });

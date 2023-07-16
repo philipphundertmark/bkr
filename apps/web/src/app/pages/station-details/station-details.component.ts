@@ -1,10 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  HostBinding,
+  inject,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { EMPTY, combineLatest, map, switchMap } from 'rxjs';
 
-import { Station } from '@bkr/api-interface';
+import { StationUtils } from '@bkr/api-interface';
 
 import {
   ButtonComponent,
@@ -38,6 +44,10 @@ import { ConfirmService } from '../../services/confirm.service';
   styleUrls: ['./station-details.component.scss'],
 })
 export class StationDetailsComponent {
+  @HostBinding('class.page') page = true;
+
+  readonly StationUtils = StationUtils;
+
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
   loading = toSignal(this.stationService.loading$, { initialValue: false });
   deleteStationLoading = signal(false);
@@ -61,14 +71,6 @@ export class StationDetailsComponent {
     private readonly router: Router,
     private readonly stationService: StationService
   ) {}
-
-  formatStationMembers(station: Station): string {
-    if (!station.members.length) {
-      return 'Keine Mitglieder';
-    }
-
-    return station.members.join(', ');
-  }
 
   handleDeleteStation(stationId: string): void {
     this.confirmService

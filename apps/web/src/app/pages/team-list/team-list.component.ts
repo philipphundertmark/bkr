@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 
@@ -28,6 +28,8 @@ import { AuthService, TeamService } from '../../services';
   styleUrls: ['./team-list.component.scss'],
 })
 export class TeamListComponent {
+  @HostBinding('class.page') page = true;
+
   readonly TeamUtils = TeamUtils;
 
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });

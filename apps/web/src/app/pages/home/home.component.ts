@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed } from '@angular/core';
+import { Component, HostBinding, computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
@@ -42,6 +42,8 @@ export interface RankingItem {
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
+  @HostBinding('class.page') page = true;
+
   isAdmin = toSignal(this.authService.isAdmin$);
   isRaceOver = toSignal(this.teamService.isRaceOver$);
   isStation = toSignal(this.authService.isStation$);

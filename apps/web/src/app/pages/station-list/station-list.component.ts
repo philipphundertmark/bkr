@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 
-import { Station } from '@bkr/api-interface';
+import { Station, StationUtils } from '@bkr/api-interface';
 
 import {
   ButtonComponent,
@@ -28,6 +28,10 @@ import { AuthService, StationService } from '../../services';
   styleUrls: ['./station-list.component.scss'],
 })
 export class StationListComponent {
+  @HostBinding('class.page') page = true;
+
+  readonly StationUtils = StationUtils;
+
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
   loading = toSignal(this.stationService.loading$, { initialValue: false });
   stations = toSignal(this.stationService.stations$, {
@@ -38,12 +42,4 @@ export class StationListComponent {
     private readonly authService: AuthService,
     private readonly stationService: StationService
   ) {}
-
-  formatStationMembers(station: Station): string {
-    if (!station.members.length) {
-      return 'Keine Mitglieder';
-    }
-
-    return station.members.join(', ');
-  }
 }

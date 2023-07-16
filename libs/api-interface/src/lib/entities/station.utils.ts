@@ -33,4 +33,11 @@ export const StationUtils = {
       results: station.results.map((result) => ResultUtils.serialize(result)),
     };
   },
+  formatStationMembers(station: Station): string {
+    if (!station.members.length) {
+      return 'Keine Mitglieder';
+    }
+
+    return station.members.join(', ');
+  },
 };

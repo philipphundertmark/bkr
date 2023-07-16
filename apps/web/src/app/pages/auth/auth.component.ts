@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Input, computed, inject } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  HostBinding,
+  Input,
+  computed,
+  inject,
+} from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
   FormControl,
@@ -34,6 +41,8 @@ import {
 })
 export class AuthComponent {
   @Input() returnUrl = '/';
+
+  @HostBinding('class.page') page = true;
 
   readonly exp = toSignal(this.authService.exp$, { initialValue: null });
   readonly sub = toSignal(this.authService.sub$, { initialValue: null });

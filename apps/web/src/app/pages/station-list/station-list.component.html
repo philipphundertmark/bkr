@@ -32,7 +32,9 @@
             <span class="number">#{{ station.number }}</span>
           </div>
 
-          <p class="text-gray-500">{{ formatStationMembers(station) }}</p>
+          <p class="text-gray-500">
+            {{ StationUtils.formatStationMembers(station) }}
+          </p>
         </div>
 
         <bkr-chevron-right-icon class="text-gray-500"></bkr-chevron-right-icon>

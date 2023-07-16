@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, HostBinding, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
@@ -32,6 +32,8 @@ import { NotificationService, TeamService } from '../../services';
   styleUrls: ['./team-new.component.scss'],
 })
 export class TeamNewComponent {
+  @HostBinding('class.page') page = true;
+
   form = new FormGroup({
     name: new FormControl<string>('', {
       nonNullable: true,

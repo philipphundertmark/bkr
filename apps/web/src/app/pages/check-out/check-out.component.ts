@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  HostBinding,
+  inject,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
   FormControl,
@@ -41,6 +47,8 @@ import { ConfirmService } from '../../services/confirm.service';
   styleUrls: ['./check-out.component.scss'],
 })
 export class CheckOutComponent {
+  @HostBinding('class.page') page = true;
+
   readonly isStation = toSignal(this.authService.isStation$, {
     initialValue: false,
   });

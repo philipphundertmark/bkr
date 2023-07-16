@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  HostBinding,
   computed,
   signal,
 } from '@angular/core';
@@ -34,6 +35,8 @@ import { StationService, TeamService } from '../../services';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EndresultComponent {
+  @HostBinding('class.page') page = true;
+
   stations = toSignal(this.stationService.stations$, {
     initialValue: [] as Station[],
   });

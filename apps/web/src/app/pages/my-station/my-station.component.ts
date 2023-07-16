@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed } from '@angular/core';
+import { Component, HostBinding, computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 
@@ -28,6 +28,8 @@ import { AuthService, TeamService } from '../../services';
   styleUrls: ['./my-station.component.scss'],
 })
 export class MyStationComponent {
+  @HostBinding('class.page') page = true;
+
   readonly TeamUtils = TeamUtils;
 
   readonly loading = toSignal(this.teamService.loading$, {

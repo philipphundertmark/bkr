@@ -1,6 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  HostBinding,
+  OnInit,
+  inject,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
   FormControl,
@@ -39,6 +46,8 @@ import { dateTimeValidator } from '../../validators';
   styleUrls: ['./team-edit.component.scss'],
 })
 export class TeamEditComponent implements OnInit {
+  @HostBinding('class.page') page = true;
+
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
   loading = toSignal(this.teamService.loading$, { initialValue: false });
   saveLoading = signal(false);
@@ -150,11 +159,5 @@ export class TeamEditComponent implements OnInit {
           }
         },
       });
-  }
-
-  private buildMemberControl(): FormControl<string> {
-    return new FormControl<string>('', {
-      nonNullable: true,
-    });
   }
 }

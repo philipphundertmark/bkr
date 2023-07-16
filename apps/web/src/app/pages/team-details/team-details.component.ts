@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  HostBinding,
+  inject,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
@@ -34,6 +40,8 @@ import { ConfirmService } from '../../services/confirm.service';
   styleUrls: ['./team-details.component.scss'],
 })
 export class TeamDetailsComponent {
+  @HostBinding('class.page') page = true;
+
   readonly TeamUtils = TeamUtils;
 
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });

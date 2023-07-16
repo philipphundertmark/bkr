@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  HostBinding,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
   FormControl,
@@ -38,6 +45,8 @@ import {
   styleUrls: ['./check-in.component.scss'],
 })
 export class CheckInComponent {
+  @HostBinding('class.page') page = true;
+
   readonly TeamUtils = TeamUtils;
 
   readonly loading = toSignal(this.teamService.loading$, {

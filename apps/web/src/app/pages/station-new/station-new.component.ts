@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, HostBinding, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
@@ -34,6 +34,8 @@ import { NotificationService, StationService } from '../../services';
   styleUrls: ['./station-new.component.scss'],
 })
 export class StationNewComponent {
+  @HostBinding('class.page') page = true;
+
   readonly Order = Order;
 
   form = new FormGroup({
