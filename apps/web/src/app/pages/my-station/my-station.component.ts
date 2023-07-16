@@ -3,7 +3,7 @@ import { Component, HostBinding, computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 
-import { TeamUtils } from '@bkr/api-interface';
+import { Result, Station, Team, TeamUtils } from '@bkr/api-interface';
 
 import {
   ButtonComponent,
@@ -11,7 +11,9 @@ import {
   LoadingComponent,
 } from '../../components';
 import { ChevronRightIconComponent } from '../../icons/mini';
-import { AuthService, TeamService } from '../../services';
+import { AuthService, StationService, TeamService } from '../../services';
+
+type ResultWithTeam = Result & { team: Team };
 
 @Component({
   selector: 'bkr-my-station',
@@ -36,7 +38,13 @@ export class MyStationComponent {
     initialValue: false,
   });
   readonly stationId = toSignal(this.authService.sub$, { initialValue: null });
-  readonly teams = toSignal(this.teamService.teams$, { initialValue: [] });
+
+  readonly stations = toSignal(this.stationService.stations$, {
+    initialValue: [] as Station[],
+  });
+  readonly teams = toSignal(this.teamService.teams$, {
+    initialValue: [] as Team[],
+  });
 
   readonly checkedInTeams = computed(() => {
     return this.teams().filter((team) =>
@@ -45,8 +53,32 @@ export class MyStationComponent {
       )
     );
   });
+
+  readonly results = computed(() => {
+    const station = this.stations().find(
+      (station) => station.id === this.stationId()
+    );
+
+    if (!station) {
+      return [];
+    }
+
+    return (
+      station.results
+        .map((result) => ({
+          ...result,
+          team: this.teams().find((team) => team.id === result.teamId),
+        }))
+        .filter(
+          (result): result is ResultWithTeam =>
+            typeof result.team !== 'undefined'
+        ) ?? []
+    );
+  });
+
   constructor(
     private readonly authService: AuthService,
+    private readonly stationService: StationService,
     private readonly teamService: TeamService
   ) {}
 }
