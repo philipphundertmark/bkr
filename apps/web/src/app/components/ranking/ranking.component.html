@@ -7,7 +7,37 @@
   <div class="flex flex-1 flex-col gap-2">
     <div class="flex justify-between gap-2">
       <h3 class="name">{{ rankingItem.name }}</h3>
-      <span class="font-mono">{{ formatDuration(rankingItem.time) }}</span>
+      <span class="font-mono text-indigo-500">
+        {{ formatDuration(rankingItem.time) }}
+      </span>
     </div>
+
+    <div class="flex justify-between gap-2">
+      <div>Gesamtzeit</div>
+      <div class="font-mono">{{ formatDuration(rankingItem.totalTime) }}</div>
+    </div>
+
+    <div class="flex justify-between gap-2">
+      <div>Strafzeit</div>
+      <div class="font-mono" [class.text-red-500]="rankingItem.penalty > 0">
+        + {{ formatDuration(rankingItem.penalty) }}
+      </div>
+    </div>
+
+    <ng-container *ngFor="let station of stations()">
+      <div class="flex justify-between gap-2">
+        <div>{{ station.name }} Zeit</div>
+        <div class="font-mono">
+          - {{ getFormattedTimeAtStation(station.id, rankingItem) }}
+        </div>
+      </div>
+
+      <div class="flex justify-between gap-2">
+        <div>{{ station.name }} Bonus</div>
+        <div class="font-mono">
+          - {{ getFormattedBonusAtStation(station.id, rankingItem) }}
+        </div>
+      </div>
+    </ng-container>
   </div>
 </div>

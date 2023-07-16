@@ -18,14 +18,11 @@
 </div>
 
 <ng-container *ngIf="loading() === false; else loadingIndicator">
-  <ul
-    class="divide-y divide-gray-200 border-y border-gray-200"
+  <bkr-ranking
     *ngIf="isRaceOver(); else empty"
-  >
-    <li class="flex gap-4 p-6" *ngFor="let rankingItem of []; let i = index">
-      asdf
-    </li>
-  </ul>
+    [stations]="stations()"
+    [teams]="teams()"
+  ></bkr-ranking>
 
   <ng-template #empty>
     <bkr-empty>Das Rennen ist noch nicht vorbei.</bkr-empty>

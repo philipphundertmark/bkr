@@ -14,6 +14,7 @@ import {
   ButtonComponent,
   EmptyComponent,
   LoadingComponent,
+  RankingComponent,
 } from '../../components';
 import { StationService, TeamService } from '../../services';
 
@@ -25,6 +26,7 @@ import { StationService, TeamService } from '../../services';
     CommonModule,
     EmptyComponent,
     LoadingComponent,
+    RankingComponent,
     RouterModule,
   ],
   templateUrl: './endresult.component.html',
