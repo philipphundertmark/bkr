@@ -3,7 +3,7 @@ export * from './check-in/check-in.component';
 export * from './check-out/check-out.component';
 export * from './endresult/endresult.component';
 export * from './home/home.component';
-export * from './station/station.component';
+export * from './my-station/my-station.component';
 export * from './station-details/station-details.component';
 export * from './station-edit/station-edit.component';
 export * from './station-list/station-list.component';

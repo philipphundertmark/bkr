@@ -9,7 +9,7 @@ import {
   CheckOutComponent,
   EndresultComponent,
   HomeComponent,
-  StationComponent,
+  MyStationComponent,
   StationDetailsComponent,
   StationEditComponent,
   StationListComponent,
@@ -30,22 +30,6 @@ export const appRoutes: Route[] = [
     component: AuthComponent,
   },
   {
-    path: 'check-in',
-    component: CheckInComponent,
-    canActivate: [roleCanActivateFn],
-    data: {
-      roles: [Role.STATION],
-    },
-  },
-  {
-    path: 'check-out',
-    component: CheckOutComponent,
-    canActivate: [roleCanActivateFn],
-    data: {
-      roles: [Role.STATION],
-    },
-  },
-  {
     path: 'endresult',
     component: EndresultComponent,
     canActivate: [roleCanActivateFn],
@@ -54,8 +38,24 @@ export const appRoutes: Route[] = [
     },
   },
   {
-    path: 'station',
-    component: StationComponent,
+    path: 'my-station',
+    component: MyStationComponent,
+    canActivate: [roleCanActivateFn],
+    data: {
+      roles: [Role.STATION],
+    },
+  },
+  {
+    path: 'my-station/check-in',
+    component: CheckInComponent,
+    canActivate: [roleCanActivateFn],
+    data: {
+      roles: [Role.STATION],
+    },
+  },
+  {
+    path: 'my-station/check-out',
+    component: CheckOutComponent,
     canActivate: [roleCanActivateFn],
     data: {
       roles: [Role.STATION],

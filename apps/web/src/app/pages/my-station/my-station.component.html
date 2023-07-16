@@ -1,6 +1,11 @@
 <header class="grid grid-cols-2 gap-4 px-6">
   <a bkr-backward-button class="col-span-1" routerLink="/">Zurück</a>
-  <a bkr-button bkrType="primary" class="col-span-1" routerLink="/check-in">
+  <a
+    bkr-button
+    bkrType="primary"
+    class="col-span-1"
+    routerLink="/my-station/check-in"
+  >
     Check-in
   </a>
 </header>
@@ -18,7 +23,7 @@
     <li *ngFor="let team of checkedInTeams()">
       <a
         class="flex items-center justify-between p-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-        [routerLink]="['/check-out']"
+        routerLink="/my-station/check-out"
         [queryParams]="{ teamId: team.id }"
       >
         <div class="flex flex-col gap-1">

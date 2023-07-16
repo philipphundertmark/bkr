@@ -14,7 +14,7 @@ import { ChevronRightIconComponent } from '../../icons/mini';
 import { AuthService, TeamService } from '../../services';
 
 @Component({
-  selector: 'bkr-station',
+  selector: 'bkr-my-station',
   standalone: true,
   imports: [
     ButtonComponent,
@@ -24,10 +24,10 @@ import { AuthService, TeamService } from '../../services';
     LoadingComponent,
     RouterModule,
   ],
-  templateUrl: './station.component.html',
-  styleUrls: ['./station.component.scss'],
+  templateUrl: './my-station.component.html',
+  styleUrls: ['./my-station.component.scss'],
 })
-export class StationComponent {
+export class MyStationComponent {
   readonly TeamUtils = TeamUtils;
 
   readonly loading = toSignal(this.teamService.loading$, {
