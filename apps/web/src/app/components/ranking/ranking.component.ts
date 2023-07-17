@@ -9,7 +9,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import dayjs from 'dayjs';
 import { BehaviorSubject } from 'rxjs';
 
-import { Order, Station, Team } from '@bkr/api-interface';
+import { Station, StationUtils, Team } from '@bkr/api-interface';
 
 interface BonusByTeam {
   [teamId: string]: number;
@@ -69,20 +69,14 @@ export class RankingComponent {
     const stations = this.stations();
     const teams = this.teams();
 
-    const stationBonus = stations.reduce((acc, station) => {
-      const bonusByTeam = station.results
-        .filter((result) => result.checkOut)
-        .sort((a, b) => {
-          return station.order === Order.ASC
-            ? a.points - b.points
-            : b.points - a.points;
-        })
-        .reduce((acc, result, index) => {
-          return {
-            ...acc,
-            [result.teamId]: TIME_BONUS[index] ?? 0,
-          };
-        }, {} as BonusByTeam);
+    const bonusByTeamByStation = stations.reduce((acc, station) => {
+      const bonusByTeam = StationUtils.getFinalResultsInOrder(station).reduce(
+        (acc, result, index) => ({
+          ...acc,
+          [result.teamId]: TIME_BONUS[index] ?? 0,
+        }),
+        {} as BonusByTeam
+      );
 
       return {
         ...acc,
@@ -101,7 +95,7 @@ export class RankingComponent {
             );
 
             return {
-              bonus: stationBonus[station.id]?.[team.id] ?? 0,
+              bonus: bonusByTeamByStation[station.id]?.[team.id] ?? 0,
               stationId: station.id,
               time: result?.checkOut?.diff(result.checkIn, 'seconds') ?? 0,
             };

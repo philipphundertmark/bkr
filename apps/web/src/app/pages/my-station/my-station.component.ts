@@ -3,7 +3,13 @@ import { Component, HostBinding, computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 
-import { Order, Result, Station, Team, TeamUtils } from '@bkr/api-interface';
+import {
+  Result,
+  Station,
+  StationUtils,
+  Team,
+  TeamUtils,
+} from '@bkr/api-interface';
 
 import {
   ButtonComponent,
@@ -64,9 +70,7 @@ export class MyStationComponent {
     }
 
     return (
-      station.results
-        // Only show results that have checked out
-        .filter((result) => result.checkOut)
+      StationUtils.getFinalResultsInOrder(station)
         // Find the team for each result
         .map((result) => ({
           ...result,
@@ -76,12 +80,6 @@ export class MyStationComponent {
         .filter(
           (result): result is ResultWithTeam =>
             typeof result.team !== 'undefined'
-        )
-        // Sort results by points
-        .sort((a, b) =>
-          station.order === Order.ASC
-            ? a.points - b.points
-            : b.points - a.points
         )
     );
   });

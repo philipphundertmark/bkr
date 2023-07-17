@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 
+import { Result } from './result';
 import { ResultUtils } from './result.utils';
 import { Station } from './station';
 import { StationDTO } from './station.dto';
@@ -39,5 +40,14 @@ export const StationUtils = {
     }
 
     return station.members.join(', ');
+  },
+  getFinalResultsInOrder(station: Station): Result[] {
+    return station.results
+      .filter((result) => result.checkOut)
+      .sort((a, b) => {
+        return station.order === 'ASC'
+          ? a.points - b.points
+          : b.points - a.points;
+      });
   },
 };
