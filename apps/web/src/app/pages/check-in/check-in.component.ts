@@ -97,7 +97,7 @@ export class CheckInComponent {
           this.checkInLoading.set(false);
           this.notificationService.success('Team wurde eingecheckt.');
 
-          this.router.navigate(['/station']);
+          this.router.navigate(['/my-station']);
         },
         error: () => {
           this.checkInLoading.set(false);

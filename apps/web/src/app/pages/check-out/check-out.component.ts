@@ -49,9 +49,6 @@ import { ConfirmService } from '../../services/confirm.service';
 export class CheckOutComponent {
   @HostBinding('class.page') page = true;
 
-  readonly isStation = toSignal(this.authService.isStation$, {
-    initialValue: false,
-  });
   readonly loading = toSignal(this.teamService.loading$, {
     initialValue: false,
   });
@@ -59,6 +56,7 @@ export class CheckOutComponent {
 
   checkOutLoading = signal(false);
   deleteResultLoading = signal(false);
+
   form = new FormGroup({
     points: new FormControl<number | null>(null, {
       validators: [Validators.required, Validators.min(0)],
@@ -107,7 +105,7 @@ export class CheckOutComponent {
           this.checkOutLoading.set(false);
           this.notificationService.success('Team wurde ausgecheckt.');
 
-          this.router.navigate(['/station']);
+          this.router.navigate(['/my-station']);
         },
         error: () => {
           this.checkOutLoading.set(false);

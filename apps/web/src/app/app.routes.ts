@@ -10,6 +10,7 @@ import {
   EndresultComponent,
   HomeComponent,
   MyStationComponent,
+  ResultComponent,
   StationDetailsComponent,
   StationEditComponent,
   StationListComponent,
@@ -56,6 +57,14 @@ export const appRoutes: Route[] = [
   {
     path: 'my-station/check-out',
     component: CheckOutComponent,
+    canActivate: [roleCanActivateFn],
+    data: {
+      roles: [Role.STATION],
+    },
+  },
+  {
+    path: 'my-station/result',
+    component: ResultComponent,
     canActivate: [roleCanActivateFn],
     data: {
       roles: [Role.STATION],

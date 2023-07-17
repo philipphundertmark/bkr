@@ -17,7 +17,7 @@
 
 <ng-container *ngIf="loading() === false; else loadingIndicator">
   <ul
-    class="divide-y divide-gray-200 border-y border-gray-200"
+    class="divide-y divide-gray-200 border-y border-gray-200 bg-white"
     *ngIf="checkedInTeams().length > 0; else empty"
   >
     <li *ngFor="let team of checkedInTeams()">
@@ -47,32 +47,40 @@
 
 <div class="space-y-1 px-6">
   <h2 class="subtitle">Ergebnisse</h2>
-  <p class="text-gray-500">Die Ergebnisse von Teams an deiner Station.</p>
+  <p class="text-gray-500">Die Ergebnisse der Teams an deiner Station.</p>
 </div>
 
 <ng-container *ngIf="loading() === false; else loadingIndicator">
   <ul
-    class="divide-y divide-gray-200 border-y border-gray-200"
+    class="divide-y divide-gray-200 border-y border-gray-200 bg-white"
     *ngIf="results().length > 0; else empty"
   >
-    <li *ngFor="let result of results()">
+    <li *ngFor="let result of results(); let i = index">
       <a
-        class="flex items-center justify-between p-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+        class="flex gap-4 p-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
         routerLink="/my-station/result"
         [queryParams]="{ teamId: result.teamId }"
       >
-        <div class="flex flex-col gap-1">
-          <div class="flex items-center gap-2">
-            <h3 class="name">{{ result.team.name }}</h3>
-            <span class="number">#{{ result.team.number }}</span>
+        <div class="font-bold">{{ i + 1 }}.</div>
+
+        <div class="flex flex-1 items-center justify-between">
+          <div class="flex flex-col gap-1">
+            <div class="flex items-center gap-2">
+              <h3 class="name">{{ result.team.name }}</h3>
+              <span class="number">#{{ result.team.number }}</span>
+            </div>
+
+            <p class="text-gray-500">
+              {{ TeamUtils.formatTeamMembers(result.team) }}
+            </p>
+
+            <p class="font-semibold">{{ result.points }} Punkte</p>
           </div>
 
-          <p class="text-gray-500">
-            {{ TeamUtils.formatTeamMembers(result.team) }}
-          </p>
+          <bkr-chevron-right-icon
+            class="text-gray-500"
+          ></bkr-chevron-right-icon>
         </div>
-
-        <bkr-chevron-right-icon class="text-gray-500"></bkr-chevron-right-icon>
       </a>
     </li>
   </ul>

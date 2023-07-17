@@ -1,0 +1,82 @@
+<header class="grid grid-cols-2 gap-4 px-6">
+  <a bkr-button class="col-span-1" routerLink="/my-station">Abbrechen</a>
+
+  <ng-container *ngIf="result$ | async as result">
+    <button
+      bkr-button
+      [bkrLoading]="updateResultLoading()"
+      bkrType="primary"
+      class="col-span-1"
+      (click)="handleUpdateResult(result.stationId, result.teamId)"
+      [disabled]="form.invalid || updateResultLoading()"
+    >
+      Aktualisieren
+    </button>
+  </ng-container>
+</header>
+
+<ng-container *ngIf="!loading(); else loadingIndicator">
+  <form
+    class="flex flex-col gap-4 px-6"
+    [formGroup]="form"
+    *ngIf="result$ | async; else empty"
+  >
+    <div class="flex flex-col gap-2">
+      <label class="label">
+        Check-in um<span class="text-indigo-500">*</span>
+      </label>
+
+      <input
+        bkrInput
+        formControlName="checkIn"
+        placeholder="Check-in"
+        type="text"
+      />
+    </div>
+
+    <p class="text-sm text-gray-500">
+      Die Zeit muss im Format
+      <span class="font-semibold text-indigo-500">DD.MM.YYYY HH:mm:ss</span>
+      angegeben werden.
+    </p>
+
+    <div class="flex flex-col gap-2">
+      <label class="label">Check-out um</label>
+
+      <input
+        bkrInput
+        formControlName="checkOut"
+        placeholder="Noch nicht ausgecheckt"
+        type="text"
+      />
+    </div>
+
+    <p class="text-sm text-gray-500">
+      Die Zeit muss im Format
+      <span class="font-semibold text-indigo-500">DD.MM.YYYY HH:mm:ss</span>
+      angegeben werden.
+    </p>
+
+    <div class="flex flex-col gap-2">
+      <label class="label">
+        Punkte<span class="text-indigo-500">*</span>
+      </label>
+
+      <input
+        bkrInput
+        formControlName="points"
+        min="0"
+        placeholder="Punkte"
+        type="number"
+      />
+    </div>
+  </form>
+
+  <ng-template #empty>
+    <bkr-empty>Ergebnis nicht gefunden.</bkr-empty>
+  </ng-template>
+</ng-container>
+
+<ng-template #loadingIndicator>
+  <bkr-loading></bkr-loading>
+</ng-template>

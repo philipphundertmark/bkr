@@ -57,7 +57,7 @@ export class ResultService {
   async updateResult(
     stationId: string,
     teamId: string,
-    updates: { points?: number; checkIn?: string; checkOut?: string }
+    updates: { points?: number; checkIn?: string; checkOut?: string | null }
   ): Promise<Result> {
     const result = await this.prisma.result.update({
       where: {
@@ -68,8 +68,14 @@ export class ResultService {
       },
       data: {
         points: updates.points,
-        checkIn: updates.checkIn ? new Date(updates.checkIn) : undefined,
-        checkOut: updates.checkOut ? new Date(updates.checkOut) : undefined,
+        checkIn:
+          typeof updates.checkIn === 'string'
+            ? new Date(updates.checkIn)
+            : updates.checkIn,
+        checkOut:
+          typeof updates.checkOut === 'string'
+            ? new Date(updates.checkOut)
+            : updates.checkOut,
       },
       select: ResultService.RESULT_SELECT,
     });

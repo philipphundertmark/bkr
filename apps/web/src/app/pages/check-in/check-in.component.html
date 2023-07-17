@@ -23,7 +23,7 @@
 
 <form [formGroup]="form" *ngIf="loading() === false; else loadingIndicator">
   <ul
-    class="divide-y divide-gray-200 border-y border-gray-200"
+    class="divide-y divide-gray-200 border-y border-gray-200 bg-white"
     *ngIf="teamsToCheckIn().length > 0; else empty"
   >
     <li

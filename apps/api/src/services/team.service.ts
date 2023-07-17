@@ -98,12 +98,14 @@ export class TeamService {
         name: updates.name,
         number: updates.number,
         members: updates.members,
-        ...(typeof updates.startedAt === 'string'
-          ? { startedAt: new Date(updates.startedAt) }
-          : { startedAt: updates.startedAt }),
-        ...(typeof updates.finishedAt === 'string'
-          ? { finishedAt: new Date(updates.finishedAt) }
-          : { finishedAt: updates.finishedAt }),
+        startedAt:
+          typeof updates.startedAt === 'string'
+            ? new Date(updates.startedAt)
+            : updates.startedAt,
+        finishedAt:
+          typeof updates.finishedAt === 'string'
+            ? new Date(updates.finishedAt)
+            : updates.finishedAt,
         penalty: updates.penalty,
       },
       include: {
