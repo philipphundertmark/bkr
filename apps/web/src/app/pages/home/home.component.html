@@ -26,90 +26,84 @@
   <p class="text-gray-500">Das aktuelle Ranking aller Teams.</p>
 </div>
 
-<ng-container *ngIf="!hasError(); else error">
-  <ng-container *ngIf="loading() === false; else loadingIndicator">
-    <ul class="list" *ngIf="rankingItems().length > 0; else empty">
-      <li
-        class="list-entry"
-        *ngFor="let rankingItem of rankingItems(); let i = index"
-      >
-        <div class="font-bold">{{ i + 1 }}.</div>
+<ng-container *ngIf="loading() === false; else loadingIndicator">
+  <ul class="list" *ngIf="rankingItems().length > 0; else empty">
+    <li
+      class="list-entry"
+      *ngFor="let rankingItem of rankingItems(); let i = index"
+    >
+      <div class="font-bold">{{ i + 1 }}.</div>
 
-        <div class="flex flex-1 flex-col gap-2">
-          <div class="flex justify-between gap-2">
-            <h3 class="name">{{ rankingItem.name }}</h3>
+      <div class="flex flex-1 flex-col gap-2">
+        <div class="flex justify-between gap-2">
+          <h3 class="name">{{ rankingItem.name }}</h3>
 
-            <div class="flex items-center gap-2">
-              <bkr-check-circle-icon
-                class="text-indigo-500"
-                *ngIf="rankingItem.finished"
-              ></bkr-check-circle-icon>
-              <span class="font-mono">{{
-                formatDuration(times()[rankingItem.teamId])
-              }}</span>
-            </div>
+          <div class="flex items-center gap-2">
+            <bkr-check-circle-icon
+              class="text-indigo-500"
+              *ngIf="rankingItem.finished"
+            ></bkr-check-circle-icon>
+            <span class="font-mono">{{
+              formatDuration(times()[rankingItem.teamId])
+            }}</span>
           </div>
+        </div>
 
-          <!-- Progress Bar -->
-          <div class="relative py-1.5">
-            <!-- Background -->
-            <div class="h-1 rounded-full bg-gray-200"></div>
+        <!-- Progress Bar -->
+        <div class="relative py-1.5">
+          <!-- Background -->
+          <div class="h-1 rounded-full bg-gray-200"></div>
 
-            <!-- Foreground -->
+          <!-- Foreground -->
+          <div
+            class="absolute left-0 top-1.5 z-10 h-1 rounded-full bg-indigo-500"
+            [ngStyle]="{
+              width: rankingItem.progress + '%'
+            }"
+          ></div>
+
+          <!-- Marker -->
+          <div class="absolute inset-x-0 top-0 z-20 flex justify-between">
+            <!-- Start -->
             <div
-              class="absolute left-0 top-1.5 z-10 h-1 rounded-full bg-indigo-500"
-              [ngStyle]="{
-                width: rankingItem.progress + '%'
+              class="h-4 w-1 rounded-sm"
+              [ngClass]="{
+                'bg-gray-200': !rankingItem.started,
+                'bg-indigo-500': rankingItem.started
               }"
             ></div>
 
-            <!-- Marker -->
-            <div class="absolute inset-x-0 top-0 z-20 flex justify-between">
-              <!-- Start -->
-              <div
-                class="h-4 w-1 rounded-sm"
-                [ngClass]="{
-                  'bg-gray-200': !rankingItem.started,
-                  'bg-indigo-500': rankingItem.started
-                }"
-              ></div>
-
-              <!-- Station -->
-              <div
-                class="h-4 w-4 rounded-full p-1"
-                [ngClass]="{
-                  'bg-gray-200': !hasStationId(rankingItem, station.id),
-                  'bg-indigo-500': hasStationId(rankingItem, station.id)
-                }"
-                *ngFor="let station of stations()"
-              >
-                <div class="h-2 w-2 rounded-full bg-white"></div>
-              </div>
-
-              <!-- End -->
-              <div
-                class="h-4 w-1 rounded-sm"
-                [ngClass]="{
-                  'bg-gray-200': !rankingItem.finished,
-                  'bg-indigo-500': rankingItem.finished
-                }"
-              ></div>
+            <!-- Station -->
+            <div
+              class="h-4 w-4 rounded-full p-1"
+              [ngClass]="{
+                'bg-gray-200': !hasStationId(rankingItem, station.id),
+                'bg-indigo-500': hasStationId(rankingItem, station.id)
+              }"
+              *ngFor="let station of stations()"
+            >
+              <div class="h-2 w-2 rounded-full bg-white"></div>
             </div>
+
+            <!-- End -->
+            <div
+              class="h-4 w-1 rounded-sm"
+              [ngClass]="{
+                'bg-gray-200': !rankingItem.finished,
+                'bg-indigo-500': rankingItem.finished
+              }"
+            ></div>
           </div>
         </div>
-      </li>
-    </ul>
+      </div>
+    </li>
+  </ul>
 
-    <ng-template #empty>
-      <bkr-empty>Es gibt noch keine Teams.</bkr-empty>
-    </ng-template>
-  </ng-container>
-
-  <ng-template #loadingIndicator>
-    <bkr-loading></bkr-loading>
+  <ng-template #empty>
+    <bkr-empty>Es gibt noch keine Teams.</bkr-empty>
   </ng-template>
 </ng-container>
 
-<ng-template #error>
-  <bkr-empty>Da lief wohl was schief.</bkr-empty>
+<ng-template #loadingIndicator>
+  <bkr-loading></bkr-loading>
 </ng-template>

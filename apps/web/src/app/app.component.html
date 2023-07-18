@@ -20,4 +20,10 @@
   </button>
 </nav>
 
-<router-outlet></router-outlet>
+<ng-container *ngIf="!hasError(); else error">
+  <router-outlet></router-outlet>
+</ng-container>
+
+<ng-template #error>
+  <bkr-empty>Da lief wohl was schief.</bkr-empty>
+</ng-template>

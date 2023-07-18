@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, computed, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterModule } from '@angular/router';
 
+import { EmptyComponent } from './components';
 import {
   FlagIconComponent,
   StarIconComponent,
@@ -15,6 +16,7 @@ import { AuthService } from './services/auth.service';
   standalone: true,
   imports: [
     CommonModule,
+    EmptyComponent,
     FlagIconComponent,
     StarIconComponent,
     RouterModule,
@@ -27,6 +29,13 @@ import { AuthService } from './services/auth.service';
 export class AppComponent implements OnInit {
   isAdmin = toSignal(this.authService.isAdmin$);
   isStation = toSignal(this.authService.isStation$);
+
+  stationsError = toSignal(this.stationService.error$, { initialValue: null });
+  teamsError = toSignal(this.teamService.error$, { initialValue: null });
+
+  hasError = computed(
+    () => this.stationsError() !== null || this.teamsError() !== null
+  );
 
   private readonly destroyRef = inject(DestroyRef);
 

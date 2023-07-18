@@ -53,17 +53,11 @@ export class HomeComponent {
     map((stations) => stations.sort((a, b) => a.number - b.number))
   );
   stations = toSignal(this.stations$, { initialValue: [] as Station[] });
-  stationsError = toSignal(this.stationService.error$, { initialValue: null });
 
   teams$ = this.teamService.teams$.pipe(
     map((teams) => teams.sort((a, b) => a.number - b.number))
   );
   teams = toSignal(this.teams$, { initialValue: [] as Team[] });
-  teamsError = toSignal(this.teamService.error$, { initialValue: null });
-
-  hasError = computed(
-    () => this.stationsError() !== null || this.teamsError() !== null
-  );
 
   timer$ = timer(0, 1000).pipe(map(() => dayjs()));
   timer = toSignal(this.timer$, { initialValue: dayjs() });
