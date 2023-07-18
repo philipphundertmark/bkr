@@ -17,13 +17,10 @@
 </div>
 
 <ng-container *ngIf="loading() === false; else loadingIndicator">
-  <ul
-    class="divide-y divide-gray-200 border-y border-gray-200 bg-white"
-    *ngIf="teams().length > 0; else empty"
-  >
+  <ul class="list" *ngIf="teams().length > 0; else empty">
     <li *ngFor="let team of teams()">
       <a
-        class="flex items-center justify-between p-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+        class="focus-outline-inset list-entry items-center justify-between"
         [routerLink]="['/teams', team.id]"
       >
         <div class="flex flex-col gap-1">

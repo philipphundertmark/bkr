@@ -27,12 +27,9 @@
 </div>
 
 <ng-container *ngIf="loading() === false; else loadingIndicator">
-  <ul
-    class="divide-y divide-gray-200 border-y border-gray-200 bg-white"
-    *ngIf="rankingItems().length > 0; else empty"
-  >
+  <ul class="list" *ngIf="rankingItems().length > 0; else empty">
     <li
-      class="flex gap-4 p-6"
+      class="list-entry"
       *ngFor="let rankingItem of rankingItems(); let i = index"
     >
       <div class="font-bold">{{ i + 1 }}.</div>

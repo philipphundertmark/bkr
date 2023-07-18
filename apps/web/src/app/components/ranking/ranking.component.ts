@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  HostBinding,
   Input,
   computed,
 } from '@angular/core';
@@ -58,6 +59,8 @@ export class RankingComponent {
   set _teams(value: Team[]) {
     this.teams$.next(value);
   }
+
+  @HostBinding('class.list') list = true;
 
   stations$ = new BehaviorSubject<Station[]>([]);
   teams$ = new BehaviorSubject<Team[]>([]);

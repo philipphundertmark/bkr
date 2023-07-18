@@ -16,13 +16,10 @@
 </div>
 
 <ng-container *ngIf="loading() === false; else loadingIndicator">
-  <ul
-    class="divide-y divide-gray-200 border-y border-gray-200 bg-white"
-    *ngIf="checkedInTeams().length > 0; else empty"
-  >
+  <ul class="list" *ngIf="checkedInTeams().length > 0; else empty">
     <li *ngFor="let team of checkedInTeams()">
       <a
-        class="flex items-center justify-between p-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+        class="focus-outline-inset list-entry items-center justify-between"
         routerLink="/my-station/check-out"
         [queryParams]="{ teamId: team.id }"
       >
@@ -51,19 +48,16 @@
 </div>
 
 <ng-container *ngIf="loading() === false; else loadingIndicator">
-  <ul
-    class="divide-y divide-gray-200 border-y border-gray-200 bg-white"
-    *ngIf="results().length > 0; else empty"
-  >
+  <ul class="list" *ngIf="results().length > 0; else empty">
     <li *ngFor="let result of results(); let i = index">
       <a
-        class="flex gap-4 p-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+        class="focus-outline-inset list-entry items-center justify-between"
         routerLink="/my-station/result"
         [queryParams]="{ teamId: result.teamId }"
       >
-        <div class="font-bold">{{ i + 1 }}.</div>
+        <div class="flex gap-4">
+          <div class="font-bold">{{ i + 1 }}.</div>
 
-        <div class="flex flex-1 items-center justify-between">
           <div class="flex flex-col gap-1">
             <div class="flex items-center gap-2">
               <h3 class="name">{{ result.team.name }}</h3>
@@ -76,11 +70,9 @@
 
             <p class="font-semibold">{{ result.points }} Punkte</p>
           </div>
-
-          <bkr-chevron-right-icon
-            class="text-gray-500"
-          ></bkr-chevron-right-icon>
         </div>
+
+        <bkr-chevron-right-icon class="text-gray-500"></bkr-chevron-right-icon>
       </a>
     </li>
   </ul>

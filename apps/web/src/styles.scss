@@ -63,4 +63,16 @@
   .radio {
     @apply h-5 w-5 border-gray-200 text-indigo-500 focus:ring-indigo-500;
   }
+
+  .list {
+    @apply divide-y divide-gray-200 border-y border-gray-200 bg-white;
+  }
+
+  .list-entry {
+    @apply flex gap-4 p-6;
+  }
+
+  .focus-outline-inset {
+    @apply focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-indigo-500;
+  }
 }
