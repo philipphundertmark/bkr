@@ -36,6 +36,9 @@ export class TeamService {
   private readonly _loading$ = new BehaviorSubject<boolean>(true);
   readonly loading$ = this._loading$.pipe(distinctUntilChanged());
 
+  private readonly _error$ = new BehaviorSubject<Error | null>(null);
+  readonly error$ = this._error$.pipe(distinctUntilChanged());
+
   readonly isRaceOver$ = this.teams$.pipe(
     map(
       (teams) =>
@@ -114,7 +117,13 @@ export class TeamService {
     return this.http.get<TeamDTO[]>('/teams').pipe(
       map((teamDtos) => teamDtos.map(TeamUtils.deserialize)),
       tap((teams) => this._teams$.next(teams)),
-      tap(() => this._loading$.next(false))
+      tap(() => this._loading$.next(false)),
+      catchError((error: HttpErrorResponse) => {
+        this._loading$.next(false);
+        this._error$.next(error);
+
+        return throwError(() => error);
+      })
     );
   }
 

@@ -36,6 +36,9 @@ export class StationService {
   private readonly _loading$ = new BehaviorSubject<boolean>(true);
   readonly loading$ = this._loading$.pipe(distinctUntilChanged());
 
+  private readonly _error$ = new BehaviorSubject<Error | null>(null);
+  readonly error$ = this._error$.pipe(distinctUntilChanged());
+
   constructor(
     private readonly http: HttpClient,
     private readonly resultService: ResultService
@@ -104,7 +107,13 @@ export class StationService {
     return this.http.get<StationDTO[]>('/stations').pipe(
       map((stationDtos) => stationDtos.map(StationUtils.deserialize)),
       tap((stations) => this._stations$.next(stations)),
-      tap(() => this._loading$.next(false))
+      tap(() => this._loading$.next(false)),
+      catchError((error: HttpErrorResponse) => {
+        this._loading$.next(false);
+        this._error$.next(error);
+
+        return throwError(() => error);
+      })
     );
   }
 
