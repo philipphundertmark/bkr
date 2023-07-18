@@ -18,10 +18,11 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
-import { combineLatest, map } from 'rxjs';
+import { EMPTY, combineLatest, map, switchMap } from 'rxjs';
 
 import {
   ButtonComponent,
+  DangerZoneComponent,
   EmptyComponent,
   InputDirective,
   LoadingComponent,
@@ -33,6 +34,7 @@ import {
   StationService,
   TeamService,
 } from '../../services';
+import { ConfirmService } from '../../services/confirm.service';
 import { dateTimeValidator } from '../../validators';
 
 @Component({
@@ -41,6 +43,7 @@ import { dateTimeValidator } from '../../validators';
   imports: [
     ButtonComponent,
     CommonModule,
+    DangerZoneComponent,
     EmptyComponent,
     InputDirective,
     LoadingComponent,
@@ -95,6 +98,7 @@ export class ResultComponent implements OnInit {
 
   constructor(
     private readonly authService: AuthService,
+    private readonly confirmService: ConfirmService,
     private readonly notificationService: NotificationService,
     private readonly resultService: ResultService,
     private readonly route: ActivatedRoute,
@@ -147,6 +151,38 @@ export class ResultComponent implements OnInit {
           this.updateResultLoading.set(false);
           this.notificationService.error(
             'Ergebnis konnte nicht aktualisiert werden.'
+          );
+        },
+      });
+  }
+
+  handleDeleteResult(stationId: string, teamId: string): void {
+    this.confirmService
+      .delete({
+        title: 'Ergebnis löschen',
+        message: 'Möchtest du das Ergebnis wirklich löschen?',
+      })
+      .pipe(
+        switchMap((confirmed) => {
+          if (!confirmed) return EMPTY;
+
+          this.deleteResultLoading.set(true);
+
+          return this.resultService.deleteResult(stationId, teamId);
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: () => {
+          this.deleteResultLoading.set(false);
+          this.notificationService.success('Ergebnis gelöscht.');
+
+          this.router.navigate(['/my-station']);
+        },
+        error: () => {
+          this.deleteResultLoading.set(false);
+          this.notificationService.error(
+            'Ergebnis konnte nicht gelöscht werden.'
           );
         },
       });

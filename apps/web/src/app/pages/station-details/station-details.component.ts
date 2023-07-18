@@ -14,6 +14,7 @@ import { StationUtils } from '@bkr/api-interface';
 
 import {
   ButtonComponent,
+  DangerZoneComponent,
   EmptyComponent,
   LoadingComponent,
 } from '../../components';
@@ -36,6 +37,7 @@ import { ConfirmService } from '../../services/confirm.service';
     ArrowUpCircleIconComponent,
     ButtonComponent,
     CommonModule,
+    DangerZoneComponent,
     EmptyComponent,
     LoadingComponent,
     RouterModule,

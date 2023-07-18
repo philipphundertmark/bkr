@@ -15,6 +15,7 @@ import { TeamUtils } from '@bkr/api-interface';
 
 import {
   ButtonComponent,
+  DangerZoneComponent,
   EmptyComponent,
   LoadingComponent,
 } from '../../components';
@@ -29,6 +30,7 @@ import { ConfirmService } from '../../services/confirm.service';
   imports: [
     ButtonComponent,
     CommonModule,
+    DangerZoneComponent,
     DatePipe,
     EmptyComponent,
     LoadingComponent,

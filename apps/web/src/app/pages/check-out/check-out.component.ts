@@ -19,6 +19,7 @@ import { EMPTY, combineLatest, map, switchMap } from 'rxjs';
 
 import {
   ButtonComponent,
+  DangerZoneComponent,
   EmptyComponent,
   InputDirective,
   LoadingComponent,
@@ -37,6 +38,7 @@ import { ConfirmService } from '../../services/confirm.service';
   imports: [
     ButtonComponent,
     CommonModule,
+    DangerZoneComponent,
     EmptyComponent,
     InputDirective,
     LoadingComponent,
@@ -143,7 +145,7 @@ export class CheckOutComponent {
           this.deleteResultLoading.set(false);
           this.notificationService.success('Check-in gelöscht.');
 
-          this.router.navigate(['/station']);
+          this.router.navigate(['/my-station']);
         },
         error: () => {
           this.deleteResultLoading.set(false);
