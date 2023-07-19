@@ -2,6 +2,10 @@ export * from './result';
 export * from './result.dto';
 export * from './result.utils';
 
+export * from './settings';
+export * from './settings.dto';
+export * from './settings.utils';
+
 export * from './station';
 export * from './station.dto';
 export * from './station.utils';

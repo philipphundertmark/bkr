@@ -80,6 +80,31 @@ components:
           $ref: '#/components/schemas/Result/properties/points'
 
     #-------------------------------
+    # Settings schemas
+    #-------------------------------
+    Settings:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        publishResults:
+          type: boolean
+          default: false
+
+    UpdateSettingsSchema:
+      type: object
+      properties:
+        publishResults:
+          $ref: '#/components/schemas/Settings/properties/publishResults'
+
+    #-------------------------------
     # Station schemas
     #-------------------------------
     Station:

@@ -10,11 +10,13 @@ import { TokenController } from './controllers/token.controller';
 import { openapiSpec } from './openapi/swagger';
 import { prisma } from './prisma';
 import { ResultService } from './services/result.service';
+import { SettingsService } from './services/settings.service';
 import { StationService } from './services/station.service';
 import { TeamService } from './services/team.service';
 import { TokenService } from './services/token.service';
 
 const resultService = new ResultService(prisma);
+const settingsService = new SettingsService(prisma);
 const stationService = new StationService(prisma);
 const teamService = new TeamService(prisma);
 const tokenService = new TokenService();
