@@ -4,6 +4,7 @@ import swaggerUi from 'swagger-ui-express';
 import { createApp } from './app';
 import { config } from './config';
 import { ResultController } from './controllers/result.controller';
+import { SettingsController } from './controllers/settings.controller';
 import { StationController } from './controllers/station.controller';
 import { TeamController } from './controllers/team.controller';
 import { TokenController } from './controllers/token.controller';
@@ -24,6 +25,7 @@ const tokenService = new TokenService();
 const app = createApp(
   [
     ResultController(resultService, stationService, teamService),
+    SettingsController(settingsService),
     StationController(stationService),
     TeamController(teamService),
     TokenController(tokenService, stationService),

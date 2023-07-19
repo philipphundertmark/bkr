@@ -9,7 +9,7 @@ import {
   StarIconComponent,
   UserIconComponent,
 } from './icons/mini';
-import { StationService, TeamService } from './services';
+import { SettingsService, StationService, TeamService } from './services';
 import { AuthService } from './services/auth.service';
 
 @Component({
@@ -30,11 +30,15 @@ export class AppComponent implements OnInit {
   isAdmin = toSignal(this.authService.isAdmin$);
   isStation = toSignal(this.authService.isStation$);
 
+  settingsError = toSignal(this.settingsService.error$, { initialValue: null });
   stationsError = toSignal(this.stationService.error$, { initialValue: null });
   teamsError = toSignal(this.teamService.error$, { initialValue: null });
 
   hasError = computed(
-    () => this.stationsError() !== null || this.teamsError() !== null
+    () =>
+      this.settingsError() !== null ||
+      this.stationsError() !== null ||
+      this.teamsError() !== null
   );
 
   private readonly destroyRef = inject(DestroyRef);
@@ -42,6 +46,7 @@ export class AppComponent implements OnInit {
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
+    private readonly settingsService: SettingsService,
     private readonly stationService: StationService,
     private readonly teamService: TeamService
   ) {}
@@ -50,6 +55,11 @@ export class AppComponent implements OnInit {
    * @implements {OnInit}
    */
   ngOnInit(): void {
+    this.settingsService
+      .getSettings()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((settings) => console.log(settings));
+
     this.stationService
       .getStations()
       .pipe(takeUntilDestroyed(this.destroyRef))

@@ -9,19 +9,24 @@ export class SettingsService {
   async upsertSettings(
     updates: { publishResults?: boolean } = {}
   ): Promise<Settings> {
-    // let settings = await this.prisma.settings.findFirst();
+    let settings = await this.prisma.settings.findFirst();
 
-    const settings = await this.prisma.settings.upsert({
-      where: {
-        // id: settings?.id,
-      },
-      create: {
-        publishResults: updates.publishResults ?? false,
-      },
-      update: {
-        publishResults: updates.publishResults,
-      },
-    });
+    if (!settings) {
+      settings = await this.prisma.settings.create({
+        data: {
+          publishResults: updates.publishResults ?? false,
+        },
+      });
+    } else {
+      settings = await this.prisma.settings.update({
+        where: {
+          id: settings.id,
+        },
+        data: {
+          publishResults: updates.publishResults,
+        },
+      });
+    }
 
     return this.toSettings(settings);
   }
