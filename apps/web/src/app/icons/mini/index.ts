@@ -6,6 +6,8 @@ export * from './chevron-right-icon.component';
 export * from './exclamation-circle-icon.component';
 export * from './flag-icon.component';
 export * from './information-circle.component';
+export * from './lock-closed-icon.component';
+export * from './lock-open-icon.component';
 export * from './pause-icon.component';
 export * from './play-icon.component';
 export * from './star-icon.component';

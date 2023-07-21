@@ -58,7 +58,7 @@ export class AppComponent implements OnInit {
     this.settingsService
       .getSettings()
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((settings) => console.log(settings));
+      .subscribe();
 
     this.stationService
       .getStations()

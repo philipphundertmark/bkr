@@ -2,11 +2,13 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   HostBinding,
   computed,
+  inject,
   signal,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 
 import { Station, Team } from '@bkr/api-interface';
@@ -17,7 +19,11 @@ import {
   LoadingComponent,
   RankingComponent,
 } from '../../components';
-import { StationService, TeamService } from '../../services';
+import {
+  LockClosedIconComponent,
+  LockOpenIconComponent,
+} from '../../icons/mini';
+import { SettingsService, StationService, TeamService } from '../../services';
 
 @Component({
   selector: 'bkr-endresult',
@@ -27,6 +33,8 @@ import { StationService, TeamService } from '../../services';
     CommonModule,
     EmptyComponent,
     LoadingComponent,
+    LockClosedIconComponent,
+    LockOpenIconComponent,
     RankingComponent,
     RouterModule,
   ],
@@ -49,16 +57,51 @@ export class EndresultComponent {
   });
   teamsLoading = toSignal(this.teamService.loading$, { initialValue: false });
 
-  isRaceOver = toSignal(this.teamService.isRaceOver$);
+  settingsLoading = toSignal(this.settingsService.loading$, {
+    initialValue: false,
+  });
+
   loading = computed(() => this.stationsLoading() || this.teamsLoading());
-  publishLoading = signal(false);
+
+  isRaceOver = toSignal(this.teamService.isRaceOver$, { initialValue: false });
+  publishResults = toSignal(this.settingsService.publishResults$, {
+    initialValue: false,
+  });
+
+  hideResultsLoading = signal(false);
+  publishResultsLoading = signal(false);
+
+  private readonly destroyRef = inject(DestroyRef);
 
   constructor(
+    private readonly settingsService: SettingsService,
     private readonly stationService: StationService,
     private readonly teamService: TeamService
   ) {}
 
-  handlePublish(): void {
-    console.log('publish');
+  handlePublishResults(): void {
+    this.publishResultsLoading.set(true);
+
+    this.settingsService
+      .updateSettings({ publishResults: true })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.publishResultsLoading.set(false);
+        },
+      });
+  }
+
+  handleHideResults(): void {
+    this.hideResultsLoading.set(true);
+
+    this.settingsService
+      .updateSettings({ publishResults: false })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.hideResultsLoading.set(false);
+        },
+      });
   }
 }

@@ -31,12 +31,20 @@ export class SettingsService {
   private readonly _error$ = new BehaviorSubject<Error | null>(null);
   readonly error$ = this._error$.pipe(distinctUntilChanged());
 
+  readonly publishResults$ = this.settings$.pipe(
+    map((settings) => settings?.publishResults ?? false),
+    distinctUntilChanged()
+  );
+
   constructor(private readonly http: HttpClient) {}
 
   getSettings(): Observable<Settings> {
+    this._loading$.next(true);
+
     return this.http.get<SettingsDTO>('/settings').pipe(
       map(SettingsUtils.deserialize),
       tap((settings) => this._settings$.next(settings)),
+      tap(() => this._loading$.next(false)),
       catchError((error: HttpErrorResponse) => {
         this._loading$.next(false);
         this._error$.next(error);
