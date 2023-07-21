@@ -45,7 +45,6 @@ export class HomeComponent {
   @HostBinding('class.page') page = true;
 
   isAdmin = toSignal(this.authService.isAdmin$);
-  isRaceOver = toSignal(this.teamService.isRaceOver$);
   isStation = toSignal(this.authService.isStation$);
   loading = toSignal(this.teamService.loading$, { initialValue: false });
 
