@@ -1,6 +1,11 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, Inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  Inject,
+} from '@angular/core';
 
 import {
   ExclamationCircleIconComponent,
@@ -32,6 +37,7 @@ export enum ConfirmType {
   ],
   templateUrl: './confirm.component.html',
   styleUrls: ['./confirm.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmComponent {
   @HostBinding('attr.role') role = 'dialog';

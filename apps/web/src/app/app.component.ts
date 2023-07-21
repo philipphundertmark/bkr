@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit, computed, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  OnInit,
+  computed,
+  inject,
+} from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterModule } from '@angular/router';
 
@@ -25,6 +32,7 @@ import { AuthService } from './services/auth.service';
   selector: 'bkr-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
   isAdmin = toSignal(this.authService.isAdmin$);

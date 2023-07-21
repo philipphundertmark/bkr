@@ -1,4 +1,4 @@
-<header class="grid grid-cols-2 gap-4 px-6" *ngIf="station$ | async as station">
+<header class="header mx-6" *ngIf="station$ | async as station">
   <a bkr-button class="col-span-1" [routerLink]="['/stations', station.id]">
     Abbrechen
   </a>

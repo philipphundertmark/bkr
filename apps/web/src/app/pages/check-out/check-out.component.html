@@ -1,4 +1,4 @@
-<header class="grid grid-cols-2 gap-4 px-6">
+<header class="header mx-6">
   <a bkr-button class="col-span-1" routerLink="/my-station">Abbrechen</a>
 
   <ng-container *ngIf="team$ | async as team">
@@ -42,7 +42,7 @@
       </div>
     </form>
 
-    <bkr-danger-zone>
+    <bkr-danger-zone class="mx-6">
       <button
         bkr-button
         [bkrLoading]="deleteResultLoading()"

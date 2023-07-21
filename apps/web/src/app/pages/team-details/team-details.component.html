@@ -1,4 +1,4 @@
-<header class="grid grid-cols-2 gap-4 px-6">
+<header class="header mx-6">
   <a bkr-backward-button class="col-span-1" routerLink="/teams">Zurück</a>
   <ng-container *ngIf="team$ | async as team">
     <a
@@ -70,7 +70,7 @@
       </div>
     </div>
 
-    <bkr-danger-zone *ngIf="isAdmin()">
+    <bkr-danger-zone class="mx-6" *ngIf="isAdmin()">
       <button
         bkr-button
         [bkrLoading]="deleteTeamLoading()"
