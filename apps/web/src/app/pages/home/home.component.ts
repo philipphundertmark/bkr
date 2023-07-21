@@ -12,9 +12,15 @@ import {
   ButtonComponent,
   EmptyComponent,
   LoadingComponent,
+  RankingComponent,
 } from '../../components';
 import { CheckCircleIconComponent } from '../../icons/mini';
-import { AuthService, StationService, TeamService } from '../../services';
+import {
+  AuthService,
+  SettingsService,
+  StationService,
+  TeamService,
+} from '../../services';
 
 dayjs.extend(duration);
 
@@ -36,6 +42,7 @@ export interface RankingItem {
     CommonModule,
     EmptyComponent,
     LoadingComponent,
+    RankingComponent,
     RouterModule,
   ],
   templateUrl: './home.component.html',
@@ -44,9 +51,13 @@ export interface RankingItem {
 export class HomeComponent {
   @HostBinding('class.page') page = true;
 
-  isAdmin = toSignal(this.authService.isAdmin$);
-  isStation = toSignal(this.authService.isStation$);
+  isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
+  isRaceOver = toSignal(this.teamService.isRaceOver$, { initialValue: false });
+  isStation = toSignal(this.authService.isStation$, { initialValue: false });
   loading = toSignal(this.teamService.loading$, { initialValue: false });
+  publishResults = toSignal(this.settingsService.publishResults$, {
+    initialValue: false,
+  });
 
   stations$ = this.stationService.stations$.pipe(
     map((stations) => stations.sort((a, b) => a.number - b.number))
@@ -101,6 +112,7 @@ export class HomeComponent {
 
   constructor(
     private readonly authService: AuthService,
+    private readonly settingsService: SettingsService,
     private readonly stationService: StationService,
     private readonly teamService: TeamService
   ) {}
