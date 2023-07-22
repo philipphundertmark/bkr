@@ -1,0 +1,51 @@
+<header class="header" *ngIf="station() as station">
+  <a
+    bkr-backward-button
+    class="col-span-1"
+    [routerLink]="['/stations', station.id]"
+  >
+    Zurück
+  </a>
+</header>
+
+<div class="space-y-1">
+  <h2 class="subtitle">Ergebnisse</h2>
+  <p class="text-gray-500">
+    Die Ergebnisse aller Teams an {{ station()?.name ?? 'dieser Station' }}.
+  </p>
+</div>
+
+<ng-container *ngIf="!loading(); else loadingIndicator">
+  <ng-container *ngIf="isRaceOver() && publishResults(); else unavailable">
+    <ul class="list" *ngIf="results().length > 0; else empty">
+      <li class="list-entry" *ngFor="let result of results(); let i = index">
+        <div class="font-bold">{{ i + 1 }}.</div>
+
+        <div class="flex flex-col gap-1">
+          <div class="flex items-center gap-2">
+            <h3 class="name">{{ result.team.name }}</h3>
+            <span class="number">#{{ result.team.number }}</span>
+          </div>
+
+          <p class="text-gray-500">
+            {{ TeamUtils.formatTeamMembers(result.team) }}
+          </p>
+
+          <p class="font-semibold">{{ result.points }} Punkte</p>
+        </div>
+      </li>
+    </ul>
+
+    <ng-template #empty>
+      <bkr-empty>Es gibt keine Ergebnisse an dieser Station.</bkr-empty>
+    </ng-template>
+  </ng-container>
+
+  <ng-template #unavailable>
+    <bkr-empty>Die Ergebnisse stehen noch nicht zur Verfügung.</bkr-empty>
+  </ng-template>
+</ng-container>
+
+<ng-template #loadingIndicator>
+  <bkr-loading></bkr-loading>
+</ng-template>

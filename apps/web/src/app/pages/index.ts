@@ -9,6 +9,7 @@ export * from './station-details/station-details.component';
 export * from './station-edit/station-edit.component';
 export * from './station-list/station-list.component';
 export * from './station-new/station-new.component';
+export * from './station-results/station-results.component';
 export * from './team-details/team-details.component';
 export * from './team-edit/team-edit.component';
 export * from './team-list/team-list.component';

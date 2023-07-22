@@ -1,9 +1,16 @@
-<header class="header mx-6">
+<header class="header">
   <a bkr-backward-button class="col-span-1" routerLink="/stations">Zurück</a>
   <ng-container *ngIf="station$ | async as station">
     <a
-      bkr-button
+      bkr-forward-button
       class="col-span-1"
+      [routerLink]="['/stations', station.id, 'results']"
+    >
+      Ergebnisse
+    </a>
+    <a
+      bkr-button
+      class="col-span-2"
       *ngIf="isAdmin()"
       [routerLink]="['/stations', station.id, 'edit']"
     >

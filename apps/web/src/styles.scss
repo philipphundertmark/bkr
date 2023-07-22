@@ -69,11 +69,19 @@
   }
 
   .list {
-    @apply divide-y divide-gray-200 border-y border-gray-200 bg-white;
+    @apply -mx-6 divide-y divide-gray-200 border border-gray-200 bg-white sm:mx-0 sm:rounded-xl;
   }
 
   .list-entry {
     @apply flex gap-4 p-6;
+  }
+
+  .list-entry:first-child {
+    @apply sm:rounded-t-xl;
+  }
+
+  .list-entry:last-child {
+    @apply sm:rounded-b-xl;
   }
 
   .focus-outline-inset {

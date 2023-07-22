@@ -1,4 +1,4 @@
-<header class="header mx-6">
+<header class="header">
   <a bkr-button class="col-span-1" routerLink="/my-station">Abbrechen</a>
 
   <ng-container *ngIf="team$ | async as team">
@@ -15,7 +15,7 @@
   </ng-container>
 </header>
 
-<div class="space-y-1 px-6" *ngIf="team$ | async as team">
+<div class="space-y-1" *ngIf="team$ | async as team">
   <h2 class="subtitle">Check-out</h2>
   <p class="text-gray-500">
     Trag das Ergebnis von

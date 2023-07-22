@@ -15,6 +15,7 @@ import {
   StationEditComponent,
   StationListComponent,
   StationNewComponent,
+  StationResultsComponent,
   TeamDetailsComponent,
   TeamEditComponent,
   TeamListComponent,
@@ -93,6 +94,10 @@ export const appRoutes: Route[] = [
     data: {
       roles: [Role.ADMIN],
     },
+  },
+  {
+    path: 'stations/:stationId/results',
+    component: StationResultsComponent,
   },
   {
     path: 'teams',
