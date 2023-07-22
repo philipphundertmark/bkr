@@ -69,7 +69,7 @@
   }
 
   .list {
-    @apply -mx-6 divide-y divide-gray-200 border border-gray-200 bg-white sm:mx-0 sm:rounded-xl;
+    @apply -mx-6 divide-y divide-gray-200 border border-gray-200 bg-white shadow-sm sm:mx-0 sm:rounded-xl;
   }
 
   .list-entry {
