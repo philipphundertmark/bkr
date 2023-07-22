@@ -27,6 +27,7 @@ import {
   InputDirective,
   LoadingComponent,
 } from '../../components';
+import { TrashIconComponent } from '../../icons/mini';
 import {
   AuthService,
   NotificationService,
@@ -49,6 +50,7 @@ import { dateTimeValidator } from '../../validators';
     LoadingComponent,
     ReactiveFormsModule,
     RouterModule,
+    TrashIconComponent,
   ],
   templateUrl: './result.component.html',
   styleUrls: ['./result.component.scss'],

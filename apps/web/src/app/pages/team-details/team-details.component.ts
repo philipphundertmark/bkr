@@ -19,7 +19,11 @@ import {
   EmptyComponent,
   LoadingComponent,
 } from '../../components';
-import { PauseIconComponent, PlayIconComponent } from '../../icons/mini';
+import {
+  PauseIconComponent,
+  PlayIconComponent,
+  TrashIconComponent,
+} from '../../icons/mini';
 import { DatePipe } from '../../pipes';
 import { AuthService, NotificationService, TeamService } from '../../services';
 import { ConfirmService } from '../../services/confirm.service';
@@ -37,6 +41,7 @@ import { ConfirmService } from '../../services/confirm.service';
     PauseIconComponent,
     PlayIconComponent,
     RouterModule,
+    TrashIconComponent,
   ],
   templateUrl: './team-details.component.html',
   styleUrls: ['./team-details.component.scss'],

@@ -21,17 +21,36 @@ export class AuthService {
     map((token) => (token !== null ? jwtDecode<JwtPayload>(token) : null))
   );
 
+  /**
+   * Observable that emits the expiration date of the current token.
+   */
   readonly exp$ = this.user$.pipe(
     map((user) => (user?.exp ? dayjs(user.exp * 1000) : null))
   );
+
+  /**
+   * Observable that emits the issue date of the current token.
+   */
   readonly iat$ = this.user$.pipe(
     map((user) => (user?.iat ? dayjs(user.iat * 1000) : null))
   );
+
+  /**
+   * Observable that emits the role of the current user.
+   */
   readonly role$ = this.user$.pipe(
     map((user) => (user !== null ? user.role : null))
   );
+
+  /**
+   * Observable that emits the sub of the current user.
+   * If the user has role `Role.STATION`, the sub is the station id.
+   */
   readonly sub$ = this.user$.pipe(map((user) => user?.sub ?? null));
 
+  /**
+   * Observable that emits whether the current user is authenticated.
+   */
   readonly isAuthenticated$ = this.user$.pipe(map((user) => user !== null));
 
   readonly isAdmin$ = this.user$.pipe(map((user) => user?.role === Role.ADMIN));
@@ -43,6 +62,11 @@ export class AuthService {
     this.restore();
   }
 
+  /**
+   * Authenticate the user with the given code.
+   * @param code The code to authenticate with.
+   * @returns An observable that emits the token.
+   */
   login(code: string): Observable<string> {
     return this.http
       .post<{ token: string }>('/token', {
@@ -55,11 +79,17 @@ export class AuthService {
       );
   }
 
+  /**
+   * Log the user out.
+   */
   logout(): void {
     localStorage.removeItem('token');
     this._token$.next(null);
   }
 
+  /**
+   * Restore the token from local storage and check if it is still valid.
+   */
   restore(): void {
     const token = localStorage.getItem('token');
 

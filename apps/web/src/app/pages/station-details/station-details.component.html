@@ -21,7 +21,7 @@
 
 <ng-container *ngIf="!loading(); else loadingIndicator">
   <ng-container *ngIf="station$ | async as station; else empty">
-    <div class="flex flex-col gap-4 px-6">
+    <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-2">
         <label class="label">Nummer</label>
         <p>{{ station.number }}</p>
@@ -67,7 +67,7 @@
       </div>
     </div>
 
-    <bkr-danger-zone class="mx-6" *ngIf="isAdmin()">
+    <bkr-danger-zone *ngIf="isAdmin()">
       <button
         bkr-button
         [bkrLoading]="deleteStationLoading()"
@@ -75,6 +75,7 @@
         class="w-full"
         (click)="handleDeleteStation(station.id)"
       >
+        <bkr-trash-icon></bkr-trash-icon>
         Station löschen
       </button>
     </bkr-danger-zone>

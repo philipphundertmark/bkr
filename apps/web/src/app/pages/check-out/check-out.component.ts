@@ -24,6 +24,7 @@ import {
   InputDirective,
   LoadingComponent,
 } from '../../components';
+import { TrashIconComponent } from '../../icons/mini';
 import {
   AuthService,
   NotificationService,
@@ -35,6 +36,8 @@ import { ConfirmService } from '../../services/confirm.service';
 @Component({
   selector: 'bkr-check-out',
   standalone: true,
+  templateUrl: './check-out.component.html',
+  styleUrls: ['./check-out.component.scss'],
   imports: [
     ButtonComponent,
     CommonModule,
@@ -44,9 +47,8 @@ import { ConfirmService } from '../../services/confirm.service';
     LoadingComponent,
     ReactiveFormsModule,
     RouterModule,
+    TrashIconComponent,
   ],
-  templateUrl: './check-out.component.html',
-  styleUrls: ['./check-out.component.scss'],
 })
 export class CheckOutComponent {
   @HostBinding('class.page') page = true;

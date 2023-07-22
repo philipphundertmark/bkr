@@ -30,6 +30,17 @@
   </ng-container>
 </header>
 
+<p class="text-sm text-gray-500" *ngIf="publishResults()">
+  Die Ergebnisse sind
+  <span class="font-semibold text-indigo-500">für alle</span> sichtbar.
+</p>
+
+<p class="text-sm text-gray-500" *ngIf="!publishResults()">
+  Die Ergebnisse sind
+  <span class="font-semibold text-indigo-500">nur für Organisatoren</span>
+  sichtbar.
+</p>
+
 <div class="space-y-1">
   <h2 class="subtitle">Endergebnis</h2>
   <p class="text-gray-500">Das finale Ergebnis aller Teams.</p>

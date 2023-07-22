@@ -25,16 +25,14 @@
     </p>
   </div>
 
-  <div class="flex flex-col gap-4 px-6">
-    <div class="flex flex-col gap-2">
-      <label class="label">Login gültig bis</label>
-      <p>{{ exp() | date }}</p>
-    </div>
+  <div class="flex flex-col gap-2">
+    <label class="label">Login gültig bis</label>
+    <p>{{ exp() | date }}</p>
   </div>
 </ng-template>
 
 <form
-  class="flex flex-col gap-4 px-6"
+  class="flex flex-col gap-4"
   [formGroup]="form"
   (ngSubmit)="handleSubmit($event)"
   *ngIf="!isAuthenticated(); else logout"
@@ -59,14 +57,7 @@
 </form>
 
 <ng-template #logout>
-  <div class="px-6">
-    <button
-      bkr-button
-      bkrType="primary"
-      class="w-full"
-      (click)="handleLogout()"
-    >
-      Ausloggen
-    </button>
-  </div>
+  <button bkr-button bkrType="primary" class="w-full" (click)="handleLogout()">
+    Ausloggen
+  </button>
 </ng-template>

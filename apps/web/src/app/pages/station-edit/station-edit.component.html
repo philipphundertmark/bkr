@@ -17,7 +17,7 @@
 
 <ng-container *ngIf="!loading(); else loadingIndicator">
   <form
-    class="flex flex-col gap-4 px-6"
+    class="flex flex-col gap-4"
     [formGroup]="form"
     *ngIf="station$ | async; else empty"
   >

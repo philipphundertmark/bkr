@@ -50,7 +50,7 @@ export class StationNewComponent {
       nonNullable: true,
       validators: [Validators.minLength(6), Validators.maxLength(6)],
     }),
-    order: new FormControl<Order>(Order.ASC, {
+    order: new FormControl<Order>(Order.DESC, {
       nonNullable: true,
       validators: [Validators.required],
     }),

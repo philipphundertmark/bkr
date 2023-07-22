@@ -17,7 +17,7 @@
 
 <ng-container *ngIf="!loading(); else loadingIndicator">
   <ng-container *ngIf="result$ | async as result; else empty">
-    <form class="flex flex-col gap-4 px-6" [formGroup]="form">
+    <form class="flex flex-col gap-4" [formGroup]="form">
       <div class="flex flex-col gap-2">
         <label class="label">
           Check-in um<span class="text-indigo-500">*</span>
@@ -69,7 +69,7 @@
       </div>
     </form>
 
-    <bkr-danger-zone class="mx-6">
+    <bkr-danger-zone>
       <button
         bkr-button
         [bkrLoading]="deleteResultLoading()"
@@ -78,6 +78,7 @@
         (click)="handleDeleteResult(result.stationId, result.teamId)"
         [disabled]="deleteResultLoading()"
       >
+        <bkr-trash-icon></bkr-trash-icon>
         Ergebnis löschen
       </button>
     </bkr-danger-zone>

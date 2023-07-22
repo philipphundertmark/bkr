@@ -21,6 +21,7 @@ import {
 import {
   ArrowDownCircleIconComponent,
   ArrowUpCircleIconComponent,
+  TrashIconComponent,
 } from '../../icons/mini';
 import {
   AuthService,
@@ -41,6 +42,7 @@ import { ConfirmService } from '../../services/confirm.service';
     EmptyComponent,
     LoadingComponent,
     RouterModule,
+    TrashIconComponent,
   ],
   templateUrl: './station-details.component.html',
   styleUrls: ['./station-details.component.scss'],
