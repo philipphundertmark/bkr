@@ -11,5 +11,6 @@ export * from './lock-open-icon.component';
 export * from './pause-icon.component';
 export * from './play-icon.component';
 export * from './star-icon.component';
+export * from './trash-icon.component';
 export * from './user-icon.component';
 export * from './x-mark-icon.component';

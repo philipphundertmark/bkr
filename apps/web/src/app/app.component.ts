@@ -10,7 +10,6 @@ import {
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterModule } from '@angular/router';
 
-import { EmptyComponent } from './components';
 import {
   FlagIconComponent,
   StarIconComponent,
@@ -23,7 +22,6 @@ import { AuthService } from './services/auth.service';
   standalone: true,
   imports: [
     CommonModule,
-    EmptyComponent,
     FlagIconComponent,
     StarIconComponent,
     RouterModule,
