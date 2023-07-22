@@ -21,10 +21,28 @@
   </a>
 </header>
 
-<div class="space-y-1">
+<div
+  class="space-y-1"
+  *ngIf="!isRaceOver() || !publishResults(); else endresultHeader"
+>
   <h2 class="subtitle">Bestenliste</h2>
   <p class="text-gray-500">Das aktuelle Ranking aller Teams.</p>
 </div>
+
+<ng-template #endresultHeader>
+  <div class="flex items-center gap-4">
+    <div
+      class="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 text-indigo-500"
+    >
+      <bkr-trophy-icon></bkr-trophy-icon>
+    </div>
+
+    <div class="space-y-1">
+      <h2 class="subtitle">Endergebnis</h2>
+      <p class="text-gray-500">Das finale Ergebnis aller Teams.</p>
+    </div>
+  </div>
+</ng-template>
 
 <ng-container *ngIf="loading() === false; else loadingIndicator">
   <ng-container *ngIf="!isRaceOver() || !publishResults(); else endresult">

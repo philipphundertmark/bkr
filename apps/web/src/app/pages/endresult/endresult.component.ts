@@ -22,6 +22,7 @@ import {
 import {
   LockClosedIconComponent,
   LockOpenIconComponent,
+  TrophyIconComponent,
 } from '../../icons/mini';
 import { SettingsService, StationService, TeamService } from '../../services';
 
@@ -37,6 +38,7 @@ import { SettingsService, StationService, TeamService } from '../../services';
     LockOpenIconComponent,
     RankingComponent,
     RouterModule,
+    TrophyIconComponent,
   ],
   templateUrl: './endresult.component.html',
   styleUrls: ['./endresult.component.scss'],

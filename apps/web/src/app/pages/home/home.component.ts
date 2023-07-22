@@ -14,7 +14,10 @@ import {
   LoadingComponent,
   RankingComponent,
 } from '../../components';
-import { CheckCircleIconComponent } from '../../icons/mini';
+import {
+  CheckCircleIconComponent,
+  TrophyIconComponent,
+} from '../../icons/mini';
 import {
   AuthService,
   SettingsService,
@@ -44,6 +47,7 @@ export interface RankingItem {
     LoadingComponent,
     RankingComponent,
     RouterModule,
+    TrophyIconComponent,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
@@ -54,20 +58,20 @@ export class HomeComponent {
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
   isRaceOver = toSignal(this.teamService.isRaceOver$, { initialValue: false });
   isStation = toSignal(this.authService.isStation$, { initialValue: false });
-  loading = toSignal(this.teamService.loading$, { initialValue: false });
   publishResults = toSignal(this.settingsService.publishResults$, {
     initialValue: false,
   });
 
-  stations$ = this.stationService.stations$.pipe(
-    map((stations) => stations.sort((a, b) => a.number - b.number))
-  );
-  stations = toSignal(this.stations$, { initialValue: [] as Station[] });
+  stationsLoading = toSignal(this.stationService.loading$, {
+    initialValue: false,
+  });
+  teamsLoading = toSignal(this.teamService.loading$, { initialValue: false });
+  loading = computed(() => this.stationsLoading() || this.teamsLoading());
 
-  teams$ = this.teamService.teams$.pipe(
-    map((teams) => teams.sort((a, b) => a.number - b.number))
-  );
-  teams = toSignal(this.teams$, { initialValue: [] as Team[] });
+  stations = toSignal(this.stationService.stations$, {
+    initialValue: [] as Station[],
+  });
+  teams = toSignal(this.teamService.teams$, { initialValue: [] as Team[] });
 
   timer$ = timer(0, 1000).pipe(map(() => dayjs()));
   timer = toSignal(this.timer$, { initialValue: dayjs() });
