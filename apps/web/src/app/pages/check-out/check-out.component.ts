@@ -3,6 +3,7 @@ import {
   Component,
   DestroyRef,
   HostBinding,
+  computed,
   inject,
   signal,
 } from '@angular/core';
@@ -15,7 +16,9 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
-import { EMPTY, combineLatest, map, switchMap } from 'rxjs';
+import { EMPTY, map, switchMap } from 'rxjs';
+
+import { Team } from '@bkr/api-interface';
 
 import {
   ButtonComponent,
@@ -53,10 +56,10 @@ import { ConfirmService } from '../../services/confirm.service';
 export class CheckOutComponent {
   @HostBinding('class.page') page = true;
 
-  readonly loading = toSignal(this.teamService.loading$, {
+  loading = toSignal(this.teamService.loading$, {
     initialValue: false,
   });
-  readonly stationId = toSignal(this.authService.sub$, { initialValue: null });
+  stationId = toSignal(this.authService.sub$, { initialValue: null });
 
   checkOutLoading = signal(false);
   deleteResultLoading = signal(false);
@@ -67,13 +70,15 @@ export class CheckOutComponent {
     }),
   });
 
-  team$ = combineLatest([
-    this.route.queryParamMap,
-    this.teamService.teams$,
-  ]).pipe(
-    map(([params, teams]) =>
-      teams.find((team) => team.id === params.get('teamId'))
-    )
+  teams = toSignal(this.teamService.teams$, { initialValue: [] as Team[] });
+  teamId = toSignal(
+    this.route.queryParamMap.pipe(map((params) => params.get('teamId'))),
+    {
+      initialValue: null,
+    }
+  );
+  team = computed(
+    () => this.teams().find((team) => team.id === this.teamId()) ?? null
   );
 
   private readonly destroyRef = inject(DestroyRef);
