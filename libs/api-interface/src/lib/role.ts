@@ -7,14 +7,6 @@ export const Role = {
 
 export type Role = typeof Role[keyof typeof Role];
 
-export function isRole(role: string): role is Role {
-  return role === Role.ADMIN || role === Role.STATION;
-}
-
 export function isAdmin(jwtPayload?: JwtPayload): boolean {
   return jwtPayload?.role === Role.ADMIN;
-}
-
-export function isStation(jwtPayload?: JwtPayload): boolean {
-  return jwtPayload?.role === Role.STATION;
 }

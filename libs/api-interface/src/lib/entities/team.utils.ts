@@ -17,9 +17,7 @@ export const TeamUtils = {
       startedAt: dto.startedAt ? dayjs(dto.startedAt) : undefined,
       finishedAt: dto.finishedAt ? dayjs(dto.finishedAt) : undefined,
       penalty: dto.penalty,
-      results: dto.results.map((resultDto) =>
-        ResultUtils.deserialize(resultDto)
-      ),
+      results: dto.results.map(ResultUtils.deserialize),
     };
   },
   serialize(team: Team): TeamDTO {
@@ -33,7 +31,7 @@ export const TeamUtils = {
       startedAt: team.startedAt?.toISOString(),
       finishedAt: team.finishedAt?.toISOString(),
       penalty: team.penalty,
-      results: team.results.map((result) => ResultUtils.serialize(result)),
+      results: team.results.map(ResultUtils.serialize),
     };
   },
   isStarted(team: Team): team is SetRequired<Team, 'startedAt'> {

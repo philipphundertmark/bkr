@@ -22,4 +22,7 @@ export const ResultUtils = {
       points: result.points,
     };
   },
+  isFinal(result: Result): boolean {
+    return typeof result.checkOut !== 'undefined';
+  },
 };

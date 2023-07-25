@@ -16,9 +16,7 @@ export const StationUtils = {
       members: dto.members,
       code: dto.code,
       order: dto.order,
-      results: dto.results.map((resultDto) =>
-        ResultUtils.deserialize(resultDto)
-      ),
+      results: dto.results.map(ResultUtils.deserialize),
     };
   },
   serialize(station: Station): StationDTO {
@@ -31,7 +29,7 @@ export const StationUtils = {
       members: station.members,
       code: station.code,
       order: station.order,
-      results: station.results.map((result) => ResultUtils.serialize(result)),
+      results: station.results.map(ResultUtils.serialize),
     };
   },
   formatStationMembers(station: Station): string {
@@ -43,11 +41,9 @@ export const StationUtils = {
   },
   getFinalResultsInOrder(station: Station): Result[] {
     return station.results
-      .filter((result) => result.checkOut)
-      .sort((a, b) => {
-        return station.order === 'ASC'
-          ? a.points - b.points
-          : b.points - a.points;
-      });
+      .filter(ResultUtils.isFinal)
+      .sort((a, b) =>
+        station.order === 'ASC' ? a.points - b.points : b.points - a.points
+      );
   },
 };
