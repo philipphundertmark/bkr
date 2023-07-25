@@ -15,13 +15,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       />
     </svg>
   `,
-  styles: [
-    `
-      :host {
-        display: block;
-      }
-    `,
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class XMarkIconComponent {}
