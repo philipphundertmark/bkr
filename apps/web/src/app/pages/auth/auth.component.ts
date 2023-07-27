@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   HostBinding,
   Input,
   computed,
   inject,
+  signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
@@ -38,14 +40,12 @@ import {
   ],
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthComponent {
   @Input() returnUrl = '/';
 
   @HostBinding('class.page') page = true;
-
-  readonly exp = toSignal(this.authService.exp$, { initialValue: null });
-  readonly sub = toSignal(this.authService.sub$, { initialValue: null });
 
   form = new FormGroup({
     code: new FormControl<string>('', {
@@ -53,18 +53,24 @@ export class AuthComponent {
       validators: [Validators.required, Validators.minLength(6)],
     }),
   });
-  loading = false;
 
-  isAuthenticated = toSignal(this.authService.isAuthenticated$);
-  isAdmin = toSignal(this.authService.isAdmin$);
-  isStation = toSignal(this.authService.isStation$);
+  loginLoading = signal(false);
 
-  station = computed(() => {
-    return this.stations().find((station) => station.id === this.sub()) ?? null;
+  exp = toSignal(this.authService.exp$, { initialValue: null });
+  sub = toSignal(this.authService.sub$, { initialValue: null });
+
+  isAuthenticated = toSignal(this.authService.isAuthenticated$, {
+    initialValue: false,
   });
+  isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
+  isStation = toSignal(this.authService.isStation$, { initialValue: false });
+
   stations = toSignal(this.stationService.stations$, {
     initialValue: [] as Station[],
   });
+  station = computed(
+    () => this.stations().find((station) => station.id === this.sub()) ?? null
+  );
 
   private readonly destroyRef = inject(DestroyRef);
 
@@ -75,40 +81,38 @@ export class AuthComponent {
     private readonly stationService: StationService
   ) {}
 
-  handleLogout(): void {
-    this.authService.logout();
-    this.notificationService.success('Du bist jetzt ausgeloggt.');
-
-    this.router.navigateByUrl('/');
-  }
-
-  handleSubmit(event: Event): void {
-    event.preventDefault();
-
+  handleLogin(): void {
     const { code } = this.form.value;
 
     if (this.form.invalid || !code) {
-      return this.form.reset();
+      return;
     }
 
-    this.loading = true;
+    this.loginLoading.set(true);
 
     this.authService
       .login(code)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.loading = false;
+          this.loginLoading.set(false);
           this.form.reset();
           this.notificationService.success('Du bist jetzt eingeloggt.');
 
           this.router.navigateByUrl(this.returnUrl);
         },
         error: () => {
-          this.loading = false;
+          this.loginLoading.set(false);
           this.form.reset();
           this.notificationService.error('Das hat leider nicht geklappt.');
         },
       });
+  }
+
+  handleLogout(): void {
+    this.authService.logout();
+    this.notificationService.success('Du bist jetzt ausgeloggt.');
+
+    this.router.navigateByUrl('/');
   }
 }

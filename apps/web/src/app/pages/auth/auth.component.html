@@ -34,23 +34,23 @@
 <form
   class="flex flex-col gap-4"
   [formGroup]="form"
-  (ngSubmit)="handleSubmit($event)"
   *ngIf="!isAuthenticated(); else logout"
 >
   <input
     bkrInput
     formControlName="code"
+    (keydown.enter)="handleLogin()"
     placeholder="Master-Passwort oder Stationscode"
     type="password"
   />
 
   <button
     bkr-button
-    [bkrLoading]="loading"
+    [bkrLoading]="loginLoading()"
     bkrType="primary"
     class="w-full"
-    [disabled]="form.invalid || loading"
-    type="submit"
+    (click)="handleLogin()"
+    [disabled]="form.invalid || loginLoading()"
   >
     Einloggen
   </button>
