@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'bkr-spinner',
@@ -7,6 +7,5 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   imports: [CommonModule],
   templateUrl: './spinner.component.html',
   styleUrls: ['./spinner.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SpinnerComponent {}
