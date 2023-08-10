@@ -21,6 +21,7 @@ import { EMPTY, map, switchMap } from 'rxjs';
 import { Team } from '@bkr/api-interface';
 
 import {
+  AlertComponent,
   ButtonComponent,
   DangerZoneComponent,
   EmptyComponent,
@@ -42,6 +43,7 @@ import { ConfirmService } from '../../services/confirm.service';
   templateUrl: './check-out.component.html',
   styleUrls: ['./check-out.component.scss'],
   imports: [
+    AlertComponent,
     ButtonComponent,
     CommonModule,
     DangerZoneComponent,

@@ -19,6 +19,7 @@ import { Router, RouterModule } from '@angular/router';
 import { TeamUtils } from '@bkr/api-interface';
 
 import {
+  AlertComponent,
   ButtonComponent,
   EmptyComponent,
   LoadingComponent,
@@ -34,6 +35,7 @@ import {
   selector: 'bkr-check-in',
   standalone: true,
   imports: [
+    AlertComponent,
     ButtonComponent,
     CommonModule,
     EmptyComponent,

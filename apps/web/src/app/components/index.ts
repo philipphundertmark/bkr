@@ -1,3 +1,4 @@
+export * from './alert/alert.component';
 export * from './button/button.component';
 export * from './danger-zone/danger-zone.component';
 export * from './empty/empty.component';

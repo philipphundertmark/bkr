@@ -15,6 +15,10 @@
   <p class="text-gray-500">Diese Teams sind momentan eingecheckt.</p>
 </div>
 
+<bkr-alert>
+  Checke ein Team direkt ein, sobald es deine Station erreicht.
+</bkr-alert>
+
 <ng-container *ngIf="loading() === false; else loadingIndicator">
   <ul class="list" *ngIf="checkedInTeams().length > 0; else empty">
     <li *ngFor="let team of checkedInTeams()">
@@ -46,6 +50,17 @@
   <h2 class="subtitle">Ergebnisse</h2>
   <p class="text-gray-500">Die Ergebnisse der Teams an deiner Station.</p>
 </div>
+
+<bkr-alert *ngIf="station() as station" [ngSwitch]="station.order">
+  <ng-container *ngSwitchCase="'ASC'">
+    An deiner Station gewinnt das Team mit den
+    <span class="font-semibold">wenigsten</span> Punkten.
+  </ng-container>
+  <ng-container *ngSwitchCase="'DESC'">
+    An deiner Station gewinnt das Team mit den
+    <span class="font-semibold">meisten</span> Punkten.
+  </ng-container>
+</bkr-alert>
 
 <ng-container *ngIf="loading() === false; else loadingIndicator">
   <ul class="list" *ngIf="results().length > 0; else empty">

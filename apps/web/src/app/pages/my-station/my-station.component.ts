@@ -12,6 +12,7 @@ import {
 } from '@bkr/api-interface';
 
 import {
+  AlertComponent,
   ButtonComponent,
   EmptyComponent,
   LoadingComponent,
@@ -25,6 +26,7 @@ type ResultWithTeam = Result & { team: Team };
   selector: 'bkr-my-station',
   standalone: true,
   imports: [
+    AlertComponent,
     ButtonComponent,
     ChevronRightIconComponent,
     CommonModule,
@@ -40,19 +42,20 @@ export class MyStationComponent {
 
   readonly TeamUtils = TeamUtils;
 
-  readonly loading = toSignal(this.teamService.loading$, {
+  loading = toSignal(this.teamService.loading$, {
     initialValue: false,
   });
-  readonly stationId = toSignal(this.authService.sub$, { initialValue: null });
 
-  readonly stations = toSignal(this.stationService.stations$, {
+  stationId = toSignal(this.authService.sub$, { initialValue: null });
+
+  stations = toSignal(this.stationService.stations$, {
     initialValue: [] as Station[],
   });
-  readonly teams = toSignal(this.teamService.teams$, {
+  teams = toSignal(this.teamService.teams$, {
     initialValue: [] as Team[],
   });
 
-  readonly checkedInTeams = computed(() => {
+  checkedInTeams = computed(() => {
     return this.teams().filter((team) =>
       team.results.some(
         (result) => result.stationId === this.stationId() && !result.checkOut
@@ -60,10 +63,12 @@ export class MyStationComponent {
     );
   });
 
-  readonly results = computed(() => {
-    const station = this.stations().find(
-      (station) => station.id === this.stationId()
-    );
+  station = computed(() => {
+    return this.stations().find((station) => station.id === this.stationId());
+  });
+
+  results = computed(() => {
+    const station = this.station();
 
     if (!station) {
       return [];
