@@ -79,6 +79,51 @@ export class TeamService {
     return team ? this.toTeam(team) : null;
   }
 
+  async shuffleTeams(): Promise<Team[]> {
+    const teams = await this.prisma.team.findMany({
+      select: {
+        id: true,
+        number: true,
+      },
+    });
+
+    // Set intermediate numbers to avoid unique constraint errors
+    await Promise.all(
+      teams.map((team) =>
+        this.prisma.team.update({
+          where: {
+            id: team.id,
+          },
+          data: {
+            number: team.number + teams.length,
+          },
+        })
+      )
+    );
+
+    const shuffledTeams = teams.sort(() => Math.random() - 0.5);
+
+    const updatedTeams = await Promise.all(
+      shuffledTeams.map((team, index) =>
+        this.prisma.team.update({
+          where: {
+            id: team.id,
+          },
+          data: {
+            number: index + 1,
+          },
+          include: {
+            results: {
+              select: ResultService.RESULT_SELECT,
+            },
+          },
+        })
+      )
+    );
+
+    return updatedTeams.map((team) => this.toTeam(team));
+  }
+
   async updateTeam(
     id: string,
     updates: {

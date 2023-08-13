@@ -140,6 +140,13 @@ export class TeamService {
     );
   }
 
+  shuffleTeams(): Observable<Team[]> {
+    return this.http.put<TeamDTO[]>('/teams/shuffle', {}).pipe(
+      map((teamDtos) => teamDtos.map(TeamUtils.deserialize)),
+      tap((teams) => this._teams$.next(teams))
+    );
+  }
+
   updateTeam(id: string, dto: UpdateTeamSchema): Observable<Team | null> {
     return this.http.put<TeamDTO>(`/teams/${id}`, dto).pipe(
       catchError((error: HttpErrorResponse) => {

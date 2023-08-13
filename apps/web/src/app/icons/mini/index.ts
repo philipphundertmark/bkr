@@ -1,4 +1,5 @@
 export * from './arrow-down-circle-icon.component';
+export * from './arrow-path-rounded-square-icon.component';
 export * from './arrow-up-circle-icon.component';
 export * from './check-circle-icon';
 export * from './chevron-left-icon.component';

@@ -9,6 +9,16 @@
   >
     Neues Team
   </a>
+  <button
+    bkr-button
+    [bkrLoading]="shuffleTeamsLoading()"
+    class="col-span-2"
+    (click)="shuffleTeams()"
+    *ngIf="isAdmin()"
+  >
+    <bkr-arrow-path-rounded-square-icon></bkr-arrow-path-rounded-square-icon>
+    Reihenfolge auslosen
+  </button>
 </header>
 
 <div class="space-y-1">

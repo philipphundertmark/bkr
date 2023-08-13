@@ -130,6 +130,67 @@ export function TeamController(
   /**
    * @openapi
    *
+   * /teams/shuffle:
+   *   put:
+   *     description: Shuffle teams
+   *     tags:
+   *       - Team
+   *     security:
+   *       - bearerAuth: []
+   *     responses:
+   *       200:
+   *         description: The updated teams
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: array
+   *               items:
+   *                 $ref: '#/components/schemas/Team'
+   *       400:
+   *         description: Invalid request body
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/BadRequest'
+   *       401:
+   *         description: You are not authenticated
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Unauthorized'
+   *       403:
+   *         description: You are not authorized to access this resource
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Forbidden'
+   *       404:
+   *         description: The team does not exist
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/NotFound'
+   *       500:
+   *         description: An unexpected error occurred
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/InternalServerError'
+   */
+  router.put(
+    '/teams/shuffle',
+    authorize(Role.ADMIN),
+    handler(async (req, res) => {
+      const teams = await teamService.shuffleTeams();
+
+      res.status(200);
+      res.json(teams.map(TeamUtils.serialize));
+    })
+  );
+
+  /**
+   * @openapi
+   *
    * /teams/{teamId}:
    *   put:
    *     description: Update a team
