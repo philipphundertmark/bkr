@@ -73,6 +73,17 @@
     <bkr-danger-zone *ngIf="isAdmin()">
       <button
         bkr-button
+        [bkrLoading]="deleteTeamResultsLoading()"
+        bkrType="danger"
+        class="w-full"
+        (click)="handleDeleteTeamResults(team.id)"
+      >
+        <bkr-trash-icon></bkr-trash-icon>
+        Ergebnisse löschen
+      </button>
+
+      <button
+        bkr-button
         [bkrLoading]="deleteTeamLoading()"
         bkrType="danger"
         class="w-full"

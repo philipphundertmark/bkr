@@ -102,6 +102,19 @@ export class TeamService {
           )
         );
       });
+
+    this.resultService.deletedResultsByTeamId$
+      .pipe(takeUntilDestroyed())
+      .subscribe((teamId) => {
+        this._teams$.next(
+          this._teams$.value.map((team) => ({
+            ...team,
+            results: team.results.filter(
+              (teamResult) => teamResult.teamId !== teamId
+            ),
+          }))
+        );
+      });
   }
 
   createTeam(dto: CreateTeamSchema): Observable<Team> {

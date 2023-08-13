@@ -27,7 +27,7 @@ const app = createApp(
     ResultController(resultService, stationService, teamService),
     SettingsController(settingsService),
     StationController(stationService),
-    TeamController(teamService),
+    TeamController(resultService, teamService),
     TokenController(tokenService, stationService),
   ],
   {

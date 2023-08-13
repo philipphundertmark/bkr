@@ -25,7 +25,12 @@ import {
   TrashIconComponent,
 } from '../../icons/mini';
 import { DatePipe } from '../../pipes';
-import { AuthService, NotificationService, TeamService } from '../../services';
+import {
+  AuthService,
+  NotificationService,
+  ResultService,
+  TeamService,
+} from '../../services';
 import { ConfirmService } from '../../services/confirm.service';
 
 @Component({
@@ -54,6 +59,7 @@ export class TeamDetailsComponent {
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
   loading = toSignal(this.teamService.loading$, { initialValue: false });
   deleteTeamLoading = signal(false);
+  deleteTeamResultsLoading = signal(false);
   startTeamLoading = signal(false);
   stopTeamLoading = signal(false);
 
@@ -69,6 +75,7 @@ export class TeamDetailsComponent {
     private readonly authService: AuthService,
     private readonly confirmService: ConfirmService,
     private readonly notificationService: NotificationService,
+    private readonly resultService: ResultService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly teamService: TeamService
@@ -100,6 +107,36 @@ export class TeamDetailsComponent {
         error: () => {
           this.deleteTeamLoading.set(false);
           this.notificationService.error('Team konnte nicht gelöscht werden.');
+        },
+      });
+  }
+
+  handleDeleteTeamResults(teamId: string): void {
+    this.confirmService
+      .delete({
+        title: 'Ergebnisse löschen',
+        message: 'Möchtest du die Ergebnisse des Teams wirklich löschen?',
+      })
+      .pipe(
+        switchMap((confirmed) => {
+          if (!confirmed) return EMPTY;
+
+          this.deleteTeamResultsLoading.set(true);
+
+          return this.resultService.deleteResultsByTeamId(teamId);
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: () => {
+          this.deleteTeamResultsLoading.set(false);
+          this.notificationService.success('Ergebnisse gelöscht.');
+        },
+        error: () => {
+          this.deleteTeamResultsLoading.set(false);
+          this.notificationService.error(
+            'Ergebnisse konnten nicht gelöscht werden.'
+          );
         },
       });
   }

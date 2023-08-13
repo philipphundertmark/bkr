@@ -9,10 +9,14 @@ import {
 
 import { BadRequestException, NotFoundException } from '../errors';
 import { authorize } from '../middleware/authorize';
+import { ResultService } from '../services/result.service';
 import { TeamService } from '../services/team.service';
 import { handler } from './handler';
 
-export function TeamController(teamService: TeamService): Router {
+export function TeamController(
+  resultService: ResultService,
+  teamService: TeamService
+): Router {
   const router = Router();
 
   /**
@@ -280,6 +284,65 @@ export function TeamController(teamService: TeamService): Router {
       }
 
       await teamService.deleteTeam(teamId);
+
+      res.status(200);
+      res.end();
+    })
+  );
+
+  /**
+   * @openapi
+   *
+   * /teams/{teamId}/results:
+   *   delete:
+   *     description: Delete all results of a team
+   *     tags:
+   *       - Team
+   *     security:
+   *       - bearerAuth: []
+   *     parameters:
+   *       - $ref: '#/components/parameters/teamId'
+   *     responses:
+   *       200:
+   *         description: Successfully deleted all results of the team
+   *       401:
+   *         description: You are not authenticated
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Unauthorized'
+   *       403:
+   *         description: You are not authorized to access this resource
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Forbidden'
+   *       404:
+   *         description: The team does not exist
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/NotFound'
+   *       500:
+   *         description: An unexpected error occurred
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/InternalServerError'
+   */
+  router.delete(
+    '/teams/:teamId/results',
+    authorize(Role.ADMIN),
+    handler(async (req, res) => {
+      const teamId = req.params.teamId;
+
+      const team = await teamService.getTeamById(teamId);
+
+      if (team === null) {
+        throw new NotFoundException(`Team ${teamId} does not exist`);
+      }
+
+      await resultService.deleteResultsByTeamId(teamId);
 
       res.status(200);
       res.end();

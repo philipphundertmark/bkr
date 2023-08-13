@@ -37,6 +37,14 @@ export class ResultService {
     });
   }
 
+  async deleteResultsByTeamId(teamId: string): Promise<void> {
+    await this.prisma.result.deleteMany({
+      where: {
+        teamId: teamId,
+      },
+    });
+  }
+
   async getResultById(
     stationId: string,
     teamId: string

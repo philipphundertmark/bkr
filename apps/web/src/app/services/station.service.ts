@@ -90,6 +90,19 @@ export class StationService {
           )
         );
       });
+
+    this.resultService.deletedResultsByTeamId$
+      .pipe(takeUntilDestroyed())
+      .subscribe((teamId) => {
+        this._stations$.next(
+          this._stations$.value.map((station) => ({
+            ...station,
+            results: station.results.filter(
+              (stationResult) => stationResult.teamId !== teamId
+            ),
+          }))
+        );
+      });
   }
 
   createStation(dto: CreateStationSchema): Observable<Station> {
