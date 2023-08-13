@@ -125,7 +125,11 @@
   </ng-container>
 
   <ng-template #endresult>
-    <bkr-ranking [stations]="stations()" [teams]="teams()"></bkr-ranking>
+    <bkr-ranking
+      [stations]="stations()"
+      [teams]="teams()"
+      [timeBonus]="timeBonus"
+    ></bkr-ranking>
   </ng-template>
 </ng-container>
 

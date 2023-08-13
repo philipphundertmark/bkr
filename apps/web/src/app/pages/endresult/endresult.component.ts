@@ -14,6 +14,7 @@ import { RouterModule } from '@angular/router';
 import { Station, Team } from '@bkr/api-interface';
 
 import {
+  AlertComponent,
   ButtonComponent,
   EmptyComponent,
   LoadingComponent,
@@ -30,6 +31,7 @@ import { SettingsService, StationService, TeamService } from '../../services';
   selector: 'bkr-endresult',
   standalone: true,
   imports: [
+    AlertComponent,
     ButtonComponent,
     CommonModule,
     EmptyComponent,
@@ -46,6 +48,8 @@ import { SettingsService, StationService, TeamService } from '../../services';
 })
 export class EndresultComponent {
   @HostBinding('class.page') page = true;
+
+  readonly timeBonus = this.stationService.TIME_BONUS;
 
   stations = toSignal(this.stationService.stations$, {
     initialValue: [] as Station[],

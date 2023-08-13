@@ -55,6 +55,8 @@ export interface RankingItem {
 export class HomeComponent {
   @HostBinding('class.page') page = true;
 
+  readonly timeBonus = this.stationService.TIME_BONUS;
+
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
   isRaceOver = toSignal(this.teamService.isRaceOver$, { initialValue: false });
   isStation = toSignal(this.authService.isStation$, { initialValue: false });

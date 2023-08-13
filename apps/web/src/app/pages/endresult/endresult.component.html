@@ -30,16 +30,18 @@
   </ng-container>
 </header>
 
-<p class="text-sm text-gray-500" *ngIf="publishResults()">
-  Die Ergebnisse sind
-  <span class="font-semibold text-indigo-500">für alle</span> sichtbar.
-</p>
+<bkr-alert>
+  <ng-container *ngIf="publishResults()">
+    Die Ergebnisse sind momentan
+    <span class="font-semibold">für alle</span> sichtbar.
+  </ng-container>
 
-<p class="text-sm text-gray-500" *ngIf="!publishResults()">
-  Die Ergebnisse sind
-  <span class="font-semibold text-indigo-500">nur für Organisatoren</span>
-  sichtbar.
-</p>
+  <ng-container *ngIf="!publishResults()">
+    Die Ergebnisse sind momentan
+    <span class="font-semibold">nur für Organisatoren</span>
+    sichtbar.
+  </ng-container>
+</bkr-alert>
 
 <div class="flex items-center gap-4">
   <div
@@ -59,6 +61,7 @@
     *ngIf="isRaceOver(); else empty"
     [stations]="stations()"
     [teams]="teams()"
+    [timeBonus]="timeBonus"
   ></bkr-ranking>
 
   <ng-template #empty>

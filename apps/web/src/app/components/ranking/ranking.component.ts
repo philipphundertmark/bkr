@@ -38,8 +38,6 @@ interface RankingItem {
   totalTime: number;
 }
 
-const TIME_BONUS = [5 * 60, 4 * 60, 3 * 60, 2 * 60, 1 * 60];
-
 @Component({
   selector: 'bkr-ranking',
   standalone: true,
@@ -60,6 +58,8 @@ export class RankingComponent {
     this.teams$.next(value);
   }
 
+  @Input({ required: true }) timeBonus: number[] = [];
+
   @HostBinding('class.list') list = true;
 
   stations$ = new BehaviorSubject<Station[]>([]);
@@ -76,7 +76,7 @@ export class RankingComponent {
       const bonusByTeam = StationUtils.getFinalResultsInOrder(station).reduce(
         (acc, result, index) => ({
           ...acc,
-          [result.teamId]: TIME_BONUS[index] ?? 0,
+          [result.teamId]: this.timeBonus[index] ?? 0,
         }),
         {} as BonusByTeam
       );

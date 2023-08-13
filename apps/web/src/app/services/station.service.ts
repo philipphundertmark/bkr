@@ -27,6 +27,22 @@ import { ResultService } from './result.service';
   providedIn: 'root',
 })
 export class StationService {
+  /**
+   * The time bonus in seconds for each place.
+   */
+  readonly TIME_BONUS = [
+    // 1st place
+    5 * 60,
+    // 2nd place
+    4 * 60,
+    // 3rd place
+    3 * 60,
+    // 4th place
+    2 * 60,
+    // 5th place
+    1 * 60,
+  ];
+
   private readonly _stations$ = new BehaviorSubject<Station[]>([]);
   readonly stations$ = this._stations$.pipe(
     map((stations) => stations.sort((a, b) => a.number - b.number)),
