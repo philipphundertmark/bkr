@@ -4,7 +4,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 
 import {
-  Result,
+  ResultWithRank,
   Station,
   StationUtils,
   Team,
@@ -20,7 +20,7 @@ import {
 import { ChevronRightIconComponent } from '../../icons/mini';
 import { AuthService, StationService, TeamService } from '../../services';
 
-type ResultWithTeam = Result & { team: Team };
+type ResultWithRankAndTeam = ResultWithRank & { team: Team };
 
 @Component({
   selector: 'bkr-my-station',
@@ -75,7 +75,7 @@ export class MyStationComponent {
     }
 
     return (
-      StationUtils.getFinalResultsInOrder(station)
+      StationUtils.getResultsWithRank(station)
         // Find the team for each result
         .map((result) => ({
           ...result,
@@ -83,7 +83,7 @@ export class MyStationComponent {
         }))
         // Filter out results that don't have a team
         .filter(
-          (result): result is ResultWithTeam =>
+          (result): result is ResultWithRankAndTeam =>
             typeof result.team !== 'undefined'
         )
     );

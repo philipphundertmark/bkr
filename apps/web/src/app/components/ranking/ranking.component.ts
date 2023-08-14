@@ -12,12 +12,12 @@ import { BehaviorSubject } from 'rxjs';
 
 import { Station, StationUtils, Team } from '@bkr/api-interface';
 
-interface BonusByTeam {
+interface RankByTeam {
   [teamId: string]: number;
 }
 
-interface BonusByTeamByStation {
-  [stationId: string]: BonusByTeam;
+interface RankByTeamByStation {
+  [stationId: string]: RankByTeam;
 }
 
 interface StationResult {
@@ -29,6 +29,8 @@ interface StationResult {
 interface RankingItem {
   // Name of the team
   name: string;
+  // Number of the team
+  number: number;
   // Penalty time in seconds
   penalty: number;
   results: StationResult[];
@@ -72,33 +74,36 @@ export class RankingComponent {
     const stations = this.stations();
     const teams = this.teams();
 
-    const bonusByTeamByStation = stations.reduce((acc, station) => {
-      const bonusByTeam = StationUtils.getFinalResultsInOrder(station).reduce(
-        (acc, result, index) => ({
+    const rankByTeamByStation = stations.reduce((acc, station) => {
+      const rankByTeam = StationUtils.getResultsWithRank(station).reduce(
+        (acc, result) => ({
           ...acc,
-          [result.teamId]: this.timeBonus[index] ?? 0,
+          [result.teamId]: result.rank,
         }),
-        {} as BonusByTeam
+        {} as RankByTeam
       );
 
       return {
         ...acc,
-        [station.id]: bonusByTeam,
+        [station.id]: rankByTeam,
       };
-    }, {} as BonusByTeamByStation);
+    }, {} as RankByTeamByStation);
 
     return teams
       .map((team): Omit<RankingItem, 'time'> => {
         return {
           name: team.name,
+          number: team.number,
           penalty: team.penalty * 60,
           results: stations.map((station) => {
             const result = team.results.find(
               (result) => result.stationId === station.id
             );
 
+            const rank = rankByTeamByStation[station.id]?.[team.id] ?? 0;
+
             return {
-              bonus: bonusByTeamByStation[station.id]?.[team.id] ?? 0,
+              bonus: rank > 0 ? this.timeBonus.at(rank - 1) ?? 0 : 0,
               stationId: station.id,
               time: result?.checkOut?.diff(result.checkIn, 'seconds') ?? 0,
             };

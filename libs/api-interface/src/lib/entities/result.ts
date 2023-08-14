@@ -26,3 +26,7 @@ export interface Result {
    */
   points: number;
 }
+
+export type ResultWithRank = Result & {
+  rank: number;
+};

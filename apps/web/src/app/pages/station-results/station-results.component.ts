@@ -7,10 +7,11 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import dayjs from 'dayjs';
 import { map } from 'rxjs';
 
 import {
-  Result,
+  ResultWithRank,
   Station,
   StationUtils,
   Team,
@@ -24,7 +25,7 @@ import {
 } from '../../components';
 import { SettingsService, StationService, TeamService } from '../../services';
 
-type ResultWithTeam = Result & { team: Team };
+type ResultWithRankAndTeam = ResultWithRank & { team: Team };
 
 @Component({
   selector: 'bkr-station-results',
@@ -44,6 +45,8 @@ export class StationResultsComponent {
   @HostBinding('class.page') page = true;
 
   readonly TeamUtils = TeamUtils;
+
+  readonly timeBonus = this.stationService.TIME_BONUS;
 
   isRaceOver = toSignal(this.teamService.isRaceOver$, { initialValue: false });
   publishResults = toSignal(this.settingsService.publishResults$, {
@@ -76,12 +79,13 @@ export class StationResultsComponent {
 
   results = computed(() => {
     const station = this.station();
+
     if (!station) {
       return [];
     }
 
     return (
-      StationUtils.getFinalResultsInOrder(station)
+      StationUtils.getResultsWithRank(station)
         // Find the team for each result
         .map((result) => ({
           ...result,
@@ -89,7 +93,7 @@ export class StationResultsComponent {
         }))
         // Filter out results that don't have a team
         .filter(
-          (result): result is ResultWithTeam =>
+          (result): result is ResultWithRankAndTeam =>
             typeof result.team !== 'undefined'
         )
     );
@@ -101,4 +105,8 @@ export class StationResultsComponent {
     private readonly stationService: StationService,
     private readonly teamService: TeamService
   ) {}
+
+  formatDuration(seconds: number): string {
+    return dayjs.duration(seconds, 'seconds').format('HH:mm:ss');
+  }
 }

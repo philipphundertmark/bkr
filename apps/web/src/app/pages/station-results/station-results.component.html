@@ -19,12 +19,18 @@
   <ng-container *ngIf="isRaceOver() && publishResults(); else unavailable">
     <ul class="list" *ngIf="results().length > 0; else empty">
       <li class="list-entry" *ngFor="let result of results(); let i = index">
-        <div class="font-bold">{{ i + 1 }}.</div>
+        <div class="font-bold">{{ result.rank }}.</div>
 
-        <div class="flex flex-col gap-1">
-          <div class="flex items-center gap-2">
-            <h3 class="name">{{ result.team.name }}</h3>
-            <span class="number">#{{ result.team.number }}</span>
+        <div class="flex flex-1 flex-col gap-1">
+          <div class="flex justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <h3 class="name">{{ result.team.name }}</h3>
+              <span class="number">#{{ result.team.number }}</span>
+            </div>
+
+            <div class="font-mono">
+              - {{ formatDuration(timeBonus.at(result.rank - 1) ?? 0) }}
+            </div>
           </div>
 
           <p class="text-gray-500">

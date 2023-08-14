@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { Result } from './result';
+import { ResultWithRank } from './result';
 import { ResultUtils } from './result.utils';
 import { Station } from './station';
 import { StationDTO } from './station.dto';
@@ -39,11 +39,25 @@ export const StationUtils = {
 
     return station.members.join(', ');
   },
-  getFinalResultsInOrder(station: Station): Result[] {
+  getResultsWithRank(station: Station): ResultWithRank[] {
+    let currentRank = 0;
+
     return station.results
       .filter(ResultUtils.isFinal)
       .sort((a, b) =>
         station.order === 'ASC' ? a.points - b.points : b.points - a.points
-      );
+      )
+      .map((result, index, allResults) => {
+        const previousResult = allResults.at(index - 1);
+
+        if (previousResult?.points !== result.points) {
+          currentRank = index + 1;
+        }
+
+        return {
+          ...result,
+          rank: currentRank,
+        };
+      });
   },
 };
