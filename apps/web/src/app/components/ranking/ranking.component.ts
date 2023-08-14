@@ -12,6 +12,8 @@ import { BehaviorSubject } from 'rxjs';
 
 import { Station, StationUtils, Team } from '@bkr/api-interface';
 
+import { RankingItemComponent } from './ranking-item/ranking-item.component';
+
 interface RankByTeam {
   [teamId: string]: number;
 }
@@ -26,7 +28,7 @@ interface StationResult {
   time: number;
 }
 
-interface RankingItem {
+export interface RankingItem {
   // Name of the team
   name: string;
   // Number of the team
@@ -43,7 +45,7 @@ interface RankingItem {
 @Component({
   selector: 'bkr-ranking',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RankingItemComponent],
   templateUrl: './ranking.component.html',
   styleUrls: ['./ranking.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -129,38 +131,4 @@ export class RankingComponent {
       })
       .sort((a, b) => a.time - b.time);
   });
-
-  formatDuration(seconds: number): string {
-    return dayjs.duration(seconds, 'seconds').format('HH:mm:ss');
-  }
-
-  getFormattedBonusAtStation(
-    stationId: string,
-    rankingItem: RankingItem
-  ): string {
-    const stationResult = rankingItem.results.find(
-      (result) => result.stationId === stationId
-    );
-
-    if (!stationResult) {
-      return '00:00:00';
-    }
-
-    return this.formatDuration(stationResult.bonus);
-  }
-
-  getFormattedTimeAtStation(
-    stationId: string,
-    rankingItem: RankingItem
-  ): string {
-    const stationResult = rankingItem.results.find(
-      (result) => result.stationId === stationId
-    );
-
-    if (!stationResult) {
-      return '00:00:00';
-    }
-
-    return this.formatDuration(stationResult.time);
-  }
 }

@@ -1,0 +1,53 @@
+<div class="font-bold">{{ bkrRank }}.</div>
+
+<div
+  class="flex flex-1 flex-col gap-2"
+  (click)="toggleCollapsed()"
+  role="button"
+>
+  <div class="flex justify-between gap-2">
+    <div class="flex items-center gap-2">
+      <bkr-chevron-right-icon
+        class="text-indigo-500"
+        [ngClass]="{ 'rotate-90': !collapsed() }"
+      >
+      </bkr-chevron-right-icon>
+      <h3 class="name">{{ bkrRankingItem.name }}</h3>
+      <span class="number">#{{ bkrRankingItem.number }}</span>
+    </div>
+
+    <div class="font-mono text-indigo-500">
+      {{ formatDuration(bkrRankingItem.time) }}
+    </div>
+  </div>
+
+  <div class="flex justify-between gap-2">
+    <div>Gesamtzeit</div>
+    <div class="font-mono">{{ formatDuration(bkrRankingItem.totalTime) }}</div>
+  </div>
+
+  <ng-container *ngIf="!collapsed()">
+    <div class="flex justify-between gap-2">
+      <div>Strafzeit</div>
+      <div class="font-mono" [class.text-red-500]="bkrRankingItem.penalty > 0">
+        + {{ formatDuration(bkrRankingItem.penalty) }}
+      </div>
+    </div>
+
+    <ng-container *ngFor="let station of bkrStations">
+      <div class="flex justify-between gap-2">
+        <div>{{ station.name }} Zeit</div>
+        <div class="font-mono">
+          - {{ getFormattedTimeAtStation(station.id, bkrRankingItem) }}
+        </div>
+      </div>
+
+      <div class="flex justify-between gap-2">
+        <div>{{ station.name }} Bonus</div>
+        <div class="font-mono">
+          - {{ getFormattedBonusAtStation(station.id, bkrRankingItem) }}
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>
