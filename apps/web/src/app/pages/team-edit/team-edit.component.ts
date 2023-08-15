@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   HostBinding,
-  OnInit,
+  computed,
+  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -17,7 +19,8 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
-import { combineLatest, map } from 'rxjs';
+
+import { Team } from '@bkr/api-interface';
 
 import {
   ButtonComponent,
@@ -42,13 +45,33 @@ import { dateTimeValidator } from '../../validators';
   ],
   templateUrl: './team-edit.component.html',
   styleUrls: ['./team-edit.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TeamEditComponent implements OnInit {
+export class TeamEditComponent {
   @HostBinding('class.page') page = true;
 
-  isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
+  paramMap = toSignal(this.route.paramMap, {
+    initialValue: null,
+  });
 
-  saveLoading = signal(false);
+  teams = toSignal(this.teamService.teams$, {
+    initialValue: [] as Team[],
+  });
+
+  teamId = computed(() => this.paramMap()?.get('teamId') ?? null);
+  team = computed(() => {
+    const teamId = this.teamId();
+
+    if (!teamId) {
+      return null;
+    }
+
+    return this.teams().find(({ id }) => id === teamId) ?? null;
+  });
+
+  isAdmin = toSignal(this.authService.isAdmin$, {
+    initialValue: false,
+  });
 
   form = new FormGroup({
     name: new FormControl<string>('', {
@@ -73,11 +96,7 @@ export class TeamEditComponent implements OnInit {
     }),
   });
 
-  team$ = combineLatest([this.route.paramMap, this.teamService.teams$]).pipe(
-    map(([params, teams]) =>
-      teams.find((team) => team.id === params.get('teamId'))
-    )
-  );
+  saveLoading = signal(false);
 
   private readonly destroyRef = inject(DestroyRef);
 
@@ -87,17 +106,21 @@ export class TeamEditComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly teamService: TeamService
-  ) {}
+  ) {
+    effect(() => {
+      const team = this.team();
 
-  ngOnInit(): void {
-    this.team$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((team) => {
+      if (!team) {
+        return;
+      }
+
       this.form.patchValue({
-        name: team?.name,
-        number: team?.number,
-        penalty: team?.penalty,
-        startedAt: team?.startedAt?.format('DD.MM.YYYY HH:mm:ss') ?? null,
-        finishedAt: team?.finishedAt?.format('DD.MM.YYYY HH:mm:ss') ?? null,
-        members: team?.members ?? [],
+        name: team.name,
+        number: team.number,
+        penalty: team.penalty,
+        startedAt: team.startedAt?.format('DD.MM.YYYY HH:mm:ss') ?? null,
+        finishedAt: team.finishedAt?.format('DD.MM.YYYY HH:mm:ss') ?? null,
+        members: team.members ?? [],
       });
     });
   }

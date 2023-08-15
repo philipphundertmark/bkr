@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, DestroyRef, HostBinding, inject } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  HostBinding,
+  inject,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
@@ -59,7 +65,7 @@ export class StationNewComponent {
     }),
   });
 
-  loading = false;
+  loading = signal(false);
 
   private readonly destroyRef = inject(DestroyRef);
 
@@ -86,7 +92,7 @@ export class StationNewComponent {
     const nonEmptyMembers =
       members?.filter((member) => member.length > 0) ?? [];
 
-    this.loading = true;
+    this.loading.set(true);
 
     this.stationService
       .createStation({
@@ -99,13 +105,13 @@ export class StationNewComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.loading = false;
+          this.loading.set(false);
           this.notificationService.success('Station wurde erstellt.');
 
           this.router.navigate(['/stations']);
         },
         error: (err: HttpErrorResponse) => {
-          this.loading = false;
+          this.loading.set(false);
 
           const error = err.error?.error;
 

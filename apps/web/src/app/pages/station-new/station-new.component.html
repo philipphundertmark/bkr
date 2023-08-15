@@ -5,8 +5,8 @@
     bkrType="primary"
     class="col-span-1"
     (click)="handleSave()"
-    [disabled]="form.invalid || loading"
-    [bkrLoading]="loading"
+    [disabled]="form.invalid || loading()"
+    [bkrLoading]="loading()"
   >
     Speichern
   </button>

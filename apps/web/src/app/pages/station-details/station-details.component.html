@@ -1,6 +1,6 @@
 <header class="header">
   <a bkr-backward-button class="col-span-1" routerLink="/stations">Zurück</a>
-  <ng-container *ngIf="station$ | async as station">
+  <ng-container *ngIf="station() as station">
     <a
       bkr-forward-button
       class="col-span-1"
@@ -19,7 +19,7 @@
   </ng-container>
 </header>
 
-<ng-container *ngIf="station$ | async as station; else empty">
+<ng-container *ngIf="station() as station; else empty">
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-2">
       <label class="label">Nummer</label>

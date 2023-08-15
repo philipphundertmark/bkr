@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   HostBinding,
-  OnInit,
+  computed,
+  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -16,9 +18,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { combineLatest, map } from 'rxjs';
 
-import { Order } from '@bkr/api-interface';
+import { Order, Station } from '@bkr/api-interface';
 
 import {
   ButtonComponent,
@@ -46,11 +47,31 @@ import {
   ],
   templateUrl: './station-edit.component.html',
   styleUrls: ['./station-edit.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StationEditComponent implements OnInit {
+export class StationEditComponent {
   @HostBinding('class.page') page = true;
 
   readonly Order = Order;
+
+  paramMap = toSignal(this.route.paramMap, {
+    initialValue: null,
+  });
+
+  stations = toSignal(this.stationService.stations$, {
+    initialValue: [] as Station[],
+  });
+
+  stationId = computed(() => this.paramMap()?.get('stationId') ?? null);
+  station = computed(() => {
+    const stationId = this.stationId();
+
+    if (!stationId) {
+      return null;
+    }
+
+    return this.stations().find(({ id }) => id === stationId) ?? null;
+  });
 
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
 
@@ -77,15 +98,6 @@ export class StationEditComponent implements OnInit {
     }),
   });
 
-  station$ = combineLatest([
-    this.route.paramMap,
-    this.stationService.stations$,
-  ]).pipe(
-    map(([params, stations]) =>
-      stations.find((station) => station.id === params.get('stationId'))
-    )
-  );
-
   private readonly destroyRef = inject(DestroyRef);
 
   constructor(
@@ -94,20 +106,22 @@ export class StationEditComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly stationService: StationService
-  ) {}
+  ) {
+    effect(() => {
+      const station = this.station();
 
-  ngOnInit(): void {
-    this.station$
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((station) => {
-        this.form.patchValue({
-          name: station?.name,
-          number: station?.number,
-          code: station?.code,
-          order: station?.order,
-          members: station?.members ?? [],
-        });
+      if (!station) {
+        return;
+      }
+
+      this.form.patchValue({
+        name: station.name,
+        number: station.number,
+        code: station.code,
+        order: station.order,
+        members: station.members ?? [],
       });
+    });
   }
 
   handleSave(stationId: string): void {

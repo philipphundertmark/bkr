@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 
@@ -21,13 +21,17 @@ import { AuthService, StationService } from '../../services';
   ],
   templateUrl: './station-list.component.html',
   styleUrls: ['./station-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StationListComponent {
   @HostBinding('class.page') page = true;
 
   readonly StationUtils = StationUtils;
 
-  isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
+  isAdmin = toSignal(this.authService.isAdmin$, {
+    initialValue: false,
+  });
+
   stations = toSignal(this.stationService.stations$, {
     initialValue: [] as Station[],
   });

@@ -1,17 +1,19 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   HostBinding,
+  computed,
   inject,
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
-import { EMPTY, combineLatest, map, switchMap } from 'rxjs';
+import { EMPTY, switchMap } from 'rxjs';
 
-import { TeamUtils } from '@bkr/api-interface';
+import { Team, TeamUtils } from '@bkr/api-interface';
 
 import {
   ButtonComponent,
@@ -48,24 +50,40 @@ import { ConfirmService } from '../../services/confirm.service';
   ],
   templateUrl: './team-details.component.html',
   styleUrls: ['./team-details.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamDetailsComponent {
   @HostBinding('class.page') page = true;
 
   readonly TeamUtils = TeamUtils;
 
-  isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
+  paramMap = toSignal(this.route.paramMap, {
+    initialValue: null,
+  });
+
+  teams = toSignal(this.teamService.teams$, {
+    initialValue: [] as Team[],
+  });
+
+  teamId = computed(() => this.paramMap()?.get('teamId') ?? null);
+  team = computed(() => {
+    const teamId = this.teamId();
+
+    if (!teamId) {
+      return null;
+    }
+
+    return this.teams().find(({ id }) => id === teamId) ?? null;
+  });
+
+  isAdmin = toSignal(this.authService.isAdmin$, {
+    initialValue: false,
+  });
 
   deleteTeamLoading = signal(false);
   deleteTeamResultsLoading = signal(false);
   startTeamLoading = signal(false);
   stopTeamLoading = signal(false);
-
-  team$ = combineLatest([this.route.paramMap, this.teamService.teams$]).pipe(
-    map(([params, teams]) =>
-      teams.find((team) => team.id === params.get('teamId'))
-    )
-  );
 
   private readonly destroyRef = inject(DestroyRef);
 

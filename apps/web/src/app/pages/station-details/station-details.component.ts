@@ -1,16 +1,18 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   HostBinding,
+  computed,
   inject,
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { EMPTY, combineLatest, map, switchMap } from 'rxjs';
+import { EMPTY, switchMap } from 'rxjs';
 
-import { StationUtils } from '@bkr/api-interface';
+import { Station, StationUtils } from '@bkr/api-interface';
 
 import {
   ButtonComponent,
@@ -44,24 +46,37 @@ import { ConfirmService } from '../../services/confirm.service';
   ],
   templateUrl: './station-details.component.html',
   styleUrls: ['./station-details.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StationDetailsComponent {
   @HostBinding('class.page') page = true;
 
   readonly StationUtils = StationUtils;
 
-  isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
+  paramMap = toSignal(this.route.paramMap, {
+    initialValue: null,
+  });
+
+  stations = toSignal(this.stationService.stations$, {
+    initialValue: [] as Station[],
+  });
+
+  stationId = computed(() => this.paramMap()?.get('stationId') ?? null);
+  station = computed(() => {
+    const stationId = this.stationId();
+
+    if (!stationId) {
+      return null;
+    }
+
+    return this.stations().find(({ id }) => id === stationId) ?? null;
+  });
+
+  isAdmin = toSignal(this.authService.isAdmin$, {
+    initialValue: false,
+  });
 
   deleteStationLoading = signal(false);
-
-  station$ = combineLatest([
-    this.route.paramMap,
-    this.stationService.stations$,
-  ]).pipe(
-    map(([params, stations]) =>
-      stations.find((station) => station.id === params.get('stationId'))
-    )
-  );
 
   private readonly destroyRef = inject(DestroyRef);
 

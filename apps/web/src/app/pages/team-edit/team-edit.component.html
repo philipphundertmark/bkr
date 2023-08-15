@@ -1,4 +1,4 @@
-<header class="header" *ngIf="team$ | async as team">
+<header class="header" *ngIf="team() as team">
   <a bkr-button class="col-span-1" [routerLink]="['/teams', team.id]">
     Abbrechen
   </a>
@@ -15,11 +15,7 @@
   </button>
 </header>
 
-<form
-  class="flex flex-col gap-4"
-  [formGroup]="form"
-  *ngIf="team$ | async; else empty"
->
+<form class="flex flex-col gap-4" [formGroup]="form" *ngIf="team(); else empty">
   <div class="flex flex-col gap-2">
     <label class="label">Nummer<span class="text-indigo-500">*</span></label>
 

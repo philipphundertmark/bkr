@@ -1,6 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, DestroyRef, HostBinding, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  HostBinding,
+  inject,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
@@ -30,6 +37,7 @@ import { NotificationService, TeamService } from '../../services';
   ],
   templateUrl: './team-new.component.html',
   styleUrls: ['./team-new.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamNewComponent {
   @HostBinding('class.page') page = true;
@@ -47,7 +55,7 @@ export class TeamNewComponent {
     }),
   });
 
-  loading = false;
+  loading = signal(false);
 
   private readonly destroyRef = inject(DestroyRef);
 
@@ -72,7 +80,7 @@ export class TeamNewComponent {
     const nonEmptyMembers =
       members?.filter((member) => member.length > 0) ?? [];
 
-    this.loading = true;
+    this.loading.set(true);
 
     this.teamService
       .createTeam({
@@ -83,13 +91,13 @@ export class TeamNewComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.loading = false;
+          this.loading.set(false);
           this.notificationService.success('Team wurde erstellt.');
 
           this.router.navigate(['/teams']);
         },
         error: (err: HttpErrorResponse) => {
-          this.loading = false;
+          this.loading.set(false);
 
           const error = err.error?.error;
 

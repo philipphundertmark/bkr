@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   HostBinding,
@@ -33,14 +34,20 @@ import { ConfirmService } from '../../services/confirm.service';
   ],
   templateUrl: './team-list.component.html',
   styleUrls: ['./team-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamListComponent {
   @HostBinding('class.page') page = true;
 
   readonly TeamUtils = TeamUtils;
 
-  isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
-  teams = toSignal(this.teamService.teams$, { initialValue: [] as Team[] });
+  isAdmin = toSignal(this.authService.isAdmin$, {
+    initialValue: false,
+  });
+
+  teams = toSignal(this.teamService.teams$, {
+    initialValue: [] as Team[],
+  });
 
   shuffleTeamsLoading = signal(false);
 
