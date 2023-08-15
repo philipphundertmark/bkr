@@ -53,7 +53,9 @@ export class EndresultComponent {
     initialValue: [] as Team[],
   });
 
-  isRaceOver = toSignal(this.teamService.isRaceOver$, { initialValue: false });
+  isRaceOver = toSignal(this.teamService.isRaceOver$, {
+    initialValue: false,
+  });
   publishResults = toSignal(this.settingsService.publishResults$, {
     initialValue: false,
   });

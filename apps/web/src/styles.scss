@@ -13,7 +13,7 @@
 
 @layer components {
   .page {
-    @apply flex flex-col gap-6 pb-32;
+    @apply flex flex-col gap-6;
   }
 
   .title {

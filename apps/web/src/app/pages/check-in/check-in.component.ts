@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   HostBinding,
@@ -43,16 +44,22 @@ import {
   ],
   templateUrl: './check-in.component.html',
   styleUrls: ['./check-in.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckInComponent {
   @HostBinding('class.page') page = true;
 
-  TeamUtils = TeamUtils;
+  readonly TeamUtils = TeamUtils;
 
-  stationId = toSignal(this.authService.sub$, { initialValue: null });
-  teams = toSignal(this.teamService.teams$, { initialValue: [] });
+  stationId = toSignal(this.authService.sub$, {
+    initialValue: null,
+  });
+  teams = toSignal(this.teamService.teams$, {
+    initialValue: [],
+  });
 
-  readonly teamsToCheckIn = computed(() => {
+  checkInLoading = signal(false);
+  teamsToCheckIn = computed(() => {
     return this.teams()
       .filter(TeamUtils.isRunning)
       .filter(
@@ -61,7 +68,6 @@ export class CheckInComponent {
       );
   });
 
-  checkInLoading = signal(false);
   form = new FormGroup({
     selectedTeamId: new FormControl<string>('', Validators.required),
   });

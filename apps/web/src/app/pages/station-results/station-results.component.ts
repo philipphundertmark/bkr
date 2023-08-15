@@ -8,7 +8,6 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
-import { map } from 'rxjs';
 
 import {
   ResultWithRank,
@@ -37,7 +36,13 @@ export class StationResultsComponent {
   readonly StationUtils = StationUtils;
   readonly TeamUtils = TeamUtils;
 
-  isRaceOver = toSignal(this.teamService.isRaceOver$, { initialValue: false });
+  paramMap = toSignal(this.route.paramMap, {
+    initialValue: null,
+  });
+
+  isRaceOver = toSignal(this.teamService.isRaceOver$, {
+    initialValue: false,
+  });
   publishResults = toSignal(this.settingsService.publishResults$, {
     initialValue: false,
   });
@@ -49,16 +54,16 @@ export class StationResultsComponent {
     initialValue: [] as Team[],
   });
 
-  stationId = toSignal(
-    this.route.paramMap.pipe(map((params) => params.get('stationId'))),
-    {
-      initialValue: null,
+  stationId = computed(() => this.paramMap()?.get('stationId') ?? null);
+  station = computed(() => {
+    const stationId = this.stationId();
+
+    if (!stationId) {
+      return null;
     }
-  );
-  station = computed(
-    () =>
-      this.stations().find((station) => station.id === this.stationId()) ?? null
-  );
+
+    return this.stations().find((station) => station.id === stationId) ?? null;
+  });
 
   results = computed(() => {
     const station = this.station();

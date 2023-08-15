@@ -25,7 +25,7 @@
   class="space-y-1"
   *ngIf="!isRaceOver() || !publishResults(); else endresultHeader"
 >
-  <h2 class="subtitle">Bestenliste</h2>
+  <h2 class="subtitle">Übersicht</h2>
   <p class="text-gray-500">Das aktuelle Ranking aller Teams.</p>
 </div>
 
@@ -46,25 +46,26 @@
 
 <ng-container *ngIf="!isRaceOver() || !publishResults(); else endresult">
   <ul class="list" *ngIf="rankingItems().length > 0; else empty">
-    <li
-      class="list-entry"
-      *ngFor="let rankingItem of rankingItems(); let i = index"
-    >
-      <div class="font-bold">{{ i + 1 }}.</div>
-
+    <li class="list-entry" *ngFor="let rankingItem of rankingItems()">
       <div class="flex flex-1 flex-col gap-2">
         <div class="flex justify-between gap-2">
-          <h3 class="name">{{ rankingItem.name }}</h3>
+          <!-- Team name and number-->
+          <div class="flex items-center gap-2">
+            <h3 class="name">{{ rankingItem.name }}</h3>
+            <span class="number">#{{ rankingItem.number }}</span>
+          </div>
 
           <div class="flex items-center gap-2">
+            <!-- Finished indicator -->
             <bkr-check-circle-icon
               class="text-indigo-500"
               *ngIf="rankingItem.finished"
             ></bkr-check-circle-icon>
 
-            <span class="font-mono">{{
-              formatDuration(times()[rankingItem.teamId])
-            }}</span>
+            <!-- Current time -->
+            <span class="font-mono">
+              {{ formatDuration(times()[rankingItem.teamId]) }}
+            </span>
           </div>
         </div>
 

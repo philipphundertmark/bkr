@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, computed } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  computed,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
@@ -33,6 +38,7 @@ export interface TimeByTeam {
 export interface RankingItem {
   finished: boolean;
   name: string;
+  number: number;
   progress: number;
   started: boolean;
   stationIds: string[];
@@ -53,13 +59,21 @@ export interface RankingItem {
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
   @HostBinding('class.page') page = true;
 
-  isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
-  isRaceOver = toSignal(this.teamService.isRaceOver$, { initialValue: false });
-  isStation = toSignal(this.authService.isStation$, { initialValue: false });
+  isAdmin = toSignal(this.authService.isAdmin$, {
+    initialValue: false,
+  });
+  isStation = toSignal(this.authService.isStation$, {
+    initialValue: false,
+  });
+
+  isRaceOver = toSignal(this.teamService.isRaceOver$, {
+    initialValue: false,
+  });
   publishResults = toSignal(this.settingsService.publishResults$, {
     initialValue: false,
   });
@@ -97,6 +111,7 @@ export class HomeComponent {
       return {
         finished: TeamUtils.isFinished(team),
         name: team.name,
+        number: team.number,
         progress: TeamUtils.isFinished(team)
           ? 100
           : team.results.length

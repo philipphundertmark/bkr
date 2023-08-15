@@ -22,8 +22,8 @@
   deiner Station waren.
 </bkr-alert>
 
-<form [formGroup]="form">
-  <ul class="list" *ngIf="teamsToCheckIn().length > 0; else empty">
+<form [formGroup]="form" *ngIf="teamsToCheckIn().length > 0; else empty">
+  <ul class="list">
     <li
       class="focus-outline-inset list-entry items-center"
       (click)="handleSelectTeam(team.id)"
@@ -46,8 +46,8 @@
       </div>
     </li>
   </ul>
-
-  <ng-template #empty>
-    <bkr-empty>Es gibt keine Teams, die du einchecken kannst.</bkr-empty>
-  </ng-template>
 </form>
+
+<ng-template #empty>
+  <bkr-empty>Es gibt keine Teams, die du einchecken kannst.</bkr-empty>
+</ng-template>
