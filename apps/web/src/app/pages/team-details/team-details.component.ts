@@ -17,7 +17,6 @@ import {
   ButtonComponent,
   DangerZoneComponent,
   EmptyComponent,
-  LoadingComponent,
 } from '../../components';
 import {
   PauseIconComponent,
@@ -42,7 +41,6 @@ import { ConfirmService } from '../../services/confirm.service';
     DangerZoneComponent,
     DatePipe,
     EmptyComponent,
-    LoadingComponent,
     PauseIconComponent,
     PlayIconComponent,
     RouterModule,
@@ -57,7 +55,7 @@ export class TeamDetailsComponent {
   readonly TeamUtils = TeamUtils;
 
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
-  loading = toSignal(this.teamService.loading$, { initialValue: false });
+
   deleteTeamLoading = signal(false);
   deleteTeamResultsLoading = signal(false);
   startTeamLoading = signal(false);

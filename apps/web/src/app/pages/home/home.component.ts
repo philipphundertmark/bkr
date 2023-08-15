@@ -11,7 +11,6 @@ import { Result, Station, Team, TeamUtils } from '@bkr/api-interface';
 import {
   ButtonComponent,
   EmptyComponent,
-  LoadingComponent,
   RankingComponent,
 } from '../../components';
 import {
@@ -26,6 +25,10 @@ import {
 } from '../../services';
 
 dayjs.extend(duration);
+
+export interface TimeByTeam {
+  [teamId: string]: number;
+}
 
 export interface RankingItem {
   finished: boolean;
@@ -44,7 +47,6 @@ export interface RankingItem {
     CheckCircleIconComponent,
     CommonModule,
     EmptyComponent,
-    LoadingComponent,
     RankingComponent,
     RouterModule,
     TrophyIconComponent,
@@ -55,8 +57,6 @@ export interface RankingItem {
 export class HomeComponent {
   @HostBinding('class.page') page = true;
 
-  readonly timeBonus = this.stationService.TIME_BONUS;
-
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
   isRaceOver = toSignal(this.teamService.isRaceOver$, { initialValue: false });
   isStation = toSignal(this.authService.isStation$, { initialValue: false });
@@ -64,16 +64,12 @@ export class HomeComponent {
     initialValue: false,
   });
 
-  stationsLoading = toSignal(this.stationService.loading$, {
-    initialValue: false,
-  });
-  teamsLoading = toSignal(this.teamService.loading$, { initialValue: false });
-  loading = computed(() => this.stationsLoading() || this.teamsLoading());
-
   stations = toSignal(this.stationService.stations$, {
     initialValue: [] as Station[],
   });
-  teams = toSignal(this.teamService.teams$, { initialValue: [] as Team[] });
+  teams = toSignal(this.teamService.teams$, {
+    initialValue: [] as Team[],
+  });
 
   timer$ = timer(0, 1000).pipe(map(() => dayjs()));
   timer = toSignal(this.timer$, { initialValue: dayjs() });
@@ -81,7 +77,7 @@ export class HomeComponent {
   times = computed(() => {
     const now = this.timer();
 
-    return this.teams().reduce<Record<string, number>>((times, team) => {
+    return this.teams().reduce<TimeByTeam>((times, team) => {
       return {
         ...times,
         [team.id]: this.calculateTeamTime(team, now),
@@ -138,11 +134,13 @@ export class HomeComponent {
         : now.diff(team.startedAt, 'seconds')
       : 0;
   }
+
   private getLatestResult(team: Team, stations: Station[]): Result | undefined {
     const stationNumbers = team.results
       .map(({ stationId }) => stations.find(({ id }) => id === stationId))
       .filter((station): station is Station => typeof station !== 'undefined')
       .map((station) => station.number);
+
     const maxStationNumber = Math.max(...stationNumbers);
     const latestStation = stations.find(
       ({ number }) => number === maxStationNumber

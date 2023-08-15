@@ -12,11 +12,7 @@ import { EMPTY, switchMap } from 'rxjs';
 
 import { Team, TeamUtils } from '@bkr/api-interface';
 
-import {
-  ButtonComponent,
-  EmptyComponent,
-  LoadingComponent,
-} from '../../components';
+import { ButtonComponent, EmptyComponent } from '../../components';
 import {
   ArrowPathRoundedSquareIconComponent,
   ChevronRightIconComponent,
@@ -33,7 +29,6 @@ import { ConfirmService } from '../../services/confirm.service';
     ChevronRightIconComponent,
     CommonModule,
     EmptyComponent,
-    LoadingComponent,
     RouterModule,
   ],
   templateUrl: './team-list.component.html',
@@ -45,7 +40,6 @@ export class TeamListComponent {
   readonly TeamUtils = TeamUtils;
 
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
-  loading = toSignal(this.teamService.loading$, { initialValue: false });
   teams = toSignal(this.teamService.teams$, { initialValue: [] as Team[] });
 
   shuffleTeamsLoading = signal(false);

@@ -4,7 +4,6 @@ import {
   Component,
   DestroyRef,
   HostBinding,
-  computed,
   inject,
   signal,
 } from '@angular/core';
@@ -17,7 +16,6 @@ import {
   AlertComponent,
   ButtonComponent,
   EmptyComponent,
-  LoadingComponent,
   RankingComponent,
 } from '../../components';
 import {
@@ -35,7 +33,6 @@ import { SettingsService, StationService, TeamService } from '../../services';
     ButtonComponent,
     CommonModule,
     EmptyComponent,
-    LoadingComponent,
     LockClosedIconComponent,
     LockOpenIconComponent,
     RankingComponent,
@@ -49,25 +46,12 @@ import { SettingsService, StationService, TeamService } from '../../services';
 export class EndresultComponent {
   @HostBinding('class.page') page = true;
 
-  readonly timeBonus = this.stationService.TIME_BONUS;
-
   stations = toSignal(this.stationService.stations$, {
     initialValue: [] as Station[],
   });
-  stationsLoading = toSignal(this.stationService.loading$, {
-    initialValue: false,
-  });
-
   teams = toSignal(this.teamService.teams$, {
     initialValue: [] as Team[],
   });
-  teamsLoading = toSignal(this.teamService.loading$, { initialValue: false });
-
-  settingsLoading = toSignal(this.settingsService.loading$, {
-    initialValue: false,
-  });
-
-  loading = computed(() => this.stationsLoading() || this.teamsLoading());
 
   isRaceOver = toSignal(this.teamService.isRaceOver$, { initialValue: false });
   publishResults = toSignal(this.settingsService.publishResults$, {

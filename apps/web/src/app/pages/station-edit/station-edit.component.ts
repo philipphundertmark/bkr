@@ -24,7 +24,6 @@ import {
   ButtonComponent,
   EmptyComponent,
   InputDirective,
-  LoadingComponent,
   MembersInputComponent,
 } from '../../components';
 import {
@@ -41,7 +40,6 @@ import {
     CommonModule,
     EmptyComponent,
     InputDirective,
-    LoadingComponent,
     MembersInputComponent,
     ReactiveFormsModule,
     RouterModule,
@@ -55,7 +53,7 @@ export class StationEditComponent implements OnInit {
   readonly Order = Order;
 
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
-  loading = toSignal(this.stationService.loading$, { initialValue: false });
+
   saveLoading = signal(false);
 
   form = new FormGroup({

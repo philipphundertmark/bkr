@@ -5,6 +5,19 @@ import { ResultUtils } from './result.utils';
 import { Station } from './station';
 import { StationDTO } from './station.dto';
 
+const TIME_BONUS = [
+  // 1st place
+  5 * 60,
+  // 2nd place
+  4 * 60,
+  // 3rd place
+  3 * 60,
+  // 4th place
+  2 * 60,
+  // 5th place
+  1 * 60,
+];
+
 export const StationUtils = {
   deserialize(dto: StationDTO): Station {
     return {
@@ -38,6 +51,9 @@ export const StationUtils = {
     }
 
     return station.members.join(', ');
+  },
+  getBonusForRank(rank: number): number {
+    return TIME_BONUS[rank - 1] ?? 0;
   },
   getResultsWithRank(station: Station): ResultWithRank[] {
     let currentRank = 0;

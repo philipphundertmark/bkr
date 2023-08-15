@@ -15,80 +15,74 @@
   </ng-container>
 </header>
 
-<ng-container *ngIf="!loading(); else loadingIndicator">
-  <ng-container *ngIf="result$ | async as result; else empty">
-    <form class="flex flex-col gap-4" [formGroup]="form">
-      <div class="flex flex-col gap-2">
-        <label class="label">
-          Check-in um<span class="text-indigo-500">*</span>
-        </label>
+<ng-container *ngIf="result$ | async as result; else empty">
+  <form class="flex flex-col gap-4" [formGroup]="form">
+    <div class="flex flex-col gap-2">
+      <label class="label">
+        Check-in um<span class="text-indigo-500">*</span>
+      </label>
 
-        <input
-          bkrInput
-          formControlName="checkIn"
-          placeholder="Check-in"
-          type="text"
-        />
-      </div>
+      <input
+        bkrInput
+        formControlName="checkIn"
+        placeholder="Check-in"
+        type="text"
+      />
+    </div>
 
-      <p class="text-sm text-gray-500">
-        Die Zeit muss im Format
-        <span class="font-semibold text-indigo-500">DD.MM.YYYY HH:mm:ss</span>
-        angegeben werden.
-      </p>
+    <p class="text-sm text-gray-500">
+      Die Zeit muss im Format
+      <span class="font-semibold text-indigo-500">DD.MM.YYYY HH:mm:ss</span>
+      angegeben werden.
+    </p>
 
-      <div class="flex flex-col gap-2">
-        <label class="label">Check-out um</label>
+    <div class="flex flex-col gap-2">
+      <label class="label">Check-out um</label>
 
-        <input
-          bkrInput
-          formControlName="checkOut"
-          placeholder="Noch nicht ausgecheckt"
-          type="text"
-        />
-      </div>
+      <input
+        bkrInput
+        formControlName="checkOut"
+        placeholder="Noch nicht ausgecheckt"
+        type="text"
+      />
+    </div>
 
-      <p class="text-sm text-gray-500">
-        Die Zeit muss im Format
-        <span class="font-semibold text-indigo-500">DD.MM.YYYY HH:mm:ss</span>
-        angegeben werden.
-      </p>
+    <p class="text-sm text-gray-500">
+      Die Zeit muss im Format
+      <span class="font-semibold text-indigo-500">DD.MM.YYYY HH:mm:ss</span>
+      angegeben werden.
+    </p>
 
-      <div class="flex flex-col gap-2">
-        <label class="label">
-          Punkte<span class="text-indigo-500">*</span>
-        </label>
+    <div class="flex flex-col gap-2">
+      <label class="label">
+        Punkte<span class="text-indigo-500">*</span>
+      </label>
 
-        <input
-          bkrInput
-          formControlName="points"
-          min="0"
-          placeholder="Punkte"
-          type="number"
-        />
-      </div>
-    </form>
+      <input
+        bkrInput
+        formControlName="points"
+        min="0"
+        placeholder="Punkte"
+        type="number"
+      />
+    </div>
+  </form>
 
-    <bkr-danger-zone>
-      <button
-        bkr-button
-        [bkrLoading]="deleteResultLoading()"
-        bkrType="danger"
-        class="w-full"
-        (click)="handleDeleteResult(result.stationId, result.teamId)"
-        [disabled]="deleteResultLoading()"
-      >
-        <bkr-trash-icon></bkr-trash-icon>
-        Ergebnis löschen
-      </button>
-    </bkr-danger-zone>
-  </ng-container>
-
-  <ng-template #empty>
-    <bkr-empty>Ergebnis nicht gefunden.</bkr-empty>
-  </ng-template>
+  <bkr-danger-zone>
+    <button
+      bkr-button
+      [bkrLoading]="deleteResultLoading()"
+      bkrType="danger"
+      class="w-full"
+      (click)="handleDeleteResult(result.stationId, result.teamId)"
+      [disabled]="deleteResultLoading()"
+    >
+      <bkr-trash-icon></bkr-trash-icon>
+      Ergebnis löschen
+    </button>
+  </bkr-danger-zone>
 </ng-container>
 
-<ng-template #loadingIndicator>
-  <bkr-loading></bkr-loading>
+<ng-template #empty>
+  <bkr-empty>Ergebnis nicht gefunden.</bkr-empty>
 </ng-template>

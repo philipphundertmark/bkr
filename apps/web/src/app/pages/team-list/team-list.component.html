@@ -26,32 +26,26 @@
   <p class="text-gray-500">Eine Übersicht aller Teams.</p>
 </div>
 
-<ng-container *ngIf="loading() === false; else loadingIndicator">
-  <ul class="list" *ngIf="teams().length > 0; else empty">
-    <li *ngFor="let team of teams()">
-      <a
-        class="focus-outline-inset list-entry items-center justify-between"
-        [routerLink]="['/teams', team.id]"
-      >
-        <div class="flex flex-col gap-1">
-          <div class="flex items-center gap-2">
-            <h3 class="name">{{ team.name }}</h3>
-            <span class="number">#{{ team.number }}</span>
-          </div>
-
-          <p class="text-gray-500">{{ TeamUtils.formatTeamMembers(team) }}</p>
+<ul class="list" *ngIf="teams().length > 0; else empty">
+  <li *ngFor="let team of teams()">
+    <a
+      class="focus-outline-inset list-entry items-center justify-between"
+      [routerLink]="['/teams', team.id]"
+    >
+      <div class="flex flex-col gap-1">
+        <div class="flex items-center gap-2">
+          <h3 class="name">{{ team.name }}</h3>
+          <span class="number">#{{ team.number }}</span>
         </div>
 
-        <bkr-chevron-right-icon class="text-gray-500"></bkr-chevron-right-icon>
-      </a>
-    </li>
-  </ul>
+        <p class="text-gray-500">{{ TeamUtils.formatTeamMembers(team) }}</p>
+      </div>
 
-  <ng-template #empty>
-    <bkr-empty>Es gibt noch keine Teams.</bkr-empty>
-  </ng-template>
-</ng-container>
+      <bkr-chevron-right-icon class="text-gray-500"></bkr-chevron-right-icon>
+    </a>
+  </li>
+</ul>
 
-<ng-template #loadingIndicator>
-  <bkr-loading></bkr-loading>
+<ng-template #empty>
+  <bkr-empty>Es gibt noch keine Teams.</bkr-empty>
 </ng-template>

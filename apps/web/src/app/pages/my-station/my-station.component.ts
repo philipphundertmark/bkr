@@ -15,7 +15,6 @@ import {
   AlertComponent,
   ButtonComponent,
   EmptyComponent,
-  LoadingComponent,
 } from '../../components';
 import { ChevronRightIconComponent } from '../../icons/mini';
 import { AuthService, StationService, TeamService } from '../../services';
@@ -31,7 +30,6 @@ type ResultWithRankAndTeam = ResultWithRank & { team: Team };
     ChevronRightIconComponent,
     CommonModule,
     EmptyComponent,
-    LoadingComponent,
     RouterModule,
   ],
   templateUrl: './my-station.component.html',
@@ -41,10 +39,6 @@ export class MyStationComponent {
   @HostBinding('class.page') page = true;
 
   readonly TeamUtils = TeamUtils;
-
-  loading = toSignal(this.teamService.loading$, {
-    initialValue: false,
-  });
 
   stationId = toSignal(this.authService.sub$, { initialValue: null });
 

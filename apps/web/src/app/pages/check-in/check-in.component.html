@@ -22,7 +22,7 @@
   deiner Station waren.
 </bkr-alert>
 
-<form [formGroup]="form" *ngIf="loading() === false; else loadingIndicator">
+<form [formGroup]="form">
   <ul class="list" *ngIf="teamsToCheckIn().length > 0; else empty">
     <li
       class="focus-outline-inset list-entry items-center"
@@ -51,7 +51,3 @@
     <bkr-empty>Es gibt keine Teams, die du einchecken kannst.</bkr-empty>
   </ng-template>
 </form>
-
-<ng-template #loadingIndicator>
-  <bkr-loading></bkr-loading>
-</ng-template>

@@ -24,49 +24,43 @@
   </p>
 </div>
 
-<ng-container *ngIf="!loading(); else loadingIndicator">
-  <ng-container *ngIf="team() as team; else empty">
-    <form class="flex flex-col gap-4" [formGroup]="form">
-      <div class="flex flex-col gap-2">
-        <label class="label" for="points">
-          Punkte<span class="text-indigo-500">*</span>
-        </label>
-        <input
-          bkrInput
-          formControlName="points"
-          id="points"
-          name="points"
-          placeholder="Punkte"
-          type="number"
-        />
-      </div>
-    </form>
+<ng-container *ngIf="team() as team; else empty">
+  <form class="flex flex-col gap-4" [formGroup]="form">
+    <div class="flex flex-col gap-2">
+      <label class="label" for="points">
+        Punkte<span class="text-indigo-500">*</span>
+      </label>
+      <input
+        bkrInput
+        formControlName="points"
+        id="points"
+        name="points"
+        placeholder="Punkte"
+        type="number"
+      />
+    </div>
+  </form>
 
-    <bkr-alert>
-      Solltest du das Team aus Versehen eingecheckt haben, kannst du den
-      Check-in hier wieder löschen.
-    </bkr-alert>
+  <bkr-alert>
+    Solltest du das Team aus Versehen eingecheckt haben, kannst du den Check-in
+    hier wieder löschen.
+  </bkr-alert>
 
-    <bkr-danger-zone>
-      <button
-        bkr-button
-        [bkrLoading]="deleteResultLoading()"
-        bkrType="danger"
-        class="w-full"
-        (click)="handleDeleteResult(team.id)"
-        [disabled]="deleteResultLoading()"
-      >
-        <bkr-trash-icon></bkr-trash-icon>
-        Check-in löschen
-      </button>
-    </bkr-danger-zone>
-  </ng-container>
-
-  <ng-template #empty>
-    <bkr-empty>Team nicht gefunden.</bkr-empty>
-  </ng-template>
+  <bkr-danger-zone>
+    <button
+      bkr-button
+      [bkrLoading]="deleteResultLoading()"
+      bkrType="danger"
+      class="w-full"
+      (click)="handleDeleteResult(team.id)"
+      [disabled]="deleteResultLoading()"
+    >
+      <bkr-trash-icon></bkr-trash-icon>
+      Check-in löschen
+    </button>
+  </bkr-danger-zone>
 </ng-container>
 
-<ng-template #loadingIndicator>
-  <bkr-loading></bkr-loading>
+<ng-template #empty>
+  <bkr-empty>Team nicht gefunden.</bkr-empty>
 </ng-template>

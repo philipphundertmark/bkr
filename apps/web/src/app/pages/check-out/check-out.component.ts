@@ -26,7 +26,6 @@ import {
   DangerZoneComponent,
   EmptyComponent,
   InputDirective,
-  LoadingComponent,
 } from '../../components';
 import { TrashIconComponent } from '../../icons/mini';
 import {
@@ -49,7 +48,6 @@ import { ConfirmService } from '../../services/confirm.service';
     DangerZoneComponent,
     EmptyComponent,
     InputDirective,
-    LoadingComponent,
     ReactiveFormsModule,
     RouterModule,
     TrashIconComponent,
@@ -58,9 +56,6 @@ import { ConfirmService } from '../../services/confirm.service';
 export class CheckOutComponent {
   @HostBinding('class.page') page = true;
 
-  loading = toSignal(this.teamService.loading$, {
-    initialValue: false,
-  });
   stationId = toSignal(this.authService.sub$, { initialValue: null });
 
   checkOutLoading = signal(false);

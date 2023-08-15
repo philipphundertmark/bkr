@@ -23,7 +23,6 @@ import {
   ButtonComponent,
   EmptyComponent,
   InputDirective,
-  LoadingComponent,
   MembersInputComponent,
 } from '../../components';
 import { AuthService, NotificationService, TeamService } from '../../services';
@@ -37,7 +36,6 @@ import { dateTimeValidator } from '../../validators';
     CommonModule,
     EmptyComponent,
     InputDirective,
-    LoadingComponent,
     MembersInputComponent,
     ReactiveFormsModule,
     RouterModule,
@@ -49,7 +47,7 @@ export class TeamEditComponent implements OnInit {
   @HostBinding('class.page') page = true;
 
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
-  loading = toSignal(this.teamService.loading$, { initialValue: false });
+
   saveLoading = signal(false);
 
   form = new FormGroup({

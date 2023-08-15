@@ -15,43 +15,37 @@
   </p>
 </div>
 
-<ng-container *ngIf="!loading(); else loadingIndicator">
-  <ng-container *ngIf="isRaceOver() && publishResults(); else unavailable">
-    <ul class="list" *ngIf="results().length > 0; else empty">
-      <li class="list-entry" *ngFor="let result of results(); let i = index">
-        <div class="font-bold">{{ result.rank }}.</div>
+<ng-container *ngIf="isRaceOver() && publishResults(); else unavailable">
+  <ul class="list" *ngIf="results().length > 0; else empty">
+    <li class="list-entry" *ngFor="let result of results(); let i = index">
+      <div class="font-bold">{{ result.rank }}.</div>
 
-        <div class="flex flex-1 flex-col gap-1">
-          <div class="flex justify-between gap-2">
-            <div class="flex items-center gap-2">
-              <h3 class="name">{{ result.team.name }}</h3>
-              <span class="number">#{{ result.team.number }}</span>
-            </div>
-
-            <div class="font-mono">
-              - {{ formatDuration(timeBonus.at(result.rank - 1) ?? 0) }}
-            </div>
+      <div class="flex flex-1 flex-col gap-1">
+        <div class="flex justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <h3 class="name">{{ result.team.name }}</h3>
+            <span class="number">#{{ result.team.number }}</span>
           </div>
 
-          <p class="text-gray-500">
-            {{ TeamUtils.formatTeamMembers(result.team) }}
-          </p>
-
-          <p class="font-semibold">{{ result.points }} Punkte</p>
+          <div class="font-mono">
+            - {{ formatDuration(StationUtils.getBonusForRank(result.rank)) }}
+          </div>
         </div>
-      </li>
-    </ul>
 
-    <ng-template #empty>
-      <bkr-empty>Es gibt keine Ergebnisse an dieser Station.</bkr-empty>
-    </ng-template>
-  </ng-container>
+        <p class="text-gray-500">
+          {{ TeamUtils.formatTeamMembers(result.team) }}
+        </p>
 
-  <ng-template #unavailable>
-    <bkr-empty>Die Ergebnisse stehen noch nicht zur Verfügung.</bkr-empty>
+        <p class="font-semibold">{{ result.points }} Punkte</p>
+      </div>
+    </li>
+  </ul>
+
+  <ng-template #empty>
+    <bkr-empty>Es gibt keine Ergebnisse an dieser Station.</bkr-empty>
   </ng-template>
 </ng-container>
 
-<ng-template #loadingIndicator>
-  <bkr-loading></bkr-loading>
+<ng-template #unavailable>
+  <bkr-empty>Die Ergebnisse stehen noch nicht zur Verfügung.</bkr-empty>
 </ng-template>

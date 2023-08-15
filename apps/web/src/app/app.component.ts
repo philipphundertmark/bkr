@@ -10,6 +10,7 @@ import {
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterModule } from '@angular/router';
 
+import { LoadingComponent } from './components';
 import {
   FlagIconComponent,
   StarIconComponent,
@@ -23,6 +24,7 @@ import { AuthService } from './services/auth.service';
   imports: [
     CommonModule,
     FlagIconComponent,
+    LoadingComponent,
     StarIconComponent,
     RouterModule,
     UserIconComponent,
@@ -45,6 +47,19 @@ export class AppComponent implements OnInit {
       this.settingsError() !== null ||
       this.stationsError() !== null ||
       this.teamsError() !== null
+  );
+
+  settingsLoading = toSignal(this.settingsService.loading$, {
+    initialValue: false,
+  });
+  stationsLoading = toSignal(this.stationService.loading$, {
+    initialValue: false,
+  });
+  teamsLoading = toSignal(this.teamService.loading$, { initialValue: false });
+
+  loading = computed(
+    () =>
+      this.settingsLoading() || this.stationsLoading() || this.teamsLoading()
   );
 
   private readonly destroyRef = inject(DestroyRef);

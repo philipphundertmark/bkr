@@ -5,11 +5,7 @@ import { RouterModule } from '@angular/router';
 
 import { Station, StationUtils } from '@bkr/api-interface';
 
-import {
-  ButtonComponent,
-  EmptyComponent,
-  LoadingComponent,
-} from '../../components';
+import { ButtonComponent, EmptyComponent } from '../../components';
 import { ChevronRightIconComponent } from '../../icons/mini';
 import { AuthService, StationService } from '../../services';
 
@@ -21,7 +17,6 @@ import { AuthService, StationService } from '../../services';
     ChevronRightIconComponent,
     CommonModule,
     EmptyComponent,
-    LoadingComponent,
     RouterModule,
   ],
   templateUrl: './station-list.component.html',
@@ -33,7 +28,6 @@ export class StationListComponent {
   readonly StationUtils = StationUtils;
 
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
-  loading = toSignal(this.stationService.loading$, { initialValue: false });
   stations = toSignal(this.stationService.stations$, {
     initialValue: [] as Station[],
   });

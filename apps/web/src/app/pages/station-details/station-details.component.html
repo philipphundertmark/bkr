@@ -19,73 +19,67 @@
   </ng-container>
 </header>
 
-<ng-container *ngIf="!loading(); else loadingIndicator">
-  <ng-container *ngIf="station$ | async as station; else empty">
-    <div class="flex flex-col gap-4">
-      <div class="flex flex-col gap-2">
-        <label class="label">Nummer</label>
-        <p>{{ station.number }}</p>
-      </div>
-
-      <div class="flex flex-col gap-2">
-        <label class="label">Name</label>
-        <p>{{ station.name }}</p>
-      </div>
-
-      <div class="flex flex-col gap-2" *ngIf="isAdmin() && station.code">
-        <label class="label">Code</label>
-        <p>{{ station.code }}</p>
-      </div>
-
-      <div class="flex flex-col gap-2" [ngSwitch]="station.order">
-        <label class="label flex items-center gap-2">
-          Wertung
-          <bkr-arrow-down-circle-icon
-            class="text-indigo-500"
-            *ngSwitchCase="'ASC'"
-          ></bkr-arrow-down-circle-icon>
-          <bkr-arrow-up-circle-icon
-            class="text-indigo-500"
-            *ngSwitchCase="'DESC'"
-          ></bkr-arrow-up-circle-icon>
-        </label>
-        <p *ngSwitchCase="'ASC'">
-          Das Team mit den
-          <span class="font-semibold text-indigo-500">wenigsten</span> Punkten
-          gewinnt.
-        </p>
-        <p *ngSwitchCase="'DESC'">
-          Das Team mit den
-          <span class="font-semibold text-indigo-500">meisten</span> Punkten
-          gewinnt.
-        </p>
-      </div>
-
-      <div class="flex flex-col gap-2">
-        <label class="label" for="name">Mitglieder</label>
-        <p>{{ StationUtils.formatStationMembers(station) }}</p>
-      </div>
+<ng-container *ngIf="station$ | async as station; else empty">
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-2">
+      <label class="label">Nummer</label>
+      <p>{{ station.number }}</p>
     </div>
 
-    <bkr-danger-zone *ngIf="isAdmin()">
-      <button
-        bkr-button
-        [bkrLoading]="deleteStationLoading()"
-        bkrType="danger"
-        class="w-full"
-        (click)="handleDeleteStation(station.id)"
-      >
-        <bkr-trash-icon></bkr-trash-icon>
-        Station löschen
-      </button>
-    </bkr-danger-zone>
-  </ng-container>
+    <div class="flex flex-col gap-2">
+      <label class="label">Name</label>
+      <p>{{ station.name }}</p>
+    </div>
 
-  <ng-template #empty>
-    <bkr-empty>Station nicht gefunden.</bkr-empty>
-  </ng-template>
+    <div class="flex flex-col gap-2" *ngIf="isAdmin() && station.code">
+      <label class="label">Code</label>
+      <p>{{ station.code }}</p>
+    </div>
+
+    <div class="flex flex-col gap-2" [ngSwitch]="station.order">
+      <label class="label flex items-center gap-2">
+        Wertung
+        <bkr-arrow-down-circle-icon
+          class="text-indigo-500"
+          *ngSwitchCase="'ASC'"
+        ></bkr-arrow-down-circle-icon>
+        <bkr-arrow-up-circle-icon
+          class="text-indigo-500"
+          *ngSwitchCase="'DESC'"
+        ></bkr-arrow-up-circle-icon>
+      </label>
+      <p *ngSwitchCase="'ASC'">
+        Das Team mit den
+        <span class="font-semibold text-indigo-500">wenigsten</span> Punkten
+        gewinnt.
+      </p>
+      <p *ngSwitchCase="'DESC'">
+        Das Team mit den
+        <span class="font-semibold text-indigo-500">meisten</span> Punkten
+        gewinnt.
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label class="label" for="name">Mitglieder</label>
+      <p>{{ StationUtils.formatStationMembers(station) }}</p>
+    </div>
+  </div>
+
+  <bkr-danger-zone *ngIf="isAdmin()">
+    <button
+      bkr-button
+      [bkrLoading]="deleteStationLoading()"
+      bkrType="danger"
+      class="w-full"
+      (click)="handleDeleteStation(station.id)"
+    >
+      <bkr-trash-icon></bkr-trash-icon>
+      Station löschen
+    </button>
+  </bkr-danger-zone>
 </ng-container>
 
-<ng-template #loadingIndicator>
-  <bkr-loading></bkr-loading>
+<ng-template #empty>
+  <bkr-empty>Station nicht gefunden.</bkr-empty>
 </ng-template>

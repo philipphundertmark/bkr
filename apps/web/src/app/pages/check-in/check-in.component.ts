@@ -22,7 +22,6 @@ import {
   AlertComponent,
   ButtonComponent,
   EmptyComponent,
-  LoadingComponent,
 } from '../../components';
 import {
   AuthService,
@@ -39,7 +38,6 @@ import {
     ButtonComponent,
     CommonModule,
     EmptyComponent,
-    LoadingComponent,
     ReactiveFormsModule,
     RouterModule,
   ],
@@ -49,13 +47,10 @@ import {
 export class CheckInComponent {
   @HostBinding('class.page') page = true;
 
-  readonly TeamUtils = TeamUtils;
+  TeamUtils = TeamUtils;
 
-  readonly loading = toSignal(this.teamService.loading$, {
-    initialValue: false,
-  });
-  readonly stationId = toSignal(this.authService.sub$, { initialValue: null });
-  readonly teams = toSignal(this.teamService.teams$, { initialValue: [] });
+  stationId = toSignal(this.authService.sub$, { initialValue: null });
+  teams = toSignal(this.teamService.teams$, { initialValue: [] });
 
   readonly teamsToCheckIn = computed(() => {
     return this.teams()

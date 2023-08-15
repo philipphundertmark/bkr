@@ -1,7 +1,7 @@
 <header class="header">
   <a bkr-backward-button class="col-span-1" routerLink="/">Zurück</a>
 
-  <ng-container *ngIf="!settingsLoading()" [ngSwitch]="publishResults()">
+  <ng-container [ngSwitch]="publishResults()">
     <button
       bkr-button
       [bkrLoading]="publishResultsLoading()"
@@ -56,19 +56,12 @@
   </div>
 </div>
 
-<ng-container *ngIf="loading() === false; else loadingIndicator">
-  <bkr-ranking
-    *ngIf="isRaceOver(); else empty"
-    [stations]="stations()"
-    [teams]="teams()"
-    [timeBonus]="timeBonus"
-  ></bkr-ranking>
+<bkr-ranking
+  *ngIf="isRaceOver(); else empty"
+  [stations]="stations()"
+  [teams]="teams()"
+></bkr-ranking>
 
-  <ng-template #empty>
-    <bkr-empty>Das Rennen ist noch nicht vorbei.</bkr-empty>
-  </ng-template>
-</ng-container>
-
-<ng-template #loadingIndicator>
-  <bkr-loading></bkr-loading>
+<ng-template #empty>
+  <bkr-empty>Das Rennen ist noch nicht vorbei.</bkr-empty>
 </ng-template>

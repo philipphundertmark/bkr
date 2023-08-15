@@ -15,88 +15,82 @@
   </button>
 </header>
 
-<ng-container *ngIf="!loading(); else loadingIndicator">
-  <form
-    class="flex flex-col gap-4"
-    [formGroup]="form"
-    *ngIf="team$ | async; else empty"
-  >
-    <div class="flex flex-col gap-2">
-      <label class="label">Nummer<span class="text-indigo-500">*</span></label>
+<form
+  class="flex flex-col gap-4"
+  [formGroup]="form"
+  *ngIf="team$ | async; else empty"
+>
+  <div class="flex flex-col gap-2">
+    <label class="label">Nummer<span class="text-indigo-500">*</span></label>
 
-      <input
-        bkrInput
-        formControlName="number"
-        placeholder="Nummer"
-        type="number"
-      />
-    </div>
+    <input
+      bkrInput
+      formControlName="number"
+      placeholder="Nummer"
+      type="number"
+    />
+  </div>
 
-    <div class="flex flex-col gap-2">
-      <label class="label">Name<span class="text-indigo-500">*</span></label>
+  <div class="flex flex-col gap-2">
+    <label class="label">Name<span class="text-indigo-500">*</span></label>
 
-      <input bkrInput formControlName="name" placeholder="Name" type="text" />
-    </div>
+    <input bkrInput formControlName="name" placeholder="Name" type="text" />
+  </div>
 
-    <div class="flex flex-col gap-2">
-      <label class="label">Gestartet um</label>
+  <div class="flex flex-col gap-2">
+    <label class="label">Gestartet um</label>
 
-      <input
-        bkrInput
-        formControlName="startedAt"
-        placeholder="Noch nicht gestartet"
-        type="text"
-      />
-    </div>
+    <input
+      bkrInput
+      formControlName="startedAt"
+      placeholder="Noch nicht gestartet"
+      type="text"
+    />
+  </div>
 
-    <p class="text-sm text-gray-500">
-      Die Zeit muss im Format
-      <span class="font-semibold text-indigo-500">DD.MM.YYYY HH:mm:ss</span>
-      angegeben werden.
-    </p>
+  <p class="text-sm text-gray-500">
+    Die Zeit muss im Format
+    <span class="font-semibold text-indigo-500">DD.MM.YYYY HH:mm:ss</span>
+    angegeben werden.
+  </p>
 
-    <div class="flex flex-col gap-2">
-      <label class="label">Angekommen um</label>
+  <div class="flex flex-col gap-2">
+    <label class="label">Angekommen um</label>
 
-      <input
-        bkrInput
-        formControlName="finishedAt"
-        placeholder="Noch nicht angekommen"
-        type="text"
-      />
-    </div>
+    <input
+      bkrInput
+      formControlName="finishedAt"
+      placeholder="Noch nicht angekommen"
+      type="text"
+    />
+  </div>
 
-    <p class="text-sm text-gray-500">
-      Die Zeit muss im Format
-      <span class="font-semibold text-indigo-500">DD.MM.YYYY HH:mm:ss</span>
-      angegeben werden.
-    </p>
+  <p class="text-sm text-gray-500">
+    Die Zeit muss im Format
+    <span class="font-semibold text-indigo-500">DD.MM.YYYY HH:mm:ss</span>
+    angegeben werden.
+  </p>
 
-    <div class="flex flex-col gap-2">
-      <label class="label">
-        Strafminuten<span class="text-indigo-500">*</span>
-      </label>
+  <div class="flex flex-col gap-2">
+    <label class="label">
+      Strafminuten<span class="text-indigo-500">*</span>
+    </label>
 
-      <input
-        bkrInput
-        formControlName="penalty"
-        min="0"
-        placeholder="Strafminuten"
-        type="number"
-      />
-    </div>
+    <input
+      bkrInput
+      formControlName="penalty"
+      min="0"
+      placeholder="Strafminuten"
+      type="number"
+    />
+  </div>
 
-    <div class="flex flex-col gap-2">
-      <label class="label">Members</label>
-      <bkr-members-input formControlName="members"></bkr-members-input>
-    </div>
-  </form>
+  <div class="flex flex-col gap-2">
+    <label class="label">Members</label>
+    <bkr-members-input formControlName="members"></bkr-members-input>
+  </div>
+</form>
 
-  <ng-template #empty>
-    <bkr-empty>Team nicht gefunden.</bkr-empty>
-  </ng-template>
-</ng-container>
-
-<ng-template #loadingIndicator>
-  <bkr-loading></bkr-loading>
+<ng-template #empty>
+  <bkr-empty>Team nicht gefunden.</bkr-empty>
 </ng-template>

@@ -16,7 +16,6 @@ import {
   ButtonComponent,
   DangerZoneComponent,
   EmptyComponent,
-  LoadingComponent,
 } from '../../components';
 import {
   ArrowDownCircleIconComponent,
@@ -40,7 +39,6 @@ import { ConfirmService } from '../../services/confirm.service';
     CommonModule,
     DangerZoneComponent,
     EmptyComponent,
-    LoadingComponent,
     RouterModule,
     TrashIconComponent,
   ],
@@ -53,7 +51,7 @@ export class StationDetailsComponent {
   readonly StationUtils = StationUtils;
 
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
-  loading = toSignal(this.stationService.loading$, { initialValue: false });
+
   deleteStationLoading = signal(false);
 
   station$ = combineLatest([

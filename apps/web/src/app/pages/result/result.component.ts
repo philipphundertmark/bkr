@@ -5,11 +5,10 @@ import {
   DestroyRef,
   HostBinding,
   OnInit,
-  computed,
   inject,
   signal,
 } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
   FormGroup,
@@ -25,14 +24,12 @@ import {
   DangerZoneComponent,
   EmptyComponent,
   InputDirective,
-  LoadingComponent,
 } from '../../components';
 import { TrashIconComponent } from '../../icons/mini';
 import {
   AuthService,
   NotificationService,
   ResultService,
-  StationService,
   TeamService,
 } from '../../services';
 import { ConfirmService } from '../../services/confirm.service';
@@ -47,7 +44,6 @@ import { dateTimeValidator } from '../../validators';
     DangerZoneComponent,
     EmptyComponent,
     InputDirective,
-    LoadingComponent,
     ReactiveFormsModule,
     RouterModule,
     TrashIconComponent,
@@ -59,20 +55,10 @@ import { dateTimeValidator } from '../../validators';
 export class ResultComponent implements OnInit {
   @HostBinding('class.page') page = true;
 
-  readonly stationsLoading = toSignal(this.stationService.loading$, {
-    initialValue: false,
-  });
-  readonly teamsLoading = toSignal(this.teamService.loading$, {
-    initialValue: false,
-  });
-  readonly loading = computed(
-    () => this.stationsLoading() || this.teamsLoading()
-  );
+  deleteResultLoading = signal(false);
+  updateResultLoading = signal(false);
 
-  readonly deleteResultLoading = signal(false);
-  readonly updateResultLoading = signal(false);
-
-  readonly form = new FormGroup({
+  form = new FormGroup({
     checkIn: new FormControl<string | null>(null, {
       validators: [Validators.required, dateTimeValidator()],
     }),
@@ -84,7 +70,7 @@ export class ResultComponent implements OnInit {
     }),
   });
 
-  readonly result$ = combineLatest([
+  result$ = combineLatest([
     this.route.queryParamMap,
     this.teamService.teams$,
     this.authService.sub$,
@@ -105,7 +91,6 @@ export class ResultComponent implements OnInit {
     private readonly resultService: ResultService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly stationService: StationService,
     private readonly teamService: TeamService
   ) {}
 

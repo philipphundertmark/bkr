@@ -18,11 +18,7 @@ import {
   TeamUtils,
 } from '@bkr/api-interface';
 
-import {
-  ButtonComponent,
-  EmptyComponent,
-  LoadingComponent,
-} from '../../components';
+import { ButtonComponent, EmptyComponent } from '../../components';
 import { SettingsService, StationService, TeamService } from '../../services';
 
 type ResultWithRankAndTeam = ResultWithRank & { team: Team };
@@ -30,13 +26,7 @@ type ResultWithRankAndTeam = ResultWithRank & { team: Team };
 @Component({
   selector: 'bkr-station-results',
   standalone: true,
-  imports: [
-    ButtonComponent,
-    CommonModule,
-    EmptyComponent,
-    LoadingComponent,
-    RouterModule,
-  ],
+  imports: [ButtonComponent, CommonModule, EmptyComponent, RouterModule],
   templateUrl: './station-results.component.html',
   styleUrls: ['./station-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,20 +34,13 @@ type ResultWithRankAndTeam = ResultWithRank & { team: Team };
 export class StationResultsComponent {
   @HostBinding('class.page') page = true;
 
+  readonly StationUtils = StationUtils;
   readonly TeamUtils = TeamUtils;
-
-  readonly timeBonus = this.stationService.TIME_BONUS;
 
   isRaceOver = toSignal(this.teamService.isRaceOver$, { initialValue: false });
   publishResults = toSignal(this.settingsService.publishResults$, {
     initialValue: false,
   });
-
-  loading = computed(() => this.stationsLoading() || this.teamsLoading());
-  stationsLoading = toSignal(this.stationService.loading$, {
-    initialValue: false,
-  });
-  teamsLoading = toSignal(this.teamService.loading$, { initialValue: false });
 
   stations = toSignal(this.stationService.stations$, {
     initialValue: [] as Station[],

@@ -62,8 +62,6 @@ export class RankingComponent {
     this.teams$.next(value);
   }
 
-  @Input({ required: true }) timeBonus: number[] = [];
-
   @HostBinding('class.list') list = true;
 
   stations$ = new BehaviorSubject<Station[]>([]);
@@ -76,20 +74,7 @@ export class RankingComponent {
     const stations = this.stations();
     const teams = this.teams();
 
-    const rankByTeamByStation = stations.reduce((acc, station) => {
-      const rankByTeam = StationUtils.getResultsWithRank(station).reduce(
-        (acc, result) => ({
-          ...acc,
-          [result.teamId]: result.rank,
-        }),
-        {} as RankByTeam
-      );
-
-      return {
-        ...acc,
-        [station.id]: rankByTeam,
-      };
-    }, {} as RankByTeamByStation);
+    const rankByTeamByStation = this.getRankByTeamByStation(stations);
 
     return teams
       .map((team): Omit<RankingItem, 'time'> => {
@@ -97,19 +82,11 @@ export class RankingComponent {
           name: team.name,
           number: team.number,
           penalty: team.penalty * 60,
-          results: stations.map((station) => {
-            const result = team.results.find(
-              (result) => result.stationId === station.id
-            );
-
-            const rank = rankByTeamByStation[station.id]?.[team.id] ?? 0;
-
-            return {
-              bonus: rank > 0 ? this.timeBonus.at(rank - 1) ?? 0 : 0,
-              stationId: station.id,
-              time: result?.checkOut?.diff(result.checkIn, 'seconds') ?? 0,
-            };
-          }),
+          results: this.getStationResultsOfTeam(
+            team,
+            stations,
+            rankByTeamByStation
+          ),
           totalTime: team.finishedAt?.diff(team.startedAt, 'seconds') ?? 0,
         };
       })
@@ -131,4 +108,49 @@ export class RankingComponent {
       })
       .sort((a, b) => a.time - b.time);
   });
+
+  /**
+   * Get the rank of each team by station.
+   *
+   * @param stations - The stations
+   * @returns The rank of each team by station
+   */
+  private getRankByTeamByStation(stations: Station[]): RankByTeamByStation {
+    return stations.reduce<RankByTeamByStation>((acc, station) => {
+      const rankByTeam = StationUtils.getResultsWithRank(
+        station
+      ).reduce<RankByTeam>(
+        (acc, result) => ({
+          ...acc,
+          [result.teamId]: result.rank,
+        }),
+        {}
+      );
+
+      return {
+        ...acc,
+        [station.id]: rankByTeam,
+      };
+    }, {});
+  }
+
+  private getStationResultsOfTeam(
+    team: Team,
+    stations: Station[],
+    rankByTeamByStation: RankByTeamByStation
+  ): StationResult[] {
+    return stations.map((station) => {
+      const result = team.results.find(
+        (result) => result.stationId === station.id
+      );
+
+      const rank = rankByTeamByStation[station.id]?.[team.id] ?? 0;
+
+      return {
+        bonus: StationUtils.getBonusForRank(rank),
+        stationId: station.id,
+        time: result?.checkOut?.diff(result.checkIn, 'seconds') ?? 0,
+      };
+    });
+  }
 }

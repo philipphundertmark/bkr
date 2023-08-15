@@ -36,70 +36,64 @@
   </ng-container>
 </header>
 
-<ng-container *ngIf="!loading(); else loadingIndicator">
-  <ng-container *ngIf="team$ | async as team; else empty">
-    <div class="flex flex-col gap-4">
-      <div class="flex flex-col gap-2">
-        <label class="label">Nummer</label>
-        <p>{{ team.number }}</p>
-      </div>
-
-      <div class="flex flex-col gap-2">
-        <label class="label">Name</label>
-        <p>{{ team.name }}</p>
-      </div>
-
-      <div class="flex flex-col gap-2">
-        <label class="label">Gestartet um</label>
-        <p>{{ team.startedAt | date }}</p>
-      </div>
-
-      <div class="flex flex-col gap-2">
-        <label class="label">Angekommen um</label>
-        <p>{{ team.finishedAt | date }}</p>
-      </div>
-
-      <div class="flex flex-col gap-2">
-        <label class="label">Strafminuten</label>
-        <p>{{ team.penalty }}</p>
-      </div>
-
-      <div class="flex flex-col gap-2">
-        <label class="label" for="name">Mitglieder</label>
-        <p>{{ TeamUtils.formatTeamMembers(team) }}</p>
-      </div>
+<ng-container *ngIf="team$ | async as team; else empty">
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-2">
+      <label class="label">Nummer</label>
+      <p>{{ team.number }}</p>
     </div>
 
-    <bkr-danger-zone *ngIf="isAdmin()">
-      <button
-        bkr-button
-        [bkrLoading]="deleteTeamResultsLoading()"
-        bkrType="danger"
-        class="w-full"
-        (click)="handleDeleteTeamResults(team.id)"
-      >
-        <bkr-trash-icon></bkr-trash-icon>
-        Ergebnisse löschen
-      </button>
+    <div class="flex flex-col gap-2">
+      <label class="label">Name</label>
+      <p>{{ team.name }}</p>
+    </div>
 
-      <button
-        bkr-button
-        [bkrLoading]="deleteTeamLoading()"
-        bkrType="danger"
-        class="w-full"
-        (click)="handleDeleteTeam(team.id)"
-      >
-        <bkr-trash-icon></bkr-trash-icon>
-        Team löschen
-      </button>
-    </bkr-danger-zone>
-  </ng-container>
+    <div class="flex flex-col gap-2">
+      <label class="label">Gestartet um</label>
+      <p>{{ team.startedAt | date }}</p>
+    </div>
 
-  <ng-template #empty>
-    <bkr-empty>Team nicht gefunden.</bkr-empty>
-  </ng-template>
+    <div class="flex flex-col gap-2">
+      <label class="label">Angekommen um</label>
+      <p>{{ team.finishedAt | date }}</p>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label class="label">Strafminuten</label>
+      <p>{{ team.penalty }}</p>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label class="label" for="name">Mitglieder</label>
+      <p>{{ TeamUtils.formatTeamMembers(team) }}</p>
+    </div>
+  </div>
+
+  <bkr-danger-zone *ngIf="isAdmin()">
+    <button
+      bkr-button
+      [bkrLoading]="deleteTeamResultsLoading()"
+      bkrType="danger"
+      class="w-full"
+      (click)="handleDeleteTeamResults(team.id)"
+    >
+      <bkr-trash-icon></bkr-trash-icon>
+      Ergebnisse löschen
+    </button>
+
+    <button
+      bkr-button
+      [bkrLoading]="deleteTeamLoading()"
+      bkrType="danger"
+      class="w-full"
+      (click)="handleDeleteTeam(team.id)"
+    >
+      <bkr-trash-icon></bkr-trash-icon>
+      Team löschen
+    </button>
+  </bkr-danger-zone>
 </ng-container>
 
-<ng-template #loadingIndicator>
-  <bkr-loading></bkr-loading>
+<ng-template #empty>
+  <bkr-empty>Team nicht gefunden.</bkr-empty>
 </ng-template>

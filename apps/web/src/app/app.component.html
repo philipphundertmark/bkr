@@ -20,8 +20,10 @@
   </button>
 </nav>
 
-<ng-container *ngIf="!hasError(); else error">
-  <router-outlet></router-outlet>
+<ng-container *ngIf="!loading(); else loadingIndicator">
+  <ng-container *ngIf="!hasError(); else error">
+    <router-outlet></router-outlet>
+  </ng-container>
 </ng-container>
 
 <ng-template #error>
@@ -42,4 +44,8 @@
 
     <span class="text-xl font-bold"> Da lief wohl was schief. </span>
   </div>
+</ng-template>
+
+<ng-template #loadingIndicator>
+  <bkr-loading></bkr-loading>
 </ng-template>

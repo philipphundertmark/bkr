@@ -15,93 +15,87 @@
   </button>
 </header>
 
-<ng-container *ngIf="!loading(); else loadingIndicator">
-  <form
-    class="flex flex-col gap-4"
-    [formGroup]="form"
-    *ngIf="station$ | async; else empty"
-  >
-    <div class="flex flex-col gap-2">
-      <label class="label">Nummer<span class="text-indigo-500">*</span></label>
+<form
+  class="flex flex-col gap-4"
+  [formGroup]="form"
+  *ngIf="station$ | async; else empty"
+>
+  <div class="flex flex-col gap-2">
+    <label class="label">Nummer<span class="text-indigo-500">*</span></label>
 
+    <input
+      bkrInput
+      formControlName="number"
+      placeholder="Nummer"
+      type="number"
+    />
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <label class="label">Name<span class="text-indigo-500">*</span></label>
+
+    <input bkrInput formControlName="name" placeholder="Name" type="text" />
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <label class="label">Code<span class="text-indigo-500">*</span></label>
+
+    <input
+      bkrInput
+      formControlName="code"
+      id="code"
+      maxlength="6"
+      placeholder="123456"
+      type="text"
+    />
+  </div>
+
+  <p class="text-sm text-gray-500">
+    Der Code dient als Passwort, mit dem sich Mitglieder der Station einloggen
+    können, und muss 6 Zeichen lang sein.
+  </p>
+
+  <div class="flex flex-col gap-2">
+    <label class="label">Wertung<span class="text-indigo-500">*</span></label>
+
+    <div class="flex items-center gap-4">
       <input
-        bkrInput
-        formControlName="number"
-        placeholder="Nummer"
-        type="number"
+        class="radio"
+        formControlName="order"
+        id="order-desc"
+        type="radio"
+        [value]="Order.DESC"
       />
+
+      <label for="order-desc">
+        Das Team mit den
+        <span class="font-semibold text-indigo-500">meisten</span> Punkten
+        gewinnt.
+      </label>
     </div>
 
-    <div class="flex flex-col gap-2">
-      <label class="label">Name<span class="text-indigo-500">*</span></label>
-
-      <input bkrInput formControlName="name" placeholder="Name" type="text" />
-    </div>
-
-    <div class="flex flex-col gap-2">
-      <label class="label">Code<span class="text-indigo-500">*</span></label>
-
+    <div class="flex items-center gap-4">
       <input
-        bkrInput
-        formControlName="code"
-        id="code"
-        maxlength="6"
-        placeholder="123456"
-        type="text"
+        class="radio"
+        formControlName="order"
+        id="order-asc"
+        type="radio"
+        [value]="Order.ASC"
       />
+      <label for="order-asc">
+        Das Team mit den
+        <span class="font-semibold text-indigo-500">wenigsten</span> Punkten
+        gewinnt.
+      </label>
     </div>
+  </div>
 
-    <p class="text-sm text-gray-500">
-      Der Code dient als Passwort, mit dem sich Mitglieder der Station einloggen
-      können, und muss 6 Zeichen lang sein.
-    </p>
+  <div class="flex flex-col gap-2">
+    <label class="label">Members</label>
+    <bkr-members-input formControlName="members"></bkr-members-input>
+  </div>
+</form>
 
-    <div class="flex flex-col gap-2">
-      <label class="label">Wertung<span class="text-indigo-500">*</span></label>
-
-      <div class="flex items-center gap-4">
-        <input
-          class="radio"
-          formControlName="order"
-          id="order-desc"
-          type="radio"
-          [value]="Order.DESC"
-        />
-
-        <label for="order-desc">
-          Das Team mit den
-          <span class="font-semibold text-indigo-500">meisten</span> Punkten
-          gewinnt.
-        </label>
-      </div>
-
-      <div class="flex items-center gap-4">
-        <input
-          class="radio"
-          formControlName="order"
-          id="order-asc"
-          type="radio"
-          [value]="Order.ASC"
-        />
-        <label for="order-asc">
-          Das Team mit den
-          <span class="font-semibold text-indigo-500">wenigsten</span> Punkten
-          gewinnt.
-        </label>
-      </div>
-    </div>
-
-    <div class="flex flex-col gap-2">
-      <label class="label">Members</label>
-      <bkr-members-input formControlName="members"></bkr-members-input>
-    </div>
-  </form>
-
-  <ng-template #empty>
-    <bkr-empty>Station nicht gefunden.</bkr-empty>
-  </ng-template>
-</ng-container>
-
-<ng-template #loadingIndicator>
-  <bkr-loading></bkr-loading>
+<ng-template #empty>
+  <bkr-empty>Station nicht gefunden.</bkr-empty>
 </ng-template>
