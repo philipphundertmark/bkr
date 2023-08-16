@@ -34,7 +34,10 @@
       </div>
     </div>
 
-    <ng-container *ngFor="let station of bkrStations">
+    <div
+      class="-mr-6 border-t border-gray-200 pr-6 pt-2"
+      *ngFor="let station of bkrStations"
+    >
       <div class="flex justify-between gap-2">
         <div>{{ station.name }} Zeit</div>
         <div class="font-mono">
@@ -48,6 +51,6 @@
           - {{ getFormattedBonusAtStation(station.id, bkrRankingItem) }}
         </div>
       </div>
-    </ng-container>
+    </div>
   </ng-container>
 </div>
