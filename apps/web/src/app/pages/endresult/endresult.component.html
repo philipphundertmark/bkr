@@ -56,8 +56,14 @@
   </div>
 </div>
 
+<bkr-tabs (bkrChange)="handleChangeRanking($event)">
+  <bkr-tab bkrKey="standard">Standardwertung</bkr-tab>
+  <bkr-tab bkrKey="help">Hilfswertung</bkr-tab>
+</bkr-tabs>
+
 <bkr-ranking
   *ngIf="isRaceOver(); else empty"
+  [ranking]="ranking()"
   [stations]="stations()"
   [teams]="teams()"
 ></bkr-ranking>

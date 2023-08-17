@@ -4,6 +4,7 @@ import { ResultWithRank } from './result';
 import { ResultUtils } from './result.utils';
 import { Station } from './station';
 import { StationDTO } from './station.dto';
+import { Team } from './team';
 
 const TIME_BONUS = [
   // 1st place
@@ -55,16 +56,20 @@ export const StationUtils = {
   getBonusForRank(rank: number): number {
     return TIME_BONUS[rank - 1] ?? 0;
   },
-  getResultsWithRank(station: Station): ResultWithRank[] {
+  getResultsForTeamsWithRank(
+    station: Station,
+    teams: Team[]
+  ): ResultWithRank[] {
     let currentRank = 0;
 
     return station.results
+      .filter((result) => teams.some((team) => team.id === result.teamId))
       .filter(ResultUtils.isFinal)
       .sort((a, b) =>
         station.order === 'ASC' ? a.points - b.points : b.points - a.points
       )
       .map((result, index, allResults) => {
-        const previousResult = allResults.at(index - 1);
+        const previousResult = allResults[index - 1];
 
         if (previousResult?.points !== result.points) {
           currentRank = index + 1;

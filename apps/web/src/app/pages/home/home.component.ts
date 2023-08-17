@@ -4,6 +4,7 @@ import {
   Component,
   HostBinding,
   computed,
+  signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
@@ -17,6 +18,8 @@ import {
   ButtonComponent,
   EmptyComponent,
   RankingComponent,
+  TabComponent,
+  TabsComponent,
 } from '../../components';
 import {
   CheckCircleIconComponent,
@@ -55,6 +58,8 @@ export interface RankingItem {
     EmptyComponent,
     RankingComponent,
     RouterModule,
+    TabComponent,
+    TabsComponent,
     TrophyIconComponent,
   ],
   templateUrl: './home.component.html',
@@ -63,6 +68,8 @@ export interface RankingItem {
 })
 export class HomeComponent {
   @HostBinding('class.page') page = true;
+
+  ranking = signal('standard');
 
   isAdmin = toSignal(this.authService.isAdmin$, {
     initialValue: false,
@@ -136,6 +143,10 @@ export class HomeComponent {
 
   formatDuration(seconds: number): string {
     return dayjs.duration(seconds, 'seconds').format('HH:mm:ss');
+  }
+
+  handleChangeRanking(ranking: string): void {
+    this.ranking.set(ranking);
   }
 
   hasStationId(rankingItem: RankingItem, stationId: string): boolean {

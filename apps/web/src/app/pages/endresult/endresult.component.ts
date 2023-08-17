@@ -17,6 +17,8 @@ import {
   ButtonComponent,
   EmptyComponent,
   RankingComponent,
+  TabComponent,
+  TabsComponent,
 } from '../../components';
 import {
   LockClosedIconComponent,
@@ -37,6 +39,8 @@ import { SettingsService, StationService, TeamService } from '../../services';
     LockOpenIconComponent,
     RankingComponent,
     RouterModule,
+    TabComponent,
+    TabsComponent,
     TrophyIconComponent,
   ],
   templateUrl: './endresult.component.html',
@@ -45,6 +49,8 @@ import { SettingsService, StationService, TeamService } from '../../services';
 })
 export class EndresultComponent {
   @HostBinding('class.page') page = true;
+
+  ranking = signal('standard');
 
   stations = toSignal(this.stationService.stations$, {
     initialValue: [] as Station[],
@@ -70,6 +76,10 @@ export class EndresultComponent {
     private readonly stationService: StationService,
     private readonly teamService: TeamService
   ) {}
+
+  handleChangeRanking(ranking: string): void {
+    this.ranking.set(ranking);
+  }
 
   handlePublishResults(): void {
     this.publishResultsLoading.set(true);

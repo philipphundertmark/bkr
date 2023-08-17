@@ -1,0 +1,11 @@
+:host {
+  @apply block flex-1 cursor-pointer rounded-lg px-3 py-2 text-center text-sm font-medium;
+}
+
+:host(.active) {
+  @apply bg-gray-200 text-gray-800;
+}
+
+:host(:not(.active)) {
+  @apply text-gray-600 hover:text-gray-800;
+}

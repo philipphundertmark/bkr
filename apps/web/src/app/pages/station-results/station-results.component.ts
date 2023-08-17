@@ -4,6 +4,7 @@ import {
   Component,
   HostBinding,
   computed,
+  signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -17,7 +18,12 @@ import {
   TeamUtils,
 } from '@bkr/api-interface';
 
-import { ButtonComponent, EmptyComponent } from '../../components';
+import {
+  ButtonComponent,
+  EmptyComponent,
+  TabComponent,
+  TabsComponent,
+} from '../../components';
 import {
   AuthService,
   SettingsService,
@@ -30,7 +36,14 @@ type ResultWithRankAndTeam = ResultWithRank & { team: Team };
 @Component({
   selector: 'bkr-station-results',
   standalone: true,
-  imports: [ButtonComponent, CommonModule, EmptyComponent, RouterModule],
+  imports: [
+    ButtonComponent,
+    CommonModule,
+    EmptyComponent,
+    RouterModule,
+    TabComponent,
+    TabsComponent,
+  ],
   templateUrl: './station-results.component.html',
   styleUrls: ['./station-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,6 +53,8 @@ export class StationResultsComponent {
 
   readonly StationUtils = StationUtils;
   readonly TeamUtils = TeamUtils;
+
+  ranking = signal('standard');
 
   paramMap = toSignal(this.route.paramMap, {
     initialValue: null,
@@ -62,6 +77,12 @@ export class StationResultsComponent {
     initialValue: [] as Team[],
   });
 
+  teamsForRanking = computed(() =>
+    this.teams().filter((team) =>
+      this.ranking() === 'standard' ? !team.help : team.help
+    )
+  );
+
   stationId = computed(() => this.paramMap()?.get('stationId') ?? null);
   station = computed(() => {
     const stationId = this.stationId();
@@ -75,13 +96,14 @@ export class StationResultsComponent {
 
   results = computed(() => {
     const station = this.station();
+    const teams = this.teamsForRanking();
 
     if (!station) {
       return [];
     }
 
     return (
-      StationUtils.getResultsWithRank(station)
+      StationUtils.getResultsForTeamsWithRank(station, teams)
         // Find the team for each result
         .map((result) => ({
           ...result,
@@ -105,5 +127,9 @@ export class StationResultsComponent {
 
   formatDuration(seconds: number): string {
     return dayjs.duration(seconds, 'seconds').format('HH:mm:ss');
+  }
+
+  handleChangeRanking(ranking: string): void {
+    this.ranking.set(ranking);
   }
 }

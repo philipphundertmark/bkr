@@ -125,5 +125,14 @@
 </ng-container>
 
 <ng-template #endresult>
-  <bkr-ranking [stations]="stations()" [teams]="teams()"></bkr-ranking>
+  <bkr-tabs (bkrChange)="handleChangeRanking($event)">
+    <bkr-tab bkrKey="standard">Standardwertung</bkr-tab>
+    <bkr-tab bkrKey="help">Hilfswertung</bkr-tab>
+  </bkr-tabs>
+
+  <bkr-ranking
+    [ranking]="ranking()"
+    [stations]="stations()"
+    [teams]="teams()"
+  ></bkr-ranking>
 </ng-template>

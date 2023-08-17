@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, computed } from '@angular/core';
+import { Component, HostBinding, computed, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 
@@ -15,6 +15,8 @@ import {
   AlertComponent,
   ButtonComponent,
   EmptyComponent,
+  TabComponent,
+  TabsComponent,
 } from '../../components';
 import { ChevronRightIconComponent } from '../../icons/mini';
 import { AuthService, StationService, TeamService } from '../../services';
@@ -31,6 +33,8 @@ type ResultWithRankAndTeam = ResultWithRank & { team: Team };
     CommonModule,
     EmptyComponent,
     RouterModule,
+    TabComponent,
+    TabsComponent,
   ],
   templateUrl: './my-station.component.html',
   styleUrls: ['./my-station.component.scss'],
@@ -39,6 +43,8 @@ export class MyStationComponent {
   @HostBinding('class.page') page = true;
 
   readonly TeamUtils = TeamUtils;
+
+  ranking = signal('standard');
 
   stationId = toSignal(this.authService.sub$, { initialValue: null });
 
@@ -61,15 +67,22 @@ export class MyStationComponent {
     return this.stations().find((station) => station.id === this.stationId());
   });
 
+  teamsForRanking = computed(() =>
+    this.teams().filter((team) =>
+      this.ranking() === 'standard' ? !team.help : team.help
+    )
+  );
+
   results = computed(() => {
     const station = this.station();
+    const teams = this.teamsForRanking();
 
     if (!station) {
       return [];
     }
 
     return (
-      StationUtils.getResultsWithRank(station)
+      StationUtils.getResultsForTeamsWithRank(station, teams)
         // Find the team for each result
         .map((result) => ({
           ...result,
@@ -88,4 +101,8 @@ export class MyStationComponent {
     private readonly stationService: StationService,
     private readonly teamService: TeamService
   ) {}
+
+  handleChangeRanking(ranking: string): void {
+    this.ranking.set(ranking);
+  }
 }

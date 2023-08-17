@@ -52,6 +52,11 @@ export interface RankingItem {
 })
 export class RankingComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename
+  @Input({ alias: 'ranking', required: true })
+  set _ranking(value: string) {
+    this.ranking$.next(value);
+  }
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input({ alias: 'stations', required: true })
   set _stations(value: Station[]) {
     this.stations$.next(value);
@@ -64,17 +69,25 @@ export class RankingComponent {
 
   @HostBinding('class.list') list = true;
 
+  ranking$ = new BehaviorSubject<string>('standard');
   stations$ = new BehaviorSubject<Station[]>([]);
   teams$ = new BehaviorSubject<Team[]>([]);
 
+  ranking = toSignal(this.ranking$, { initialValue: 'standard' });
   stations = toSignal(this.stations$, { initialValue: [] as Station[] });
   teams = toSignal(this.teams$, { initialValue: [] as Team[] });
 
+  teamsForRanking = computed(() =>
+    this.teams().filter((team) =>
+      this.ranking() === 'standard' ? !team.help : team.help
+    )
+  );
+
   rankingItems = computed(() => {
     const stations = this.stations();
-    const teams = this.teams();
+    const teams = this.teamsForRanking();
 
-    const rankByTeamByStation = this.getRankByTeamByStation(stations);
+    const rankByTeamByStation = this.getRankByTeamByStation(stations, teams);
 
     return teams
       .map((team): Omit<RankingItem, 'time'> => {
@@ -115,10 +128,14 @@ export class RankingComponent {
    * @param stations - The stations
    * @returns The rank of each team by station
    */
-  private getRankByTeamByStation(stations: Station[]): RankByTeamByStation {
+  private getRankByTeamByStation(
+    stations: Station[],
+    teams: Team[]
+  ): RankByTeamByStation {
     return stations.reduce<RankByTeamByStation>((acc, station) => {
-      const rankByTeam = StationUtils.getResultsWithRank(
-        station
+      const rankByTeam = StationUtils.getResultsForTeamsWithRank(
+        station,
+        teams
       ).reduce<RankByTeam>(
         (acc, result) => ({
           ...acc,

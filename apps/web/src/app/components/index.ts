@@ -7,3 +7,5 @@ export * from './members-input/members-input.component';
 export * from './input.directive';
 export * from './ranking/ranking.component';
 export * from './spinner/spinner.component';
+export * from './tabs/tab/tab.component';
+export * from './tabs/tabs.component';

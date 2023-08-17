@@ -60,6 +60,11 @@
   </ng-container>
 </bkr-alert>
 
+<bkr-tabs (bkrChange)="handleChangeRanking($event)">
+  <bkr-tab bkrKey="standard">Standardwertung</bkr-tab>
+  <bkr-tab bkrKey="help">Hilfswertung</bkr-tab>
+</bkr-tabs>
+
 <ul class="list" *ngIf="results().length > 0; else emptyResults">
   <li *ngFor="let result of results(); let i = index">
     <a

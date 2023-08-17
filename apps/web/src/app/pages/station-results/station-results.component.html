@@ -15,6 +15,11 @@
   </p>
 </div>
 
+<bkr-tabs (bkrChange)="handleChangeRanking($event)">
+  <bkr-tab bkrKey="standard">Standardwertung</bkr-tab>
+  <bkr-tab bkrKey="help">Hilfswertung</bkr-tab>
+</bkr-tabs>
+
 <ng-container
   *ngIf="isRaceOver() && (isAdmin() || publishResults()); else unavailable"
 >
