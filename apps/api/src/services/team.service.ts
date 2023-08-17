@@ -89,15 +89,17 @@ export class TeamService {
       },
     });
 
+    const maxNumber = Math.max(...teams.map((team) => team.number));
+
     // Set intermediate numbers to avoid unique constraint errors
-    await Promise.all(
+    await this.prisma.$transaction(
       teams.map((team) =>
         this.prisma.team.update({
           where: {
             id: team.id,
           },
           data: {
-            number: team.number + teams.length,
+            number: team.number + maxNumber,
           },
         })
       )
@@ -105,7 +107,7 @@ export class TeamService {
 
     const shuffledTeams = teams.sort(() => Math.random() - 0.5);
 
-    const updatedTeams = await Promise.all(
+    const updatedTeams = await this.prisma.$transaction(
       shuffledTeams.map((team, index) =>
         this.prisma.team.update({
           where: {
