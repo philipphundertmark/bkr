@@ -18,7 +18,12 @@ import {
 } from '@bkr/api-interface';
 
 import { ButtonComponent, EmptyComponent } from '../../components';
-import { SettingsService, StationService, TeamService } from '../../services';
+import {
+  AuthService,
+  SettingsService,
+  StationService,
+  TeamService,
+} from '../../services';
 
 type ResultWithRankAndTeam = ResultWithRank & { team: Team };
 
@@ -40,6 +45,9 @@ export class StationResultsComponent {
     initialValue: null,
   });
 
+  isAdmin = toSignal(this.authService.isAdmin$, {
+    initialValue: false,
+  });
   isRaceOver = toSignal(this.teamService.isRaceOver$, {
     initialValue: false,
   });
@@ -88,6 +96,7 @@ export class StationResultsComponent {
   });
 
   constructor(
+    private readonly authService: AuthService,
     private readonly route: ActivatedRoute,
     private readonly settingsService: SettingsService,
     private readonly stationService: StationService,

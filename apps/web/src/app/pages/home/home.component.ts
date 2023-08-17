@@ -110,7 +110,7 @@ export class HomeComponent {
 
       return {
         finished: TeamUtils.isFinished(team),
-        name: team.name,
+        name: TeamUtils.getTeamName(team),
         number: team.number,
         progress: TeamUtils.isFinished(team)
           ? 100

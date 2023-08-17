@@ -52,4 +52,9 @@ export const TeamUtils = {
 
     return team.members.join(', ');
   },
+  getTeamName(team: Team): string {
+    const teamName = team.name || `Team ${team.number}`;
+
+    return team.help ? teamName + '*' : teamName;
+  },
 };

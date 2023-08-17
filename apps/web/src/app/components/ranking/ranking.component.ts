@@ -10,7 +10,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import dayjs from 'dayjs';
 import { BehaviorSubject } from 'rxjs';
 
-import { Station, StationUtils, Team } from '@bkr/api-interface';
+import { Station, StationUtils, Team, TeamUtils } from '@bkr/api-interface';
 
 import { RankingItemComponent } from './ranking-item/ranking-item.component';
 
@@ -79,7 +79,7 @@ export class RankingComponent {
     return teams
       .map((team): Omit<RankingItem, 'time'> => {
         return {
-          name: team.name,
+          name: TeamUtils.getTeamName(team),
           number: team.number,
           penalty: team.penalty * 60,
           results: this.getStationResultsOfTeam(

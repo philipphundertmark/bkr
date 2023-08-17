@@ -15,7 +15,9 @@
   </p>
 </div>
 
-<ng-container *ngIf="isRaceOver() && publishResults(); else unavailable">
+<ng-container
+  *ngIf="isRaceOver() && (isAdmin() || publishResults()); else unavailable"
+>
   <ul class="list" *ngIf="results().length > 0; else empty">
     <li class="list-entry" *ngFor="let result of results()">
       <div class="font-bold">{{ result.rank }}.</div>
