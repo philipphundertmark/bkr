@@ -18,7 +18,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
 import { EMPTY, map, switchMap } from 'rxjs';
 
-import { Team } from '@bkr/api-interface';
+import { Team, TeamUtils } from '@bkr/api-interface';
 
 import {
   AlertComponent,
@@ -55,6 +55,8 @@ import { ConfirmService } from '../../services/confirm.service';
 })
 export class CheckOutComponent {
   @HostBinding('class.page') page = true;
+
+  readonly TeamUtils = TeamUtils;
 
   stationId = toSignal(this.authService.sub$, { initialValue: null });
 

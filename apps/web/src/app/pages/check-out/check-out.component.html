@@ -19,8 +19,10 @@
   <h2 class="subtitle">Check-out</h2>
   <p class="text-gray-500">
     Trag das Ergebnis von
-    <span class="font-semibold text-indigo-500">{{ team.name }}</span> an deiner
-    Station ein.
+    <span class="font-semibold text-indigo-500">
+      {{ TeamUtils.getTeamName(team) }}
+    </span>
+    an deiner Station ein.
   </p>
 </div>
 
