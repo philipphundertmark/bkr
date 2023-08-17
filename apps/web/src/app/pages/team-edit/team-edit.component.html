@@ -69,6 +69,42 @@
 
   <div class="flex flex-col gap-2">
     <label class="label">
+      Hilfsmittel<span class="text-indigo-500">*</span>
+    </label>
+
+    <div class="flex items-center gap-4">
+      <input
+        class="radio"
+        formControlName="help"
+        id="help-yes"
+        type="radio"
+        [value]="true"
+      />
+
+      <label for="help-yes">
+        <span class="font-semibold text-indigo-500">Ja</span>, das Team nutzt
+        irgendeine Form von Hilfsmittel und wird von der Hauptwertung
+        ausgeschlossen.
+      </label>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <input
+        class="radio"
+        formControlName="help"
+        id="help-no"
+        type="radio"
+        [value]="false"
+      />
+      <label for="help-no">
+        <span class="font-semibold text-indigo-500">Nein</span>, das Team nutzt
+        keine Hilfsmittel.
+      </label>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <label class="label">
       Strafminuten<span class="text-indigo-500">*</span>
     </label>
 

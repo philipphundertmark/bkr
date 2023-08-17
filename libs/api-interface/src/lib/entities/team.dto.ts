@@ -9,6 +9,7 @@ export interface TeamDTO {
   members: string[];
   startedAt?: string;
   finishedAt?: string;
+  help: boolean;
   penalty: number;
   results: ResultDTO[];
 }

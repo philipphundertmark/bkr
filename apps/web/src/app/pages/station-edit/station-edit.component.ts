@@ -139,7 +139,9 @@ export class StationEditComponent {
     }
 
     const nonEmptyMembers =
-      members?.filter((member) => member.length > 0) ?? [];
+      members
+        ?.map((member) => member.trim())
+        .filter((member) => member.length > 0) ?? [];
 
     this.saveLoading.set(true);
 

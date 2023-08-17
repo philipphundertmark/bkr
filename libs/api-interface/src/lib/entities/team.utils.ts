@@ -16,6 +16,7 @@ export const TeamUtils = {
       members: dto.members,
       startedAt: dto.startedAt ? dayjs(dto.startedAt) : undefined,
       finishedAt: dto.finishedAt ? dayjs(dto.finishedAt) : undefined,
+      help: dto.help,
       penalty: dto.penalty,
       results: dto.results.map(ResultUtils.deserialize),
     };
@@ -30,6 +31,7 @@ export const TeamUtils = {
       members: team.members,
       startedAt: team.startedAt?.toISOString(),
       finishedAt: team.finishedAt?.toISOString(),
+      help: team.help,
       penalty: team.penalty,
       results: team.results.map(ResultUtils.serialize),
     };

@@ -58,6 +58,19 @@
       <p>{{ team.finishedAt | date }}</p>
     </div>
 
+    <div class="flex flex-col gap-2" [ngSwitch]="team.help">
+      <label class="label">Hilfsmittel</label>
+      <p *ngSwitchCase="true">
+        <span class="font-semibold text-indigo-500">Ja</span>, das Team nutzt
+        irgendeine Form von Hilfsmittel und wird von der Hauptwertung
+        ausgeschlossen.
+      </p>
+      <p *ngSwitchCase="false">
+        <span class="font-semibold text-indigo-500">Nein</span>, das Team nutzt
+        keine Hilfsmittel.
+      </p>
+    </div>
+
     <div class="flex flex-col gap-2">
       <label class="label">Strafminuten</label>
       <p>{{ team.penalty }}</p>

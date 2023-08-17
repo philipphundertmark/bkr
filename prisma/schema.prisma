@@ -59,5 +59,6 @@ model Team {
 
   startedAt  DateTime?
   finishedAt DateTime?
+  help       Boolean   @default(false)
   penalty    Int       @default(0)
 }

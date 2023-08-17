@@ -11,13 +11,15 @@ export class TeamService {
   async createTeam(
     name: string,
     number: number,
-    members: string[]
+    members: string[],
+    help: boolean
   ): Promise<Team> {
     const team = await this.prisma.team.create({
       data: {
         name: name,
         number: number,
         members: members,
+        help: help,
       },
       include: {
         results: {
@@ -132,6 +134,7 @@ export class TeamService {
       members?: string[];
       startedAt?: string | null;
       finishedAt?: string | null;
+      help?: boolean;
       penalty?: number;
     }
   ): Promise<Team> {
@@ -151,6 +154,7 @@ export class TeamService {
           typeof updates.finishedAt === 'string'
             ? new Date(updates.finishedAt)
             : updates.finishedAt,
+        help: updates.help,
         penalty: updates.penalty,
       },
       include: {

@@ -53,6 +53,9 @@ export class TeamNewComponent {
     members: new FormControl<string[]>([], {
       nonNullable: true,
     }),
+    help: new FormControl<boolean>(false, {
+      nonNullable: true,
+    }),
   });
 
   loading = signal(false);
@@ -66,13 +69,14 @@ export class TeamNewComponent {
   ) {}
 
   handleSave(): void {
-    const { name, number, members } = this.form.value;
+    const { name, number, members, help } = this.form.value;
 
     if (
       this.form.invalid ||
       typeof name === 'undefined' ||
       typeof number === 'undefined' ||
-      number === null
+      number === null ||
+      typeof help === 'undefined'
     ) {
       return;
     }
@@ -87,6 +91,7 @@ export class TeamNewComponent {
         name,
         number,
         members: nonEmptyMembers,
+        help,
       })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({

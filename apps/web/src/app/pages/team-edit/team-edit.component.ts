@@ -87,6 +87,9 @@ export class TeamEditComponent {
     finishedAt: new FormControl<string | null>(null, {
       validators: [dateTimeValidator()],
     }),
+    help: new FormControl<boolean>(false, {
+      nonNullable: true,
+    }),
     penalty: new FormControl<number>(0, {
       nonNullable: true,
       validators: [Validators.required, Validators.min(0)],
@@ -117,29 +120,33 @@ export class TeamEditComponent {
       this.form.patchValue({
         name: team.name,
         number: team.number,
-        penalty: team.penalty,
         startedAt: team.startedAt?.format('DD.MM.YYYY HH:mm:ss') ?? null,
         finishedAt: team.finishedAt?.format('DD.MM.YYYY HH:mm:ss') ?? null,
         members: team.members ?? [],
+        help: team.help,
+        penalty: team.penalty,
       });
     });
   }
 
   handleSave(teamId: string): void {
-    const { name, number, members, startedAt, finishedAt, penalty } =
+    const { name, number, members, startedAt, finishedAt, help, penalty } =
       this.form.value;
 
     if (
       this.form.invalid ||
       typeof name === 'undefined' ||
       typeof number === 'undefined' ||
-      number === null
+      number === null ||
+      typeof help === 'undefined'
     ) {
       return;
     }
 
     const nonEmptyMembers =
-      members?.filter((member) => member.length > 0) ?? [];
+      members
+        ?.map((member) => member.trim())
+        .filter((member) => member.length > 0) ?? [];
 
     this.saveLoading.set(true);
 
@@ -154,6 +161,7 @@ export class TeamEditComponent {
         finishedAt: finishedAt
           ? dayjs(finishedAt, 'DD.MM.YYYY HH:mm:ss').toISOString()
           : null,
+        help,
         penalty,
       })
       .pipe(takeUntilDestroyed(this.destroyRef))

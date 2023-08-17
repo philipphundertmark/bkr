@@ -44,6 +44,11 @@ export interface Team {
   finishedAt?: dayjs.Dayjs;
 
   /**
+   * Whether the team uses any kind of help.
+   */
+  help: boolean;
+
+  /**
    * The penalty time of the team in minutes.
    */
   penalty: number;
