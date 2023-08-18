@@ -1,4 +1,4 @@
-import { PrismaClient, Result } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -59,6 +59,7 @@ async function main() {
       },
     });
 
+    // The time it takes to get from one station to the next
     const segment = Math.floor(duration / (stations.length + 1));
 
     for (let j = 0; j < stations.length; j++) {
