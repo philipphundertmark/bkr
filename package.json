@@ -11,6 +11,7 @@
     "format:check:all": "nx format:check --all",
     "format:write": "nx format:write",
     "format:write:all": "nx format:write --all",
+    "generate:results": "ts-node prisma/scripts/generate-results.ts",
     "lint": "nx affected:lint",
     "lint:all": "nx run-many -t lint",
     "migrate:reset": "prisma migrate reset --force",
