@@ -19,6 +19,7 @@ import {
 } from '@bkr/api-interface';
 
 import {
+  AlertComponent,
   ButtonComponent,
   EmptyComponent,
   TabComponent,
@@ -37,6 +38,7 @@ type ResultWithRankAndTeam = ResultWithRank & { team: Team };
   selector: 'bkr-station-results',
   standalone: true,
   imports: [
+    AlertComponent,
     ButtonComponent,
     CommonModule,
     EmptyComponent,

@@ -41,10 +41,10 @@
       <div class="flex flex-1 flex-col gap-1">
         <div class="flex justify-between gap-2">
           <!-- Team name and number-->
-          <div class="flex items-center gap-2">
-            <h3 class="name">{{ TeamUtils.getTeamName(result.team) }}</h3>
+          <h3 class="name">
+            {{ TeamUtils.getTeamName(result.team) }}
             <span class="number">#{{ result.team.number }}</span>
-          </div>
+          </h3>
 
           <!-- Time bonus -->
           <div class="font-mono">
