@@ -61,8 +61,8 @@
 </bkr-alert>
 
 <bkr-tabs (bkrChange)="handleChangeRanking($event)">
-  <bkr-tab bkrKey="standard">Standardwertung</bkr-tab>
-  <bkr-tab bkrKey="help">Hilfswertung</bkr-tab>
+  <bkr-tab bkrKey="standard">Hauptwertung</bkr-tab>
+  <bkr-tab bkrKey="help">Nebenwertung</bkr-tab>
 </bkr-tabs>
 
 <ul class="list" *ngIf="results().length > 0; else emptyResults">

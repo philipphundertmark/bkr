@@ -15,9 +15,20 @@
   </p>
 </div>
 
+<bkr-alert *ngIf="station() as station" [ngSwitch]="station.order">
+  <ng-container *ngSwitchCase="'ASC'">
+    An dieser Station gewinnt das Team mit den
+    <span class="font-semibold">wenigsten</span> Punkten.
+  </ng-container>
+  <ng-container *ngSwitchCase="'DESC'">
+    An dieser Station gewinnt das Team mit den
+    <span class="font-semibold">meisten</span> Punkten.
+  </ng-container>
+</bkr-alert>
+
 <bkr-tabs (bkrChange)="handleChangeRanking($event)">
-  <bkr-tab bkrKey="standard">Standardwertung</bkr-tab>
-  <bkr-tab bkrKey="help">Hilfswertung</bkr-tab>
+  <bkr-tab bkrKey="standard">Hauptwertung</bkr-tab>
+  <bkr-tab bkrKey="help">Nebenwertung</bkr-tab>
 </bkr-tabs>
 
 <ng-container
