@@ -21,6 +21,7 @@ import {
   TeamListComponent,
   TeamNewComponent,
 } from './pages';
+import { RulesComponent } from './pages/rules/rules.component';
 
 export const appRoutes: Route[] = [
   {
@@ -70,6 +71,10 @@ export const appRoutes: Route[] = [
     data: {
       roles: [Role.STATION],
     },
+  },
+  {
+    path: 'rules',
+    component: RulesComponent,
   },
   {
     path: 'stations',
