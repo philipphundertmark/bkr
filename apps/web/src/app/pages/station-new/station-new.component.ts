@@ -105,6 +105,8 @@ export class StationNewComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
+          window.plausible('Create Station');
+
           this.loading.set(false);
           this.notificationService.success('Station wurde erstellt.');
 

@@ -107,6 +107,8 @@ export class StationDetailsComponent {
       )
       .subscribe({
         next: () => {
+          window.plausible('Delete Station');
+
           this.deleteStationLoading.set(false);
           this.notificationService.success('Station gelöscht.');
 

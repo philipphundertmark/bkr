@@ -115,6 +115,8 @@ export class TeamDetailsComponent {
       )
       .subscribe({
         next: () => {
+          window.plausible('Delete Team');
+
           this.deleteTeamLoading.set(false);
           this.notificationService.success('Team gelöscht.');
 
@@ -145,6 +147,8 @@ export class TeamDetailsComponent {
       )
       .subscribe({
         next: () => {
+          window.plausible('Delete Team Results');
+
           this.deleteTeamResultsLoading.set(false);
           this.notificationService.success('Ergebnisse gelöscht.');
         },
@@ -177,6 +181,8 @@ export class TeamDetailsComponent {
       )
       .subscribe({
         next: () => {
+          window.plausible('Start Team');
+
           this.startTeamLoading.set(false);
           this.notificationService.success('Team gestartet.');
         },
@@ -207,6 +213,8 @@ export class TeamDetailsComponent {
       )
       .subscribe({
         next: () => {
+          window.plausible('Stop Team');
+
           this.stopTeamLoading.set(false);
           this.notificationService.success('Team gestoppt.');
         },

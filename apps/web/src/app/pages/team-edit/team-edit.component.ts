@@ -167,6 +167,8 @@ export class TeamEditComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
+          window.plausible('Edit Team');
+
           this.saveLoading.set(false);
           this.notificationService.success('Team wurde aktualisiert.');
 

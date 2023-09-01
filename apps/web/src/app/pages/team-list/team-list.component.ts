@@ -79,6 +79,8 @@ export class TeamListComponent {
       )
       .subscribe({
         next: () => {
+          window.plausible('Shuffle Teams');
+
           this.shuffleTeamsLoading.set(false);
           this.notificationService.success('Reihenfolge wurde ausgelost.');
         },

@@ -110,6 +110,8 @@ export class CheckOutComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
+          window.plausible('Check-Out');
+
           this.checkOutLoading.set(false);
           this.notificationService.success('Team wurde ausgecheckt.');
 
@@ -148,6 +150,8 @@ export class CheckOutComponent {
       )
       .subscribe({
         next: () => {
+          window.plausible('Delete Check-In');
+
           this.deleteResultLoading.set(false);
           this.notificationService.success('Check-in gelöscht.');
 

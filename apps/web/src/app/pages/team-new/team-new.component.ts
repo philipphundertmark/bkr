@@ -96,6 +96,7 @@ export class TeamNewComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
+          window.plausible('Create Team');
           this.loading.set(false);
           this.notificationService.success('Team wurde erstellt.');
 
