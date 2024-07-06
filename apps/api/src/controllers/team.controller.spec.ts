@@ -17,7 +17,7 @@ const client = axios.create({
 const app = createApp([
   TeamController(
     resultServiceMock as unknown as ResultService,
-    teamServiceMock as unknown as TeamService
+    teamServiceMock as unknown as TeamService,
   ),
 ]);
 const server = http.createServer(app);

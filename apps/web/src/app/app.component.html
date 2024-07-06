@@ -11,7 +11,7 @@
     (click)="handleAuth()"
     [ngClass]="{
       'bg-gray-300': !isAdmin() && !isStation(),
-      'bg-indigo-500': isAdmin() || isStation()
+      'bg-indigo-500': isAdmin() || isStation(),
     }"
   >
     <bkr-star-icon *ngIf="isAdmin()"></bkr-star-icon>

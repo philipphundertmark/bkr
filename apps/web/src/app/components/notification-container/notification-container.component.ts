@@ -16,7 +16,7 @@ const notificationMotion = trigger('notificationMotion', [
       style({
         opacity: 1,
         transform: 'translateX(0) translateY(0)',
-      })
+      }),
     ),
   ]),
   transition(':leave', [animate('100ms ease-in', style({ opacity: 0 }))]),
@@ -41,7 +41,7 @@ export class NotificationContainerComponent {
 
   removeNotification(id: number): void {
     this.notifications = this.notifications.filter(
-      (notification) => notification.id !== id
+      (notification) => notification.id !== id,
     );
   }
 }

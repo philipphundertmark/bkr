@@ -7,7 +7,7 @@ export const logger = expressWinston.logger({
     winston.format.colorize(),
     winston.format.printf(({ level, message, timestamp }) => {
       return `${timestamp} ${level}: ${message}`;
-    })
+    }),
   ),
   transports: [new winston.transports.Console()],
 });

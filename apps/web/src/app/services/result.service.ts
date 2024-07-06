@@ -36,20 +36,20 @@ export class ResultService {
       .post<ResultDTO>(`/stations/${stationId}/results`, { teamId })
       .pipe(
         map(ResultUtils.deserialize),
-        tap((result) => this._newResult$.next(result))
+        tap((result) => this._newResult$.next(result)),
       );
   }
 
   updateResult(
     stationId: string,
     teamId: string,
-    dto: UpdateResultSchema
+    dto: UpdateResultSchema,
   ): Observable<Result> {
     return this.http
       .put<ResultDTO>(`/stations/${stationId}/results/${teamId}`, dto)
       .pipe(
         map(ResultUtils.deserialize),
-        tap((result) => this._updatedResult$.next(result))
+        tap((result) => this._updatedResult$.next(result)),
       );
   }
 

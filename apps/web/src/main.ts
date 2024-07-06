@@ -10,7 +10,7 @@ declare global {
   interface Window {
     plausible: (
       event: string,
-      options?: { props?: Record<string, unknown> }
+      options?: { props?: Record<string, unknown> },
     ) => void;
   }
 }
@@ -19,5 +19,5 @@ dayjs.extend(customParseFormat);
 dayjs.extend(localizedFormat);
 
 bootstrapApplication(AppComponent, appConfig).catch((err) =>
-  console.error(err)
+  console.error(err),
 );

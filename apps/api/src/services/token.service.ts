@@ -8,7 +8,7 @@ export class TokenService {
   createToken(
     sub: string,
     role: Role,
-    expiresIn: string | number = '7d'
+    expiresIn: string | number = '7d',
   ): string {
     return jwt.sign(
       {
@@ -18,7 +18,7 @@ export class TokenService {
       config.SECRET,
       {
         expiresIn: expiresIn,
-      }
+      },
     );
   }
 }

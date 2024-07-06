@@ -86,7 +86,7 @@ export class StationDetailsComponent {
     private readonly notificationService: NotificationService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly stationService: StationService
+    private readonly stationService: StationService,
   ) {}
 
   handleDeleteStation(stationId: string): void {
@@ -103,7 +103,7 @@ export class StationDetailsComponent {
 
           return this.stationService.deleteStation(stationId);
         }),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
         next: () => {
@@ -117,7 +117,7 @@ export class StationDetailsComponent {
         error: () => {
           this.deleteStationLoading.set(false);
           this.notificationService.error(
-            'Station konnte nicht gelöscht werden.'
+            'Station konnte nicht gelöscht werden.',
           );
         },
       });

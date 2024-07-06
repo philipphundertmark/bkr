@@ -33,7 +33,7 @@ export class SettingsService {
 
   readonly publishResults$ = this.settings$.pipe(
     map((settings) => settings?.publishResults ?? false),
-    distinctUntilChanged()
+    distinctUntilChanged(),
   );
 
   constructor(private readonly http: HttpClient) {}
@@ -50,14 +50,14 @@ export class SettingsService {
         this._error$.next(error);
 
         return throwError(() => error);
-      })
+      }),
     );
   }
 
   updateSettings(dto: UpdateSettingsSchema): Observable<Settings | null> {
     return this.http.put<SettingsDTO>('/settings', dto).pipe(
       map(SettingsUtils.deserialize),
-      tap((settings) => this._settings$.next(settings))
+      tap((settings) => this._settings$.next(settings)),
     );
   }
 }

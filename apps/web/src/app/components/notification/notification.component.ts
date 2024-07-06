@@ -34,7 +34,7 @@ export class NotificationComponent implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.timer = setTimeout(
       () => this.handleClose(),
-      this.notification?.duration ?? 5000
+      this.notification?.duration ?? 5000,
     );
   }
 

@@ -57,7 +57,7 @@ export class TeamListComponent {
     private readonly authService: AuthService,
     private readonly confirmService: ConfirmService,
     private readonly notificationService: NotificationService,
-    private readonly teamService: TeamService
+    private readonly teamService: TeamService,
   ) {}
 
   shuffleTeams(): void {
@@ -75,7 +75,7 @@ export class TeamListComponent {
 
           return this.teamService.shuffleTeams();
         }),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
         next: () => {
@@ -87,7 +87,7 @@ export class TeamListComponent {
         error: () => {
           this.shuffleTeamsLoading.set(false);
           this.notificationService.error(
-            'Reihenfolge konnte nicht ausgelost werden.'
+            'Reihenfolge konnte nicht ausgelost werden.',
           );
         },
       });

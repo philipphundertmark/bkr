@@ -4,7 +4,7 @@ export const handler = (handler: RequestHandler) => {
   return async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ): Promise<void> => {
     try {
       await handler(req, res, next);

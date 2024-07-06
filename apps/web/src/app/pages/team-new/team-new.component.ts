@@ -65,7 +65,7 @@ export class TeamNewComponent {
   constructor(
     private readonly notificationService: NotificationService,
     private readonly router: Router,
-    private readonly teamService: TeamService
+    private readonly teamService: TeamService,
   ) {}
 
   handleSave(): void {
@@ -109,11 +109,11 @@ export class TeamNewComponent {
 
           if (error === '"number" must be unique') {
             this.notificationService.error(
-              'Es gibt bereits ein Team mit dieser Nummer.'
+              'Es gibt bereits ein Team mit dieser Nummer.',
             );
           } else {
             this.notificationService.error(
-              'Team konnte nicht erstellt werden.'
+              'Team konnte nicht erstellt werden.',
             );
           }
         },

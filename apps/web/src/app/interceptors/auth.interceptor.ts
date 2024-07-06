@@ -1,4 +1,10 @@
-import { HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpRequest, HttpResponse } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpHandlerFn,
+  HttpInterceptorFn,
+  HttpRequest,
+  HttpResponse,
+} from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Observable, switchMap, take, tap } from 'rxjs';
 
@@ -7,7 +13,7 @@ import { AuthService } from '../services';
 
 export const AuthHttpInterceptorFn: HttpInterceptorFn = (
   req: HttpRequest<unknown>,
-  next: HttpHandlerFn
+  next: HttpHandlerFn,
 ): Observable<HttpEvent<unknown>> => {
   const baseUrl = environment.apiUrl + environment.apiPath;
   const requestUrl = req.url;
@@ -32,8 +38,8 @@ export const AuthHttpInterceptorFn: HttpInterceptorFn = (
           if (event instanceof HttpResponse && event.status === 401) {
             authService.logout();
           }
-        })
+        }),
       );
-    })
+    }),
   );
 };

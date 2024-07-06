@@ -17,7 +17,7 @@ import { handler } from './handler';
 export function ResultController(
   resultService: ResultService,
   stationService: StationService,
-  teamService: TeamService
+  teamService: TeamService,
 ): Router {
   const router = Router();
 
@@ -102,7 +102,7 @@ export function ResultController(
 
       if (result !== null) {
         throw new BadRequestException(
-          `A result for team ${teamId} at station ${stationId} already exists`
+          `A result for team ${teamId} at station ${stationId} already exists`,
         );
       }
 
@@ -110,7 +110,7 @@ export function ResultController(
 
       res.status(201);
       res.json(ResultUtils.serialize(result));
-    })
+    }),
   );
 
   /**
@@ -190,7 +190,7 @@ export function ResultController(
 
       if (result === null) {
         throw new NotFoundException(
-          `A result for team ${teamId} at station ${stationId} does not exist`
+          `A result for team ${teamId} at station ${stationId} does not exist`,
         );
       }
 
@@ -202,7 +202,7 @@ export function ResultController(
 
       res.status(200);
       res.json(ResultUtils.serialize(result));
-    })
+    }),
   );
 
   /**
@@ -257,7 +257,7 @@ export function ResultController(
 
       if (result === null) {
         throw new NotFoundException(
-          `A result for team ${teamId} at station ${stationId} does not exist`
+          `A result for team ${teamId} at station ${stationId} does not exist`,
         );
       }
 
@@ -265,7 +265,7 @@ export function ResultController(
 
       res.status(200);
       res.end();
-    })
+    }),
   );
 
   return router;

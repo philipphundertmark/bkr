@@ -38,6 +38,6 @@ export class StationListComponent {
 
   constructor(
     private readonly authService: AuthService,
-    private readonly stationService: StationService
+    private readonly stationService: StationService,
   ) {}
 }

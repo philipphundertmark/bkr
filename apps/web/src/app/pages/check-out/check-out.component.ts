@@ -74,10 +74,10 @@ export class CheckOutComponent {
     this.route.queryParamMap.pipe(map((params) => params.get('teamId'))),
     {
       initialValue: null,
-    }
+    },
   );
   team = computed(
-    () => this.teams().find((team) => team.id === this.teamId()) ?? null
+    () => this.teams().find((team) => team.id === this.teamId()) ?? null,
   );
 
   private readonly destroyRef = inject(DestroyRef);
@@ -89,7 +89,7 @@ export class CheckOutComponent {
     private readonly resultService: ResultService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly teamService: TeamService
+    private readonly teamService: TeamService,
   ) {}
 
   handleCheckOut(teamId: string): void {
@@ -120,7 +120,7 @@ export class CheckOutComponent {
         error: () => {
           this.checkOutLoading.set(false);
           this.notificationService.error(
-            'Team konnte nicht ausgecheckt werden.'
+            'Team konnte nicht ausgecheckt werden.',
           );
         },
       });
@@ -146,7 +146,7 @@ export class CheckOutComponent {
 
           return this.resultService.deleteResult(stationId, teamId);
         }),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
         next: () => {
@@ -160,7 +160,7 @@ export class CheckOutComponent {
         error: () => {
           this.deleteResultLoading.set(false);
           this.notificationService.error(
-            'Check-in konnte nicht gelöscht werden.'
+            'Check-in konnte nicht gelöscht werden.',
           );
         },
       });

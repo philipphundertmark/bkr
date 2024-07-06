@@ -58,8 +58,8 @@ export class MyStationComponent {
   checkedInTeams = computed(() => {
     return this.teams().filter((team) =>
       team.results.some(
-        (result) => result.stationId === this.stationId() && !result.checkOut
-      )
+        (result) => result.stationId === this.stationId() && !result.checkOut,
+      ),
     );
   });
 
@@ -69,8 +69,8 @@ export class MyStationComponent {
 
   teamsForRanking = computed(() =>
     this.teams().filter((team) =>
-      this.ranking() === 'standard' ? !team.help : team.help
-    )
+      this.ranking() === 'standard' ? !team.help : team.help,
+    ),
   );
 
   results = computed(() => {
@@ -91,7 +91,7 @@ export class MyStationComponent {
         // Filter out results that don't have a team
         .filter(
           (result): result is ResultWithRankAndTeam =>
-            typeof result.team !== 'undefined'
+            typeof result.team !== 'undefined',
         )
     );
   });
@@ -99,7 +99,7 @@ export class MyStationComponent {
   constructor(
     private readonly authService: AuthService,
     private readonly stationService: StationService,
-    private readonly teamService: TeamService
+    private readonly teamService: TeamService,
   ) {}
 
   handleChangeRanking(ranking: string): void {

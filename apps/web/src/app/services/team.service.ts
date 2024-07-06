@@ -30,7 +30,7 @@ export class TeamService {
   private readonly _teams$ = new BehaviorSubject<Team[]>([]);
   readonly teams$ = this._teams$.pipe(
     map((teams) => teams.sort((a, b) => a.number - b.number)),
-    shareReplay(1)
+    shareReplay(1),
   );
 
   private readonly _loading$ = new BehaviorSubject<boolean>(true);
@@ -46,14 +46,14 @@ export class TeamService {
         teams.every(
           (team) =>
             typeof team.startedAt !== 'undefined' &&
-            typeof team.finishedAt !== 'undefined'
-        )
-    )
+            typeof team.finishedAt !== 'undefined',
+        ),
+    ),
   );
 
   constructor(
     private readonly http: HttpClient,
-    private readonly resultService: ResultService
+    private readonly resultService: ResultService,
   ) {
     this.resultService.newResult$
       .pipe(takeUntilDestroyed())
@@ -62,8 +62,8 @@ export class TeamService {
           this._teams$.value.map((team) =>
             team.id === result.teamId
               ? { ...team, results: [...team.results, result] }
-              : team
-          )
+              : team,
+          ),
         );
       });
 
@@ -78,11 +78,11 @@ export class TeamService {
                   results: team.results.map((teamResult) =>
                     teamResult.stationId === result.stationId
                       ? result
-                      : teamResult
+                      : teamResult,
                   ),
                 }
-              : team
-          )
+              : team,
+          ),
         );
       });
 
@@ -95,11 +95,11 @@ export class TeamService {
               ? {
                   ...team,
                   results: team.results.filter(
-                    (teamResult) => teamResult.stationId !== stationId
+                    (teamResult) => teamResult.stationId !== stationId,
                   ),
                 }
-              : team
-          )
+              : team,
+          ),
         );
       });
 
@@ -110,9 +110,9 @@ export class TeamService {
           this._teams$.value.map((team) => ({
             ...team,
             results: team.results.filter(
-              (teamResult) => teamResult.teamId !== teamId
+              (teamResult) => teamResult.teamId !== teamId,
             ),
-          }))
+          })),
         );
       });
   }
@@ -120,7 +120,7 @@ export class TeamService {
   createTeam(dto: CreateTeamSchema): Observable<Team> {
     return this.http.post<TeamDTO>('/teams', dto).pipe(
       map(TeamUtils.deserialize),
-      tap((team) => this._teams$.next([...this._teams$.value, team]))
+      tap((team) => this._teams$.next([...this._teams$.value, team])),
     );
   }
 
@@ -136,14 +136,14 @@ export class TeamService {
         this._error$.next(error);
 
         return throwError(() => error);
-      })
+      }),
     );
   }
 
   shuffleTeams(): Observable<Team[]> {
     return this.http.put<TeamDTO[]>('/teams/shuffle', {}).pipe(
       map((teamDtos) => teamDtos.map(TeamUtils.deserialize)),
-      tap((teams) => this._teams$.next(teams))
+      tap((teams) => this._teams$.next(teams)),
     );
   }
 
@@ -164,10 +164,10 @@ export class TeamService {
 
         this._teams$.next(
           this._teams$.value.map((team) =>
-            team.id === id ? updatedTeam : team
-          ) ?? null
+            team.id === id ? updatedTeam : team,
+          ) ?? null,
         );
-      })
+      }),
     );
   }
 
@@ -177,9 +177,9 @@ export class TeamService {
       .pipe(
         tap(() =>
           this._teams$.next(
-            this._teams$.value?.filter((team) => team.id !== id) ?? null
-          )
-        )
+            this._teams$.value?.filter((team) => team.id !== id) ?? null,
+          ),
+        ),
       );
   }
 }

@@ -24,7 +24,7 @@ const app = createApp([
   ResultController(
     resultServiceMock as unknown as ResultService,
     stationServiceMock as unknown as StationService,
-    teamServiceMock as unknown as TeamService
+    teamServiceMock as unknown as TeamService,
   ),
 ]);
 const server = http.createServer(app);
@@ -56,7 +56,7 @@ describe('ResultController', () => {
         },
         {
           headers: mockAuthorizationHeaderForStation(),
-        }
+        },
       );
 
       expect(response.status).toEqual(201);
@@ -84,7 +84,7 @@ describe('ResultController', () => {
         },
         {
           headers: mockAuthorizationHeaderForStation(),
-        }
+        },
       );
 
       expect(response.status).toEqual(201);
@@ -105,7 +105,7 @@ describe('ResultController', () => {
         {},
         {
           headers: mockAuthorizationHeaderForStation(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -126,7 +126,7 @@ describe('ResultController', () => {
         },
         {
           headers: mockAuthorizationHeaderForStation(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -148,7 +148,7 @@ describe('ResultController', () => {
         },
         {
           headers: mockAuthorizationHeaderForStation(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -173,7 +173,7 @@ describe('ResultController', () => {
         },
         {
           headers: mockAuthorizationHeaderForStation(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -184,7 +184,7 @@ describe('ResultController', () => {
         '/stations/00000000-0000-0000-0000-000000000000/results',
         {
           teamId: '00000000-0000-0000-0000-000000000000',
-        }
+        },
       );
 
       expect(response.status).toEqual(401);
@@ -200,7 +200,7 @@ describe('ResultController', () => {
         },
         {
           headers: mockAuthorizationHeaderForStation(),
-        }
+        },
       );
 
       expect(response.status).toEqual(404);

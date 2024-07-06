@@ -24,7 +24,7 @@ export const mockAuthorizationHeaderForAdmin = (): {
     process.env.SECRET ?? '',
     {
       expiresIn: '5m',
-    }
+    },
   );
 
   return {
@@ -47,7 +47,7 @@ export const mockAuthorizationHeaderForStation = (): {
     process.env.SECRET ?? '',
     {
       expiresIn: '5m',
-    }
+    },
   );
 
   return {

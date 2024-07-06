@@ -20,7 +20,7 @@ export class NotificationService {
 
   constructor(
     private readonly injector: Injector,
-    private readonly overlay: Overlay
+    private readonly overlay: Overlay,
   ) {}
 
   success(message: string, duration = 3000): void {
@@ -42,7 +42,7 @@ export class NotificationService {
   }
 
   private createContainer(
-    ctor: ComponentType<NotificationContainerComponent>
+    ctor: ComponentType<NotificationContainerComponent>,
   ): NotificationContainerComponent {
     const overlayRef = this.overlay.create({
       hasBackdrop: false,

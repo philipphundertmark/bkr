@@ -79,8 +79,8 @@ export class RankingComponent {
 
   teamsForRanking = computed(() =>
     this.teams().filter((team) =>
-      this.ranking() === 'standard' ? !team.help : team.help
-    )
+      this.ranking() === 'standard' ? !team.help : team.help,
+    ),
   );
 
   rankingItems = computed(() => {
@@ -98,7 +98,7 @@ export class RankingComponent {
           results: this.getStationResultsOfTeam(
             team,
             stations,
-            rankByTeamByStation
+            rankByTeamByStation,
           ),
           totalTime: team.finishedAt?.diff(team.startedAt, 'seconds') ?? 0,
         };
@@ -130,18 +130,18 @@ export class RankingComponent {
    */
   private getRankByTeamByStation(
     stations: Station[],
-    teams: Team[]
+    teams: Team[],
   ): RankByTeamByStation {
     return stations.reduce<RankByTeamByStation>((acc, station) => {
       const rankByTeam = StationUtils.getResultsForTeamsWithRank(
         station,
-        teams
+        teams,
       ).reduce<RankByTeam>(
         (acc, result) => ({
           ...acc,
           [result.teamId]: result.rank,
         }),
-        {}
+        {},
       );
 
       return {
@@ -154,11 +154,11 @@ export class RankingComponent {
   private getStationResultsOfTeam(
     team: Team,
     stations: Station[],
-    rankByTeamByStation: RankByTeamByStation
+    rankByTeamByStation: RankByTeamByStation,
   ): StationResult[] {
     return stations.map((station) => {
       const result = team.results.find(
-        (result) => result.stationId === station.id
+        (result) => result.stationId === station.id,
       );
 
       const rank = rankByTeamByStation[station.id]?.[team.id] ?? 0;

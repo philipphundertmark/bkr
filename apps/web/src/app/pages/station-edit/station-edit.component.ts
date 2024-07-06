@@ -105,7 +105,7 @@ export class StationEditComponent {
     private readonly notificationService: NotificationService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly stationService: StationService
+    private readonly stationService: StationService,
   ) {
     effect(() => {
       const station = this.station();
@@ -170,15 +170,15 @@ export class StationEditComponent {
 
           if (error === '"number" must be unique') {
             this.notificationService.error(
-              'Es gibt bereits ein Station mit dieser Nummer.'
+              'Es gibt bereits ein Station mit dieser Nummer.',
             );
           } else if (error === '"code" must be unique') {
             this.notificationService.error(
-              'Es gibt bereits eine Station mit diesem Code.'
+              'Es gibt bereits eine Station mit diesem Code.',
             );
           } else {
             this.notificationService.error(
-              'Station konnte nicht aktualisiert werden.'
+              'Station konnte nicht aktualisiert werden.',
             );
           }
         },

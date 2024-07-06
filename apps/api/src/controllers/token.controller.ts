@@ -10,7 +10,7 @@ import { handler } from './handler';
 
 export function TokenController(
   tokenService: TokenService,
-  stationService: StationService
+  stationService: StationService,
 ): Router {
   const router = Router();
 
@@ -81,7 +81,7 @@ export function TokenController(
       res.json({
         token: token,
       });
-    })
+    }),
   );
 
   return router;

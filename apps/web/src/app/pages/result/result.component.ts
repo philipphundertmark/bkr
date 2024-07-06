@@ -78,8 +78,8 @@ export class ResultComponent implements OnInit {
     map(([params, teams, stationId]) =>
       teams
         .find((team) => team.id === params.get('teamId'))
-        ?.results.find((result) => result.stationId === stationId)
-    )
+        ?.results.find((result) => result.stationId === stationId),
+    ),
   );
 
   private readonly destroyRef = inject(DestroyRef);
@@ -91,7 +91,7 @@ export class ResultComponent implements OnInit {
     private readonly resultService: ResultService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly teamService: TeamService
+    private readonly teamService: TeamService,
   ) {}
 
   /**
@@ -137,7 +137,7 @@ export class ResultComponent implements OnInit {
         error: () => {
           this.updateResultLoading.set(false);
           this.notificationService.error(
-            'Ergebnis konnte nicht aktualisiert werden.'
+            'Ergebnis konnte nicht aktualisiert werden.',
           );
         },
       });
@@ -157,7 +157,7 @@ export class ResultComponent implements OnInit {
 
           return this.resultService.deleteResult(stationId, teamId);
         }),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
         next: () => {
@@ -171,7 +171,7 @@ export class ResultComponent implements OnInit {
         error: () => {
           this.deleteResultLoading.set(false);
           this.notificationService.error(
-            'Ergebnis konnte nicht gelöscht werden.'
+            'Ergebnis konnte nicht gelöscht werden.',
           );
         },
       });

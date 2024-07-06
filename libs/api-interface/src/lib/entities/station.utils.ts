@@ -58,7 +58,7 @@ export const StationUtils = {
   },
   getResultsForTeamsWithRank(
     station: Station,
-    teams: Team[]
+    teams: Team[],
   ): ResultWithRank[] {
     let currentRank = 0;
 
@@ -66,7 +66,7 @@ export const StationUtils = {
       .filter((result) => teams.some((team) => team.id === result.teamId))
       .filter(ResultUtils.isFinal)
       .sort((a, b) =>
-        station.order === 'ASC' ? a.points - b.points : b.points - a.points
+        station.order === 'ASC' ? a.points - b.points : b.points - a.points,
       )
       .map((result, index, allResults) => {
         const previousResult = allResults[index - 1];

@@ -63,7 +63,7 @@ export class ConfirmComponent {
 
   constructor(
     public dialogRef: DialogRef<boolean>,
-    @Inject(DIALOG_DATA) public data: ConfirmData
+    @Inject(DIALOG_DATA) public data: ConfirmData,
   ) {}
 
   handleConfirm(): void {

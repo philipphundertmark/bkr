@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
     () =>
       this.settingsError() !== null ||
       this.stationsError() !== null ||
-      this.teamsError() !== null
+      this.teamsError() !== null,
   );
 
   settingsLoading = toSignal(this.settingsService.loading$, {
@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
 
   loading = computed(
     () =>
-      this.settingsLoading() || this.stationsLoading() || this.teamsLoading()
+      this.settingsLoading() || this.stationsLoading() || this.teamsLoading(),
   );
 
   private readonly destroyRef = inject(DestroyRef);
@@ -69,7 +69,7 @@ export class AppComponent implements OnInit {
     private readonly router: Router,
     private readonly settingsService: SettingsService,
     private readonly stationService: StationService,
-    private readonly teamService: TeamService
+    private readonly teamService: TeamService,
   ) {}
 
   /**

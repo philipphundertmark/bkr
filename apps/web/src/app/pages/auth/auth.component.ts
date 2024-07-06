@@ -69,7 +69,7 @@ export class AuthComponent {
     initialValue: [] as Station[],
   });
   station = computed(
-    () => this.stations().find((station) => station.id === this.sub()) ?? null
+    () => this.stations().find((station) => station.id === this.sub()) ?? null,
   );
 
   private readonly destroyRef = inject(DestroyRef);
@@ -78,7 +78,7 @@ export class AuthComponent {
     private readonly authService: AuthService,
     private readonly notificationService: NotificationService,
     private readonly router: Router,
-    private readonly stationService: StationService
+    private readonly stationService: StationService,
   ) {}
 
   handleLogin(): void {

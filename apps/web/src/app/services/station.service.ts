@@ -30,7 +30,7 @@ export class StationService {
   private readonly _stations$ = new BehaviorSubject<Station[]>([]);
   readonly stations$ = this._stations$.pipe(
     map((stations) => stations.sort((a, b) => a.number - b.number)),
-    shareReplay(1)
+    shareReplay(1),
   );
 
   private readonly _loading$ = new BehaviorSubject<boolean>(true);
@@ -41,7 +41,7 @@ export class StationService {
 
   constructor(
     private readonly http: HttpClient,
-    private readonly resultService: ResultService
+    private readonly resultService: ResultService,
   ) {
     this.resultService.newResult$
       .pipe(takeUntilDestroyed())
@@ -50,8 +50,8 @@ export class StationService {
           this._stations$.value.map((station) =>
             station.id === result.stationId
               ? { ...station, results: [...station.results, result] }
-              : station
-          )
+              : station,
+          ),
         );
       });
 
@@ -66,11 +66,11 @@ export class StationService {
                   results: station.results.map((stationResult) =>
                     stationResult.teamId === result.teamId
                       ? result
-                      : stationResult
+                      : stationResult,
                   ),
                 }
-              : station
-          )
+              : station,
+          ),
         );
       });
 
@@ -83,11 +83,11 @@ export class StationService {
               ? {
                   ...station,
                   results: station.results.filter(
-                    (stationResult) => stationResult.teamId !== teamId
+                    (stationResult) => stationResult.teamId !== teamId,
                   ),
                 }
-              : station
-          )
+              : station,
+          ),
         );
       });
 
@@ -98,9 +98,9 @@ export class StationService {
           this._stations$.value.map((station) => ({
             ...station,
             results: station.results.filter(
-              (stationResult) => stationResult.teamId !== teamId
+              (stationResult) => stationResult.teamId !== teamId,
             ),
-          }))
+          })),
         );
       });
   }
@@ -109,8 +109,8 @@ export class StationService {
     return this.http.post<StationDTO>('/stations', dto).pipe(
       map(StationUtils.deserialize),
       tap((station) =>
-        this._stations$.next([...this._stations$.value, station])
-      )
+        this._stations$.next([...this._stations$.value, station]),
+      ),
     );
   }
 
@@ -126,13 +126,13 @@ export class StationService {
         this._error$.next(error);
 
         return throwError(() => error);
-      })
+      }),
     );
   }
 
   updateStation(
     id: string,
-    dto: UpdateStationSchema
+    dto: UpdateStationSchema,
   ): Observable<Station | null> {
     return this.http.put<StationDTO>(`/stations/${id}`, dto).pipe(
       catchError((error: HttpErrorResponse) => {
@@ -143,7 +143,7 @@ export class StationService {
         return throwError(() => error);
       }),
       map((stationDto) =>
-        stationDto ? StationUtils.deserialize(stationDto) : null
+        stationDto ? StationUtils.deserialize(stationDto) : null,
       ),
       tap((updatedStation) => {
         if (!updatedStation) {
@@ -152,10 +152,10 @@ export class StationService {
 
         this._stations$.next(
           this._stations$.value.map((station) =>
-            station.id === id ? updatedStation : station
-          ) ?? null
+            station.id === id ? updatedStation : station,
+          ) ?? null,
         );
-      })
+      }),
     );
   }
 
@@ -166,9 +166,9 @@ export class StationService {
         tap(() =>
           this._stations$.next(
             this._stations$.value?.filter((station) => station.id !== id) ??
-              null
-          )
-        )
+              null,
+          ),
+        ),
       );
   }
 }

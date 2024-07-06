@@ -81,8 +81,8 @@ export class StationResultsComponent {
 
   teamsForRanking = computed(() =>
     this.teams().filter((team) =>
-      this.ranking() === 'standard' ? !team.help : team.help
-    )
+      this.ranking() === 'standard' ? !team.help : team.help,
+    ),
   );
 
   stationId = computed(() => this.paramMap()?.get('stationId') ?? null);
@@ -114,7 +114,7 @@ export class StationResultsComponent {
         // Filter out results that don't have a team
         .filter(
           (result): result is ResultWithRankAndTeam =>
-            typeof result.team !== 'undefined'
+            typeof result.team !== 'undefined',
         )
     );
   });
@@ -124,7 +124,7 @@ export class StationResultsComponent {
     private readonly route: ActivatedRoute,
     private readonly settingsService: SettingsService,
     private readonly stationService: StationService,
-    private readonly teamService: TeamService
+    private readonly teamService: TeamService,
   ) {}
 
   formatDuration(seconds: number): string {

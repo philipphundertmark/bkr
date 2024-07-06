@@ -12,7 +12,7 @@ export class TeamService {
     name: string,
     number: number,
     members: string[],
-    help: boolean
+    help: boolean,
   ): Promise<Team> {
     const team = await this.prisma.team.create({
       data: {
@@ -101,8 +101,8 @@ export class TeamService {
           data: {
             number: team.number + maxNumber,
           },
-        })
-      )
+        }),
+      ),
     );
 
     const shuffledTeams = teams.sort(() => Math.random() - 0.5);
@@ -121,8 +121,8 @@ export class TeamService {
               select: ResultService.RESULT_SELECT,
             },
           },
-        })
-      )
+        }),
+      ),
     );
 
     return updatedTeams.map((team) => this.toTeam(team));
@@ -138,7 +138,7 @@ export class TeamService {
       finishedAt?: string | null;
       help?: boolean;
       penalty?: number;
-    }
+    },
   ): Promise<Team> {
     const team = await this.prisma.team.update({
       where: {
@@ -178,7 +178,7 @@ export class TeamService {
         checkOut: Date | null;
         points: number;
       }[];
-    }
+    },
   ): Team {
     return {
       ...team,

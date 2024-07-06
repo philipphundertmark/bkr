@@ -39,7 +39,7 @@ export function SettingsController(settingsService: SettingsService): Router {
 
       res.status(200);
       res.json(SettingsUtils.serialize(settings));
-    })
+    }),
   );
 
   /**
@@ -113,7 +113,7 @@ export function SettingsController(settingsService: SettingsService): Router {
 
       res.status(200);
       res.json(SettingsUtils.serialize(settings));
-    })
+    }),
   );
 
   return router;

@@ -3,7 +3,7 @@
     class="mx-auto flex h-12 w-12 items-center justify-center rounded-full"
     [ngClass]="{
       'bg-indigo-100 text-indigo-500': data.type === ConfirmType.INFO,
-      'bg-red-100 text-red-500': data.type === ConfirmType.DELETE
+      'bg-red-100 text-red-500': data.type === ConfirmType.DELETE,
     }"
     [ngSwitch]="data.type"
   >

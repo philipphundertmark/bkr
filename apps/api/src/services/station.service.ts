@@ -13,7 +13,7 @@ export class StationService {
     number: number,
     members: string[],
     code: string,
-    order: Order
+    order: Order,
   ): Promise<Station> {
     const station = await this.prisma.station.create({
       data: {
@@ -106,7 +106,7 @@ export class StationService {
       members?: string[];
       code?: string;
       order?: Order;
-    }
+    },
   ): Promise<Station> {
     const station = await this.prisma.station.update({
       where: {
@@ -138,7 +138,7 @@ export class StationService {
         checkOut: Date | null;
         points: number;
       }[];
-    }
+    },
   ): Station {
     return {
       ...station,

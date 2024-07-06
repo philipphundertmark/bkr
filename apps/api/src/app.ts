@@ -19,7 +19,7 @@ export interface AppConfig {
  */
 export const createApp = (
   handlers: express.RequestHandler[],
-  config?: AppConfig
+  config?: AppConfig,
 ): express.Application => {
   const app = express();
 

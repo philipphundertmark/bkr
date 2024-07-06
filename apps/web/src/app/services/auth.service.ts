@@ -18,28 +18,28 @@ export class AuthService {
    * Emits `null`, if no user is logged in.
    */
   readonly user$ = this.token$.pipe(
-    map((token) => (token !== null ? jwtDecode<JwtPayload>(token) : null))
+    map((token) => (token !== null ? jwtDecode<JwtPayload>(token) : null)),
   );
 
   /**
    * Observable that emits the expiration date of the current token.
    */
   readonly exp$ = this.user$.pipe(
-    map((user) => (user?.exp ? dayjs(user.exp * 1000) : null))
+    map((user) => (user?.exp ? dayjs(user.exp * 1000) : null)),
   );
 
   /**
    * Observable that emits the issue date of the current token.
    */
   readonly iat$ = this.user$.pipe(
-    map((user) => (user?.iat ? dayjs(user.iat * 1000) : null))
+    map((user) => (user?.iat ? dayjs(user.iat * 1000) : null)),
   );
 
   /**
    * Observable that emits the role of the current user.
    */
   readonly role$ = this.user$.pipe(
-    map((user) => (user !== null ? user.role : null))
+    map((user) => (user !== null ? user.role : null)),
   );
 
   /**
@@ -55,7 +55,7 @@ export class AuthService {
 
   readonly isAdmin$ = this.user$.pipe(map((user) => user?.role === Role.ADMIN));
   readonly isStation$ = this.user$.pipe(
-    map((user) => user?.role === Role.STATION)
+    map((user) => user?.role === Role.STATION),
   );
 
   constructor(private readonly http: HttpClient) {
@@ -75,7 +75,7 @@ export class AuthService {
       .pipe(
         map((res) => res.token),
         tap((token) => this._token$.next(token)),
-        tap((token) => localStorage.setItem('token', token))
+        tap((token) => localStorage.setItem('token', token)),
       );
   }
 

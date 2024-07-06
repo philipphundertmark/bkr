@@ -7,7 +7,7 @@ import { UnauthorizedException } from '../errors';
 export function authenticate(
   req: express.Request,
   res: express.Response,
-  next: express.NextFunction
+  next: express.NextFunction,
 ): void {
   const authorization = req.headers['authorization'];
 

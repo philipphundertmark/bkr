@@ -122,11 +122,11 @@ export class HomeComponent {
         progress: TeamUtils.isFinished(team)
           ? 100
           : team.results.length
-          ? team.results.length * segment +
-            (typeof latestResult?.checkOut !== 'undefined' ? halfSegment : 0)
-          : TeamUtils.isStarted(team)
-          ? halfSegment
-          : 0,
+            ? team.results.length * segment +
+              (typeof latestResult?.checkOut !== 'undefined' ? halfSegment : 0)
+            : TeamUtils.isStarted(team)
+              ? halfSegment
+              : 0,
         stationIds: team.results.map((result) => result.stationId),
         started: TeamUtils.isStarted(team),
         teamId: team.id,
@@ -138,7 +138,7 @@ export class HomeComponent {
     private readonly authService: AuthService,
     private readonly settingsService: SettingsService,
     private readonly stationService: StationService,
-    private readonly teamService: TeamService
+    private readonly teamService: TeamService,
   ) {}
 
   formatDuration(seconds: number): string {
@@ -169,11 +169,11 @@ export class HomeComponent {
 
     const maxStationNumber = Math.max(...stationNumbers);
     const latestStation = stations.find(
-      ({ number }) => number === maxStationNumber
+      ({ number }) => number === maxStationNumber,
     );
 
     return team.results.find(
-      ({ stationId }) => stationId === latestStation?.id
+      ({ stationId }) => stationId === latestStation?.id,
     );
   }
 }

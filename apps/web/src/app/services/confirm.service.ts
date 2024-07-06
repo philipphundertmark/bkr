@@ -27,7 +27,7 @@ export class ConfirmService {
 
   private open(
     type: ConfirmType,
-    config: Omit<ConfirmData, 'type'>
+    config: Omit<ConfirmData, 'type'>,
   ): Observable<boolean> {
     const dialogRef = this.dialog.open<boolean, ConfirmData, ConfirmComponent>(
       ConfirmComponent,
@@ -38,7 +38,7 @@ export class ConfirmService {
         },
         backdropClass: 'backdrop',
         panelClass: 'dialog',
-      }
+      },
     );
 
     return dialogRef.closed.pipe(map((confirmed) => confirmed ?? false));

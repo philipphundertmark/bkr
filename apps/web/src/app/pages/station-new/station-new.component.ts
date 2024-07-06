@@ -72,7 +72,7 @@ export class StationNewComponent {
   constructor(
     private readonly notificationService: NotificationService,
     private readonly router: Router,
-    private readonly stationService: StationService
+    private readonly stationService: StationService,
   ) {}
 
   handleSave(): void {
@@ -119,15 +119,15 @@ export class StationNewComponent {
 
           if (error === '"number" must be unique') {
             this.notificationService.error(
-              'Es gibt bereits eine Station mit dieser Nummer.'
+              'Es gibt bereits eine Station mit dieser Nummer.',
             );
           } else if (error === '"code" must be unique') {
             this.notificationService.error(
-              'Es gibt bereits eine Station mit diesem Code.'
+              'Es gibt bereits eine Station mit diesem Code.',
             );
           } else {
             this.notificationService.error(
-              'Station konnte nicht erstellt werden.'
+              'Station konnte nicht erstellt werden.',
             );
           }
         },

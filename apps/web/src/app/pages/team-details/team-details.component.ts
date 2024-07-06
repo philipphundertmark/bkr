@@ -94,7 +94,7 @@ export class TeamDetailsComponent {
     private readonly resultService: ResultService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly teamService: TeamService
+    private readonly teamService: TeamService,
   ) {}
 
   handleDeleteTeam(teamId: string): void {
@@ -111,7 +111,7 @@ export class TeamDetailsComponent {
 
           return this.teamService.deleteTeam(teamId);
         }),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
         next: () => {
@@ -143,7 +143,7 @@ export class TeamDetailsComponent {
 
           return this.resultService.deleteResultsByTeamId(teamId);
         }),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
         next: () => {
@@ -155,7 +155,7 @@ export class TeamDetailsComponent {
         error: () => {
           this.deleteTeamResultsLoading.set(false);
           this.notificationService.error(
-            'Ergebnisse konnten nicht gelöscht werden.'
+            'Ergebnisse konnten nicht gelöscht werden.',
           );
         },
       });
@@ -177,7 +177,7 @@ export class TeamDetailsComponent {
             startedAt: dayjs().toISOString(),
           });
         }),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
         next: () => {
@@ -209,7 +209,7 @@ export class TeamDetailsComponent {
             finishedAt: dayjs().toISOString(),
           });
         }),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
         next: () => {

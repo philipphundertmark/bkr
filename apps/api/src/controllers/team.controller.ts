@@ -15,7 +15,7 @@ import { handler } from './handler';
 
 export function TeamController(
   resultService: ResultService,
-  teamService: TeamService
+  teamService: TeamService,
 ): Router {
   const router = Router();
 
@@ -90,7 +90,7 @@ export function TeamController(
 
       res.status(201);
       res.json(TeamUtils.serialize(team));
-    })
+    }),
   );
 
   /**
@@ -124,7 +124,7 @@ export function TeamController(
 
       res.status(200);
       res.json(teams.map(TeamUtils.serialize));
-    })
+    }),
   );
 
   /**
@@ -185,7 +185,7 @@ export function TeamController(
 
       res.status(200);
       res.json(teams.map(TeamUtils.serialize));
-    })
+    }),
   );
 
   /**
@@ -291,7 +291,7 @@ export function TeamController(
 
       res.status(200);
       res.json(TeamUtils.serialize(team));
-    })
+    }),
   );
 
   /**
@@ -350,7 +350,7 @@ export function TeamController(
 
       res.status(200);
       res.end();
-    })
+    }),
   );
 
   /**
@@ -409,7 +409,7 @@ export function TeamController(
 
       res.status(200);
       res.end();
-    })
+    }),
   );
 
   return router;

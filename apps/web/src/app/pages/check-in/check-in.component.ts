@@ -64,7 +64,7 @@ export class CheckInComponent {
       .filter(TeamUtils.isRunning)
       .filter(
         (team) =>
-          !team.results.some((result) => result.stationId === this.stationId())
+          !team.results.some((result) => result.stationId === this.stationId()),
       );
   });
 
@@ -79,7 +79,7 @@ export class CheckInComponent {
     private readonly notificationService: NotificationService,
     private readonly resultService: ResultService,
     private readonly router: Router,
-    private readonly teamService: TeamService
+    private readonly teamService: TeamService,
   ) {}
 
   handleCheckIn(): void {
@@ -107,7 +107,7 @@ export class CheckInComponent {
         error: () => {
           this.checkInLoading.set(false);
           this.notificationService.error(
-            'Team konnte nicht eingecheckt werden.'
+            'Team konnte nicht eingecheckt werden.',
           );
         },
       });

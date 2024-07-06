@@ -96,12 +96,12 @@ export function StationController(stationService: StationService): Router {
         number,
         members,
         code,
-        order
+        order,
       );
 
       res.status(201);
       res.json(StationUtils.serialize(station));
-    })
+    }),
   );
 
   /**
@@ -140,7 +140,7 @@ export function StationController(stationService: StationService): Router {
 
       res.status(200);
       res.json(stations.map(StationUtils.serialize));
-    })
+    }),
   );
 
   /**
@@ -256,7 +256,7 @@ export function StationController(stationService: StationService): Router {
 
       res.status(200);
       res.json(StationUtils.serialize(station));
-    })
+    }),
   );
 
   /**
@@ -315,7 +315,7 @@ export function StationController(stationService: StationService): Router {
 
       res.status(200);
       res.end();
-    })
+    }),
   );
 
   return router;

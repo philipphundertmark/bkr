@@ -32,7 +32,7 @@ const app = createApp(
   ],
   {
     origin: config.ORIGIN,
-  }
+  },
 );
 const server = http.createServer(app);
 

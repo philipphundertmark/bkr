@@ -74,7 +74,7 @@ export class EndresultComponent {
   constructor(
     private readonly settingsService: SettingsService,
     private readonly stationService: StationService,
-    private readonly teamService: TeamService
+    private readonly teamService: TeamService,
   ) {}
 
   handleChangeRanking(ranking: string): void {

@@ -47,7 +47,7 @@ export class ResultService {
 
   async getResultById(
     stationId: string,
-    teamId: string
+    teamId: string,
   ): Promise<Result | null> {
     const result = await this.prisma.result.findUnique({
       where: {
@@ -65,7 +65,7 @@ export class ResultService {
   async updateResult(
     stationId: string,
     teamId: string,
-    updates: { points?: number; checkIn?: string; checkOut?: string | null }
+    updates: { points?: number; checkIn?: string; checkOut?: string | null },
   ): Promise<Result> {
     const result = await this.prisma.result.update({
       where: {

@@ -18,12 +18,12 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom([DialogModule, OverlayModule]),
     provideAnimations(),
     provideHttpClient(
-      withInterceptors([ApiHttpInterceptorFn, AuthHttpInterceptorFn])
+      withInterceptors([ApiHttpInterceptorFn, AuthHttpInterceptorFn]),
     ),
     provideRouter(
       appRoutes,
       withComponentInputBinding(),
-      withEnabledBlockingInitialNavigation()
+      withEnabledBlockingInitialNavigation(),
     ),
   ],
 };

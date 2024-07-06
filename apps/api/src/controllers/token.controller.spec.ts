@@ -17,7 +17,7 @@ const client = axios.create({
 const app = createApp([
   TokenController(
     tokenServiceMock as unknown as TokenService,
-    stationServiceMock as unknown as StationService
+    stationServiceMock as unknown as StationService,
   ),
 ]);
 const server = http.createServer(app);

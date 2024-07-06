@@ -7,7 +7,7 @@ export class SettingsService {
   constructor(private prisma: PrismaClient) {}
 
   async upsertSettings(
-    updates: { publishResults?: boolean } = {}
+    updates: { publishResults?: boolean } = {},
   ): Promise<Settings> {
     let settings = await this.prisma.settings.findFirst();
 

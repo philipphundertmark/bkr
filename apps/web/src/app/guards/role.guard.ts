@@ -7,7 +7,7 @@ import { Role } from '@bkr/api-interface';
 import { AuthService } from '../services';
 
 export const roleCanActivateFn: CanActivateFn = (
-  route: ActivatedRouteSnapshot
+  route: ActivatedRouteSnapshot,
 ) => {
   const requiredRoles = (route.data['roles'] || []) as Role[];
 
@@ -22,12 +22,13 @@ function redirectIfUnauthorized(requiredRoles: Role[]): Observable<boolean> {
     take(1),
     map(
       (role) =>
-        !requiredRoles.length || (role !== null && requiredRoles.includes(role))
+        !requiredRoles.length ||
+        (role !== null && requiredRoles.includes(role)),
     ),
     tap((isAuthorized) => {
       if (!isAuthorized) {
         router.navigate(['/']);
       }
-    })
+    }),
   );
 }

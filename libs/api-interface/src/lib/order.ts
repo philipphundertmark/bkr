@@ -1,4 +1,4 @@
-export type Order = typeof Order[keyof typeof Order];
+export type Order = (typeof Order)[keyof typeof Order];
 
 export const Order = {
   ASC: 'ASC',

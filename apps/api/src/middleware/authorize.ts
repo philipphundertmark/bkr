@@ -8,7 +8,7 @@ export function authorize(...roles: Role[]) {
   return function (
     req: express.Request,
     res: express.Response,
-    next: express.NextFunction
+    next: express.NextFunction,
   ): void {
     if (!roles.length) {
       return next();

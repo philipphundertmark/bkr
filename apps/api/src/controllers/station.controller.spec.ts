@@ -58,7 +58,7 @@ describe('StationController', () => {
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(201);
@@ -80,7 +80,7 @@ describe('StationController', () => {
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -101,7 +101,7 @@ describe('StationController', () => {
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -121,7 +121,7 @@ describe('StationController', () => {
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -142,7 +142,7 @@ describe('StationController', () => {
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -157,7 +157,7 @@ describe('StationController', () => {
         mockStation({
           name: 'Station 1',
           number: 1,
-        })
+        }),
       );
 
       const response = await client.post(
@@ -171,7 +171,7 @@ describe('StationController', () => {
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -191,7 +191,7 @@ describe('StationController', () => {
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -211,7 +211,7 @@ describe('StationController', () => {
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -232,7 +232,7 @@ describe('StationController', () => {
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -247,7 +247,7 @@ describe('StationController', () => {
           name: 'Station 1',
           number: 1,
           code: '123456',
-        })
+        }),
       );
 
       const response = await client.post(
@@ -261,7 +261,7 @@ describe('StationController', () => {
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -281,7 +281,7 @@ describe('StationController', () => {
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -302,7 +302,7 @@ describe('StationController', () => {
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -323,7 +323,7 @@ describe('StationController', () => {
         {},
         {
           headers: mockAuthorizationHeaderForStation(),
-        }
+        },
       );
 
       expect(response.status).toEqual(403);
@@ -442,7 +442,7 @@ describe('StationController', () => {
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(200);
@@ -461,7 +461,7 @@ describe('StationController', () => {
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -478,7 +478,7 @@ describe('StationController', () => {
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -492,13 +492,13 @@ describe('StationController', () => {
         mockStation({
           name: 'Station 1',
           number: 1,
-        })
+        }),
       );
       stationServiceMock.getStationByNumber.mockResolvedValueOnce(
         mockStation({
           name: 'Station 2',
           number: 1,
-        })
+        }),
       );
 
       const response = await client.put(
@@ -508,7 +508,7 @@ describe('StationController', () => {
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -525,7 +525,7 @@ describe('StationController', () => {
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -539,14 +539,14 @@ describe('StationController', () => {
         mockStation({
           name: 'Station 1',
           number: 1,
-        })
+        }),
       );
       stationServiceMock.getStationByCode.mockResolvedValueOnce(
         mockStation({
           name: 'Station 2',
           number: 2,
           code: '123456',
-        })
+        }),
       );
 
       const response = await client.put(
@@ -556,7 +556,7 @@ describe('StationController', () => {
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -573,7 +573,7 @@ describe('StationController', () => {
         },
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(400);
@@ -594,7 +594,7 @@ describe('StationController', () => {
         {},
         {
           headers: mockAuthorizationHeaderForStation(),
-        }
+        },
       );
 
       expect(response.status).toEqual(403);
@@ -608,7 +608,7 @@ describe('StationController', () => {
         {},
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(404);
@@ -622,7 +622,7 @@ describe('StationController', () => {
         {},
         {
           headers: mockAuthorizationHeaderForAdmin(),
-        }
+        },
       );
 
       expect(response.status).toEqual(500);

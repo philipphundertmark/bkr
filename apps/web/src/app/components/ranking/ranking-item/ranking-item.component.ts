@@ -33,10 +33,10 @@ export class RankingItemComponent {
 
   getFormattedBonusAtStation(
     stationId: string,
-    rankingItem: RankingItem
+    rankingItem: RankingItem,
   ): string {
     const stationResult = rankingItem.results.find(
-      (result) => result.stationId === stationId
+      (result) => result.stationId === stationId,
     );
 
     if (!stationResult) {
@@ -48,10 +48,10 @@ export class RankingItemComponent {
 
   getFormattedTimeAtStation(
     stationId: string,
-    rankingItem: RankingItem
+    rankingItem: RankingItem,
   ): string {
     const stationResult = rankingItem.results.find(
-      (result) => result.stationId === stationId
+      (result) => result.stationId === stationId,
     );
 
     if (!stationResult) {
