@@ -44,3 +44,6 @@ Thumbs.db
 
 # Dump
 dump
+
+.nx/cache
+.nx/workspace-data
