@@ -2,13 +2,10 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  HostBinding,
-  Input,
   computed,
+  input,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import dayjs from 'dayjs';
-import { BehaviorSubject } from 'rxjs';
 
 import {
   Station,
@@ -18,6 +15,7 @@ import {
   TeamWithResults,
 } from '@bkr/api-interface';
 
+import { EmptyComponent } from '../empty/empty.component';
 import { RankingItemComponent } from './ranking-item/ranking-item.component';
 
 interface RankByTeam {
@@ -51,39 +49,16 @@ export interface RankingItem {
 @Component({
   selector: 'bkr-ranking',
   standalone: true,
-  imports: [CommonModule, RankingItemComponent],
+  imports: [CommonModule, EmptyComponent, RankingItemComponent],
+  host: { class: 'list' },
+  styleUrl: './ranking.component.scss',
   templateUrl: './ranking.component.html',
-  styleUrls: ['./ranking.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RankingComponent {
-  // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input({ alias: 'ranking', required: true })
-  set _ranking(value: string) {
-    this.ranking$.next(value);
-  }
-  // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input({ alias: 'stations', required: true })
-  set _stations(value: StationWithResults[]) {
-    this.stations$.next(value);
-  }
-  // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input({ alias: 'teams', required: true })
-  set _teams(value: TeamWithResults[]) {
-    this.teams$.next(value);
-  }
-
-  @HostBinding('class.list') list = true;
-
-  ranking$ = new BehaviorSubject<string>('standard');
-  stations$ = new BehaviorSubject<StationWithResults[]>([]);
-  teams$ = new BehaviorSubject<TeamWithResults[]>([]);
-
-  ranking = toSignal(this.ranking$, { initialValue: 'standard' });
-  stations = toSignal(this.stations$, {
-    initialValue: [] as StationWithResults[],
-  });
-  teams = toSignal(this.teams$, { initialValue: [] as TeamWithResults[] });
+  ranking = input.required<string>();
+  stations = input.required<StationWithResults[]>();
+  teams = input.required<TeamWithResults[]>();
 
   teamsForRanking = computed(() =>
     this.teams().filter((team) =>

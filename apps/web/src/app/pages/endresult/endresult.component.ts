@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  HostBinding,
   inject,
   signal,
 } from '@angular/core';
@@ -23,7 +22,7 @@ import {
   LockOpenIconComponent,
   TrophyIconComponent,
 } from '../../icons/mini';
-import { SettingsService } from '../../services';
+import { NotificationService, SettingsService } from '../../services';
 import { Store } from '../../services/store';
 
 @Component({
@@ -42,13 +41,12 @@ import { Store } from '../../services/store';
     TabsComponent,
     TrophyIconComponent,
   ],
+  host: { class: 'page' },
+  styleUrl: './endresult.component.scss',
   templateUrl: './endresult.component.html',
-  styleUrls: ['./endresult.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EndresultComponent {
-  @HostBinding('class.page') page = true;
-
   ranking = signal('standard');
 
   stations = this.store.stations;
@@ -63,6 +61,7 @@ export class EndresultComponent {
   private readonly destroyRef = inject(DestroyRef);
 
   constructor(
+    private readonly notificationService: NotificationService,
     private readonly settingsService: SettingsService,
     private readonly store: Store,
   ) {}
@@ -78,8 +77,13 @@ export class EndresultComponent {
       .updateSettings({ publishResults: true })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: () => {
+        next: (settings) => {
           this.publishResultsLoading.set(false);
+          this.store.setSettings(settings);
+        },
+        error: () => {
+          this.publishResultsLoading.set(false);
+          this.notificationService.error('Das hat leider nicht funktioniert');
         },
       });
   }
@@ -91,8 +95,13 @@ export class EndresultComponent {
       .updateSettings({ publishResults: false })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: () => {
+        next: (settings) => {
           this.hideResultsLoading.set(false);
+          this.store.setSettings(settings);
+        },
+        error: () => {
+          this.hideResultsLoading.set(false);
+          this.notificationService.error('Das hat leider nicht funktioniert');
         },
       });
   }

@@ -1,6 +1,9 @@
-<bkr-ranking-item
-  [bkrRank]="i + 1"
-  [bkrRankingItem]="rankingItem"
-  [bkrStations]="stations()"
-  *ngFor="let rankingItem of rankingItems(); let i = index"
-></bkr-ranking-item>
+@for (rankingItem of rankingItems(); track $index) {
+  <bkr-ranking-item
+    [rank]="$index + 1"
+    [rankingItem]="rankingItem"
+    [stations]="stations()"
+  ></bkr-ranking-item>
+} @empty {
+  <bkr-empty>Diese Wertung hat keine Teams.</bkr-empty>
+}

@@ -21,7 +21,7 @@ export class SettingsService {
       .pipe(map(SettingsUtils.deserialize));
   }
 
-  updateSettings(dto: UpdateSettingsSchema): Observable<Settings | null> {
+  updateSettings(dto: UpdateSettingsSchema): Observable<Settings> {
     return this.http
       .put<SettingsDTO>('/settings', dto)
       .pipe(map(SettingsUtils.deserialize));
