@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import { SetRequired } from 'type-fest';
 
-import { ResultUtils } from './result.utils';
 import { Team } from './team';
 import { TeamDTO } from './team.dto';
 
@@ -18,7 +17,6 @@ export const TeamUtils = {
       finishedAt: dto.finishedAt ? dayjs(dto.finishedAt) : undefined,
       help: dto.help,
       penalty: dto.penalty,
-      results: dto.results.map(ResultUtils.deserialize),
     };
   },
   serialize(team: Team): TeamDTO {
@@ -33,7 +31,6 @@ export const TeamUtils = {
       finishedAt: team.finishedAt?.toISOString(),
       help: team.help,
       penalty: team.penalty,
-      results: team.results.map(ResultUtils.serialize),
     };
   },
   isStarted(team: Team): team is SetRequired<Team, 'startedAt'> {

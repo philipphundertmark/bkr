@@ -22,7 +22,12 @@ const tokenService = new TokenService();
 
 const app = createApp(
   [
-    ResultController(resultService, stationService, teamService),
+    ResultController(
+      resultService,
+      settingsService,
+      stationService,
+      teamService,
+    ),
     SettingsController(settingsService),
     StationController(stationService),
     TeamController(resultService, teamService),

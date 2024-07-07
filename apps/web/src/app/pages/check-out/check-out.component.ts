@@ -18,7 +18,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
 import { EMPTY, map, switchMap } from 'rxjs';
 
-import { Team, TeamUtils } from '@bkr/api-interface';
+import { TeamUtils } from '@bkr/api-interface';
 
 import {
   AlertComponent,
@@ -32,9 +32,9 @@ import {
   AuthService,
   NotificationService,
   ResultService,
-  TeamService,
 } from '../../services';
 import { ConfirmService } from '../../services/confirm.service';
+import { Store } from '../../services/store';
 
 @Component({
   selector: 'bkr-check-out',
@@ -69,7 +69,7 @@ export class CheckOutComponent {
     }),
   });
 
-  teams = toSignal(this.teamService.teams$, { initialValue: [] as Team[] });
+  teams = this.store.teams;
   teamId = toSignal(
     this.route.queryParamMap.pipe(map((params) => params.get('teamId'))),
     {
@@ -89,7 +89,7 @@ export class CheckOutComponent {
     private readonly resultService: ResultService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly teamService: TeamService,
+    private readonly store: Store,
   ) {}
 
   handleCheckOut(teamId: string): void {

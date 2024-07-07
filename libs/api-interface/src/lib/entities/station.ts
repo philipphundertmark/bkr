@@ -43,7 +43,9 @@ export interface Station {
    * The order in which results of teams are sorted.
    */
   order: Order;
+}
 
+export interface StationWithResults extends Station {
   /**
    * Results of teams at the station.
    */

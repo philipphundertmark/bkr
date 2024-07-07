@@ -7,10 +7,8 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
-
-import { Station, Team } from '@bkr/api-interface';
 
 import {
   AlertComponent,
@@ -25,7 +23,8 @@ import {
   LockOpenIconComponent,
   TrophyIconComponent,
 } from '../../icons/mini';
-import { SettingsService, StationService, TeamService } from '../../services';
+import { SettingsService } from '../../services';
+import { Store } from '../../services/store';
 
 @Component({
   selector: 'bkr-endresult',
@@ -52,19 +51,11 @@ export class EndresultComponent {
 
   ranking = signal('standard');
 
-  stations = toSignal(this.stationService.stations$, {
-    initialValue: [] as Station[],
-  });
-  teams = toSignal(this.teamService.teams$, {
-    initialValue: [] as Team[],
-  });
+  stations = this.store.stations;
+  teams = this.store.teams;
 
-  isRaceOver = toSignal(this.teamService.isRaceOver$, {
-    initialValue: false,
-  });
-  publishResults = toSignal(this.settingsService.publishResults$, {
-    initialValue: false,
-  });
+  publishResults = this.store.publishResults;
+  isRaceOver = this.store.raceIsOver;
 
   hideResultsLoading = signal(false);
   publishResultsLoading = signal(false);
@@ -73,8 +64,7 @@ export class EndresultComponent {
 
   constructor(
     private readonly settingsService: SettingsService,
-    private readonly stationService: StationService,
-    private readonly teamService: TeamService,
+    private readonly store: Store,
   ) {}
 
   handleChangeRanking(ranking: string): void {

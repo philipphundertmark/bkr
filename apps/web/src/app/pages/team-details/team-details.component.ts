@@ -13,7 +13,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
 import { EMPTY, switchMap } from 'rxjs';
 
-import { Team, TeamUtils } from '@bkr/api-interface';
+import { TeamUtils } from '@bkr/api-interface';
 
 import {
   ButtonComponent,
@@ -33,6 +33,7 @@ import {
   TeamService,
 } from '../../services';
 import { ConfirmService } from '../../services/confirm.service';
+import { Store } from '../../services/store';
 
 @Component({
   selector: 'bkr-team-details',
@@ -61,9 +62,7 @@ export class TeamDetailsComponent {
     initialValue: null,
   });
 
-  teams = toSignal(this.teamService.teams$, {
-    initialValue: [] as Team[],
-  });
+  teams = this.store.teams;
 
   teamId = computed(() => this.paramMap()?.get('teamId') ?? null);
   team = computed(() => {
@@ -94,6 +93,7 @@ export class TeamDetailsComponent {
     private readonly resultService: ResultService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
+    private readonly store: Store,
     private readonly teamService: TeamService,
   ) {}
 

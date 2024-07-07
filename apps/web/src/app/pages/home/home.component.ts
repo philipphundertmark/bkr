@@ -12,7 +12,13 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { map, timer } from 'rxjs';
 
-import { Result, Station, Team, TeamUtils } from '@bkr/api-interface';
+import {
+  Result,
+  Station,
+  Team,
+  TeamUtils,
+  TeamWithResults,
+} from '@bkr/api-interface';
 
 import {
   ButtonComponent,
@@ -31,6 +37,7 @@ import {
   StationService,
   TeamService,
 } from '../../services';
+import { Store } from '../../services/store';
 
 dayjs.extend(duration);
 
@@ -78,19 +85,11 @@ export class HomeComponent {
     initialValue: false,
   });
 
-  isRaceOver = toSignal(this.teamService.isRaceOver$, {
-    initialValue: false,
-  });
-  publishResults = toSignal(this.settingsService.publishResults$, {
-    initialValue: false,
-  });
+  publishResults = this.store.publishResults;
+  isRaceOver = this.store.raceIsOver;
 
-  stations = toSignal(this.stationService.stations$, {
-    initialValue: [] as Station[],
-  });
-  teams = toSignal(this.teamService.teams$, {
-    initialValue: [] as Team[],
-  });
+  stations = this.store.stations;
+  teams = this.store.teams;
 
   timer$ = timer(0, 1000).pipe(map(() => dayjs()));
   timer = toSignal(this.timer$, { initialValue: dayjs() });
@@ -138,6 +137,7 @@ export class HomeComponent {
     private readonly authService: AuthService,
     private readonly settingsService: SettingsService,
     private readonly stationService: StationService,
+    private readonly store: Store,
     private readonly teamService: TeamService,
   ) {}
 
@@ -161,7 +161,10 @@ export class HomeComponent {
       : 0;
   }
 
-  private getLatestResult(team: Team, stations: Station[]): Result | undefined {
+  private getLatestResult(
+    team: TeamWithResults,
+    stations: Station[],
+  ): Result | undefined {
     const stationNumbers = team.results
       .map(({ stationId }) => stations.find(({ id }) => id === stationId))
       .filter((station): station is Station => typeof station !== 'undefined')

@@ -2,20 +2,25 @@ import { Router } from 'express';
 
 import {
   CreateResultSchema,
+  Result,
   ResultUtils,
   Role,
   UpdateResultSchema,
+  isAdmin,
+  isStation,
 } from '@bkr/api-interface';
 
 import { BadRequestException, NotFoundException } from '../errors';
 import { authorize } from '../middleware/authorize';
 import { ResultService } from '../services/result.service';
+import { SettingsService } from '../services/settings.service';
 import { StationService } from '../services/station.service';
 import { TeamService } from '../services/team.service';
 import { handler } from './handler';
 
 export function ResultController(
   resultService: ResultService,
+  settingsService: SettingsService,
   stationService: StationService,
   teamService: TeamService,
 ): Router {
@@ -59,6 +64,21 @@ export function ResultController(
 
       res.status(201);
       res.json(ResultUtils.serialize(result));
+    }),
+  );
+
+  router.get(
+    '/results',
+    handler(async (req, res) => {
+      const settings = await settingsService.upsertSettings();
+      let results: Result[] = [];
+
+      if (settings.publishResults || isAdmin(req.user) || isStation(req.user)) {
+        results = await resultService.getAll();
+      }
+
+      res.status(200);
+      res.json(results.map(ResultUtils.serialize));
     }),
   );
 

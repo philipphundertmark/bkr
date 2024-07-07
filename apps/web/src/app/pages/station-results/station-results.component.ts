@@ -12,10 +12,9 @@ import dayjs from 'dayjs';
 
 import {
   ResultWithRank,
-  Station,
   StationUtils,
-  Team,
   TeamUtils,
+  TeamWithResults,
 } from '@bkr/api-interface';
 
 import {
@@ -25,14 +24,10 @@ import {
   TabComponent,
   TabsComponent,
 } from '../../components';
-import {
-  AuthService,
-  SettingsService,
-  StationService,
-  TeamService,
-} from '../../services';
+import { AuthService } from '../../services';
+import { Store } from '../../services/store';
 
-type ResultWithRankAndTeam = ResultWithRank & { team: Team };
+type ResultWithRankAndTeam = ResultWithRank & { team: TeamWithResults };
 
 @Component({
   selector: 'bkr-station-results',
@@ -65,19 +60,12 @@ export class StationResultsComponent {
   isAdmin = toSignal(this.authService.isAdmin$, {
     initialValue: false,
   });
-  isRaceOver = toSignal(this.teamService.isRaceOver$, {
-    initialValue: false,
-  });
-  publishResults = toSignal(this.settingsService.publishResults$, {
-    initialValue: false,
-  });
 
-  stations = toSignal(this.stationService.stations$, {
-    initialValue: [] as Station[],
-  });
-  teams = toSignal(this.teamService.teams$, {
-    initialValue: [] as Team[],
-  });
+  isRaceOver = this.store.raceIsOver;
+  publishResults = this.store.publishResults;
+
+  stations = this.store.stations;
+  teams = this.store.teams;
 
   teamsForRanking = computed(() =>
     this.teams().filter((team) =>
@@ -122,9 +110,7 @@ export class StationResultsComponent {
   constructor(
     private readonly authService: AuthService,
     private readonly route: ActivatedRoute,
-    private readonly settingsService: SettingsService,
-    private readonly stationService: StationService,
-    private readonly teamService: TeamService,
+    private readonly store: Store,
   ) {}
 
   formatDuration(seconds: number): string {

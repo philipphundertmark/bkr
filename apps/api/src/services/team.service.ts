@@ -3,8 +3,6 @@ import dayjs from 'dayjs';
 
 import { Team } from '@bkr/api-interface';
 
-import { ResultService } from './result.service';
-
 export class TeamService {
   constructor(private prisma: PrismaClient) {}
 
@@ -21,11 +19,6 @@ export class TeamService {
         members: members,
         help: help,
       },
-      include: {
-        results: {
-          select: ResultService.RESULT_SELECT,
-        },
-      },
     });
 
     return this.toTeam(team);
@@ -40,13 +33,7 @@ export class TeamService {
   }
 
   async getAll(): Promise<Team[]> {
-    const teams = await this.prisma.team.findMany({
-      include: {
-        results: {
-          select: ResultService.RESULT_SELECT,
-        },
-      },
-    });
+    const teams = await this.prisma.team.findMany({});
 
     return teams.map((team) => this.toTeam(team));
   }
@@ -55,11 +42,6 @@ export class TeamService {
     const team = await this.prisma.team.findUnique({
       where: {
         id: id,
-      },
-      include: {
-        results: {
-          select: ResultService.RESULT_SELECT,
-        },
       },
     });
 
@@ -70,11 +52,6 @@ export class TeamService {
     const team = await this.prisma.team.findUnique({
       where: {
         number: number,
-      },
-      include: {
-        results: {
-          select: ResultService.RESULT_SELECT,
-        },
       },
     });
 
@@ -116,11 +93,6 @@ export class TeamService {
           data: {
             number: index + 1,
           },
-          include: {
-            results: {
-              select: ResultService.RESULT_SELECT,
-            },
-          },
         }),
       ),
     );
@@ -159,38 +131,18 @@ export class TeamService {
         help: updates.help,
         penalty: updates.penalty,
       },
-      include: {
-        results: {
-          select: ResultService.RESULT_SELECT,
-        },
-      },
     });
 
     return this.toTeam(team);
   }
 
-  private toTeam(
-    team: PrismaTeam & {
-      results: {
-        stationId: string;
-        teamId: string;
-        checkIn: Date;
-        checkOut: Date | null;
-        points: number;
-      }[];
-    },
-  ): Team {
+  private toTeam(team: PrismaTeam): Team {
     return {
       ...team,
       createdAt: dayjs(team.createdAt),
       updatedAt: dayjs(team.updatedAt),
       startedAt: team.startedAt ? dayjs(team.startedAt) : undefined,
       finishedAt: team.finishedAt ? dayjs(team.finishedAt) : undefined,
-      results: team.results.map((result) => ({
-        ...result,
-        checkIn: dayjs(result.checkIn),
-        checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
-      })),
     };
   }
 }

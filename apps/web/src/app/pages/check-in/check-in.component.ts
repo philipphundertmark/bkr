@@ -30,6 +30,7 @@ import {
   ResultService,
   TeamService,
 } from '../../services';
+import { Store } from '../../services/store';
 
 @Component({
   selector: 'bkr-check-in',
@@ -54,9 +55,7 @@ export class CheckInComponent {
   stationId = toSignal(this.authService.sub$, {
     initialValue: null,
   });
-  teams = toSignal(this.teamService.teams$, {
-    initialValue: [],
-  });
+  teams = this.store.teams;
 
   checkInLoading = signal(false);
   teamsToCheckIn = computed(() => {
@@ -79,6 +78,7 @@ export class CheckInComponent {
     private readonly notificationService: NotificationService,
     private readonly resultService: ResultService,
     private readonly router: Router,
+    private readonly store: Store,
     private readonly teamService: TeamService,
   ) {}
 

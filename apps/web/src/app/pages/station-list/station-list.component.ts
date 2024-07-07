@@ -3,11 +3,12 @@ import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 
-import { Station, StationUtils } from '@bkr/api-interface';
+import { StationUtils } from '@bkr/api-interface';
 
 import { ButtonComponent, EmptyComponent } from '../../components';
 import { ChevronRightIconComponent } from '../../icons/mini';
-import { AuthService, StationService } from '../../services';
+import { AuthService } from '../../services';
+import { Store } from '../../services/store';
 
 @Component({
   selector: 'bkr-station-list',
@@ -32,12 +33,10 @@ export class StationListComponent {
     initialValue: false,
   });
 
-  stations = toSignal(this.stationService.stations$, {
-    initialValue: [] as Station[],
-  });
+  stations = this.store.stations;
 
   constructor(
     private readonly authService: AuthService,
-    private readonly stationService: StationService,
+    private readonly store: Store,
   ) {}
 }

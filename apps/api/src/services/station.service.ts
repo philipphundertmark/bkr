@@ -3,8 +3,6 @@ import dayjs from 'dayjs';
 
 import { Station } from '@bkr/api-interface';
 
-import { ResultService } from './result.service';
-
 export class StationService {
   constructor(private prisma: PrismaClient) {}
 
@@ -23,11 +21,6 @@ export class StationService {
         members: members,
         order: order,
       },
-      include: {
-        results: {
-          select: ResultService.RESULT_SELECT,
-        },
-      },
     });
 
     return this.toStation(station);
@@ -42,13 +35,7 @@ export class StationService {
   }
 
   async getAll(): Promise<Station[]> {
-    const stations = await this.prisma.station.findMany({
-      include: {
-        results: {
-          select: ResultService.RESULT_SELECT,
-        },
-      },
-    });
+    const stations = await this.prisma.station.findMany({});
 
     return stations.map((station) => this.toStation(station));
   }
@@ -57,11 +44,6 @@ export class StationService {
     const station = await this.prisma.station.findUnique({
       where: {
         id: id,
-      },
-      include: {
-        results: {
-          select: ResultService.RESULT_SELECT,
-        },
       },
     });
 
@@ -73,11 +55,6 @@ export class StationService {
       where: {
         number: number,
       },
-      include: {
-        results: {
-          select: ResultService.RESULT_SELECT,
-        },
-      },
     });
 
     return station ? this.toStation(station) : null;
@@ -87,11 +64,6 @@ export class StationService {
     const station = await this.prisma.station.findUnique({
       where: {
         code: code,
-      },
-      include: {
-        results: {
-          select: ResultService.RESULT_SELECT,
-        },
       },
     });
 
@@ -119,36 +91,16 @@ export class StationService {
         code: updates.code,
         order: updates.order,
       },
-      include: {
-        results: {
-          select: ResultService.RESULT_SELECT,
-        },
-      },
     });
 
     return this.toStation(station);
   }
 
-  private toStation(
-    station: PrismaStation & {
-      results: {
-        stationId: string;
-        teamId: string;
-        checkIn: Date;
-        checkOut: Date | null;
-        points: number;
-      }[];
-    },
-  ): Station {
+  private toStation(station: PrismaStation): Station {
     return {
       ...station,
       createdAt: dayjs(station.createdAt),
       updatedAt: dayjs(station.updatedAt),
-      results: station.results.map((result) => ({
-        ...result,
-        checkIn: dayjs(result.checkIn),
-        checkOut: result.checkOut ? dayjs(result.checkOut) : undefined,
-      })),
     };
   }
 }

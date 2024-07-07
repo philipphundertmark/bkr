@@ -20,8 +20,6 @@ import {
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
 
-import { Team } from '@bkr/api-interface';
-
 import {
   ButtonComponent,
   EmptyComponent,
@@ -29,6 +27,7 @@ import {
   MembersInputComponent,
 } from '../../components';
 import { AuthService, NotificationService, TeamService } from '../../services';
+import { Store } from '../../services/store';
 import { dateTimeValidator } from '../../validators';
 
 @Component({
@@ -54,9 +53,7 @@ export class TeamEditComponent {
     initialValue: null,
   });
 
-  teams = toSignal(this.teamService.teams$, {
-    initialValue: [] as Team[],
-  });
+  teams = this.store.teams;
 
   teamId = computed(() => this.paramMap()?.get('teamId') ?? null);
   team = computed(() => {
@@ -108,6 +105,7 @@ export class TeamEditComponent {
     private readonly notificationService: NotificationService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
+    private readonly store: Store,
     private readonly teamService: TeamService,
   ) {
     effect(() => {

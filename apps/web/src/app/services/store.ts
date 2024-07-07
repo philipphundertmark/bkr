@@ -1,7 +1,14 @@
 import { Injectable, computed, signal } from '@angular/core';
 import dayjs from 'dayjs';
 
-import { Result, Settings, Station, Team } from '@bkr/api-interface';
+import {
+  Result,
+  Settings,
+  Station,
+  StationWithResults,
+  Team,
+  TeamWithResults,
+} from '@bkr/api-interface';
 
 /** Initial results state */
 const INITIAL_RESULTS: Result[] = [];
@@ -38,10 +45,39 @@ export class Store {
 
   settings = computed(() => this._settings());
   stations = computed(() =>
-    this._stations().sort((a, b) => (a.number = b.number)),
+    this._stations()
+      // Find the results for each station
+      .map<StationWithResults>((station) => ({
+        ...station,
+        results: this._results().filter(
+          (result) => result.stationId === station.id,
+        ),
+      }))
+      // Sort stations by number
+      .sort((a, b) => (a.number = b.number)),
   );
-  teams = computed(() => this._teams().sort((a, b) => (a.number = b.number)));
+  teams = computed(() =>
+    this._teams()
+      // Find the results for each team
+      .map<TeamWithResults>((team) => ({
+        ...team,
+        results: this._results().filter((result) => result.teamId === team.id),
+      }))
+      // Sort teams by number
+      .sort((a, b) => (a.number = b.number)),
+  );
 
+  resultsLoading = computed(() => this._resultsLoading());
+  settingsLoading = computed(() => this._settingsLoading());
+  stationsLoading = computed(() => this._stationsLoading());
+  teamsLoading = computed(() => this._teamsLoading());
+
+  resultsError = computed(() => this._resultsError());
+  settingsError = computed(() => this._settingsError());
+  stationsError = computed(() => this._stationsError());
+  teamsError = computed(() => this._teamsError());
+
+  publishResults = computed(() => this._settings().publishResults);
   raceIsOver = computed(
     () =>
       this._teams().length > 0 &&

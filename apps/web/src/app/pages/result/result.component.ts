@@ -8,7 +8,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import {
   FormControl,
   FormGroup,
@@ -33,6 +33,7 @@ import {
   TeamService,
 } from '../../services';
 import { ConfirmService } from '../../services/confirm.service';
+import { Store } from '../../services/store';
 import { dateTimeValidator } from '../../validators';
 
 @Component({
@@ -70,9 +71,11 @@ export class ResultComponent implements OnInit {
     }),
   });
 
+  teams$ = toObservable(this.store.teams);
+
   result$ = combineLatest([
     this.route.queryParamMap,
-    this.teamService.teams$,
+    this.teams$,
     this.authService.sub$,
   ]).pipe(
     map(([params, teams, stationId]) =>
@@ -91,6 +94,7 @@ export class ResultComponent implements OnInit {
     private readonly resultService: ResultService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
+    private readonly store: Store,
     private readonly teamService: TeamService,
   ) {}
 

@@ -52,7 +52,9 @@ export interface Team {
    * The penalty time of the team in minutes.
    */
   penalty: number;
+}
 
+export interface TeamWithResults extends Team {
   /**
    * The results of the team.
    */

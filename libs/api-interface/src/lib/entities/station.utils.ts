@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 
 import { ResultWithRank } from './result';
 import { ResultUtils } from './result.utils';
-import { Station } from './station';
+import { Station, StationWithResults } from './station';
 import { StationDTO } from './station.dto';
 import { Team } from './team';
 
@@ -30,7 +30,6 @@ export const StationUtils = {
       members: dto.members,
       code: dto.code,
       order: dto.order,
-      results: dto.results.map(ResultUtils.deserialize),
     };
   },
   serialize(station: Station): StationDTO {
@@ -43,7 +42,6 @@ export const StationUtils = {
       members: station.members,
       code: station.code,
       order: station.order,
-      results: station.results.map(ResultUtils.serialize),
     };
   },
   formatStationMembers(station: Station): string {
@@ -57,7 +55,7 @@ export const StationUtils = {
     return TIME_BONUS[rank - 1] ?? 0;
   },
   getResultsForTeamsWithRank(
-    station: Station,
+    station: StationWithResults,
     teams: Team[],
   ): ResultWithRank[] {
     let currentRank = 0;

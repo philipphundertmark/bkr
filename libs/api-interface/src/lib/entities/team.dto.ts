@@ -1,5 +1,3 @@
-import { ResultDTO } from './result.dto';
-
 export interface TeamDTO {
   id: string;
   createdAt: string;
@@ -11,5 +9,4 @@ export interface TeamDTO {
   finishedAt?: string;
   help: boolean;
   penalty: number;
-  results: ResultDTO[];
 }

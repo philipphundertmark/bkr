@@ -1,5 +1,4 @@
 import { Order } from '../order';
-import { ResultDTO } from './result.dto';
 
 export interface StationDTO {
   id: string;
@@ -10,5 +9,4 @@ export interface StationDTO {
   members: string[];
   code?: string;
   order: Order;
-  results: ResultDTO[];
 }

@@ -12,7 +12,7 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { EMPTY, switchMap } from 'rxjs';
 
-import { Station, StationUtils } from '@bkr/api-interface';
+import { StationUtils } from '@bkr/api-interface';
 
 import {
   ButtonComponent,
@@ -30,6 +30,7 @@ import {
   StationService,
 } from '../../services';
 import { ConfirmService } from '../../services/confirm.service';
+import { Store } from '../../services/store';
 
 @Component({
   selector: 'bkr-station-details',
@@ -57,9 +58,7 @@ export class StationDetailsComponent {
     initialValue: null,
   });
 
-  stations = toSignal(this.stationService.stations$, {
-    initialValue: [] as Station[],
-  });
+  stations = this.store.stations;
 
   stationId = computed(() => this.paramMap()?.get('stationId') ?? null);
   station = computed(() => {
@@ -87,6 +86,7 @@ export class StationDetailsComponent {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly stationService: StationService,
+    private readonly store: Store,
   ) {}
 
   handleDeleteStation(stationId: string): void {

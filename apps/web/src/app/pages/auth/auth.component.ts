@@ -18,15 +18,10 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Station } from '@bkr/api-interface';
-
 import { ButtonComponent, InputDirective } from '../../components';
 import { DatePipe } from '../../pipes';
-import {
-  AuthService,
-  NotificationService,
-  StationService,
-} from '../../services';
+import { AuthService, NotificationService } from '../../services';
+import { Store } from '../../services/store';
 
 @Component({
   selector: 'bkr-auth',
@@ -65,9 +60,7 @@ export class AuthComponent {
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
   isStation = toSignal(this.authService.isStation$, { initialValue: false });
 
-  stations = toSignal(this.stationService.stations$, {
-    initialValue: [] as Station[],
-  });
+  stations = this.store.stations;
   station = computed(
     () => this.stations().find((station) => station.id === this.sub()) ?? null,
   );
@@ -78,7 +71,7 @@ export class AuthComponent {
     private readonly authService: AuthService,
     private readonly notificationService: NotificationService,
     private readonly router: Router,
-    private readonly stationService: StationService,
+    private readonly store: Store,
   ) {}
 
   handleLogin(): void {

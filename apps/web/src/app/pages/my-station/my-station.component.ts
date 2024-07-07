@@ -5,10 +5,9 @@ import { RouterModule } from '@angular/router';
 
 import {
   ResultWithRank,
-  Station,
   StationUtils,
-  Team,
   TeamUtils,
+  TeamWithResults,
 } from '@bkr/api-interface';
 
 import {
@@ -19,9 +18,10 @@ import {
   TabsComponent,
 } from '../../components';
 import { ChevronRightIconComponent } from '../../icons/mini';
-import { AuthService, StationService, TeamService } from '../../services';
+import { AuthService } from '../../services';
+import { Store } from '../../services/store';
 
-type ResultWithRankAndTeam = ResultWithRank & { team: Team };
+type ResultWithRankAndTeam = ResultWithRank & { team: TeamWithResults };
 
 @Component({
   selector: 'bkr-my-station',
@@ -48,12 +48,8 @@ export class MyStationComponent {
 
   stationId = toSignal(this.authService.sub$, { initialValue: null });
 
-  stations = toSignal(this.stationService.stations$, {
-    initialValue: [] as Station[],
-  });
-  teams = toSignal(this.teamService.teams$, {
-    initialValue: [] as Team[],
-  });
+  stations = this.store.stations;
+  teams = this.store.teams;
 
   checkedInTeams = computed(() => {
     return this.teams().filter((team) =>
@@ -98,8 +94,7 @@ export class MyStationComponent {
 
   constructor(
     private readonly authService: AuthService,
-    private readonly stationService: StationService,
-    private readonly teamService: TeamService,
+    private readonly store: Store,
   ) {}
 
   handleChangeRanking(ranking: string): void {

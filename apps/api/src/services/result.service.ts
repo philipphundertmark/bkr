@@ -4,14 +4,6 @@ import dayjs from 'dayjs';
 import { Result } from '@bkr/api-interface';
 
 export class ResultService {
-  static readonly RESULT_SELECT = {
-    stationId: true,
-    teamId: true,
-    checkIn: true,
-    checkOut: true,
-    points: true,
-  };
-
   constructor(private prisma: PrismaClient) {}
 
   async createResult(stationId: string, teamId: string): Promise<Result> {
@@ -20,7 +12,6 @@ export class ResultService {
         stationId: stationId,
         teamId: teamId,
       },
-      select: ResultService.RESULT_SELECT,
     });
 
     return this.toResult(result);
@@ -45,6 +36,12 @@ export class ResultService {
     });
   }
 
+  async getAll(): Promise<Result[]> {
+    const results = await this.prisma.result.findMany({});
+
+    return results.map((result) => this.toResult(result));
+  }
+
   async getResultById(
     stationId: string,
     teamId: string,
@@ -56,7 +53,6 @@ export class ResultService {
           teamId: teamId,
         },
       },
-      select: ResultService.RESULT_SELECT,
     });
 
     return result ? this.toResult(result) : null;
@@ -85,7 +81,6 @@ export class ResultService {
             ? new Date(updates.checkOut)
             : updates.checkOut,
       },
-      select: ResultService.RESULT_SELECT,
     });
 
     return this.toResult(result);

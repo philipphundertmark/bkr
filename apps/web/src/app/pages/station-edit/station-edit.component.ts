@@ -19,7 +19,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
-import { Order, Station } from '@bkr/api-interface';
+import { Order } from '@bkr/api-interface';
 
 import {
   ButtonComponent,
@@ -32,6 +32,7 @@ import {
   NotificationService,
   StationService,
 } from '../../services';
+import { Store } from '../../services/store';
 
 @Component({
   selector: 'bkr-station-edit',
@@ -58,9 +59,7 @@ export class StationEditComponent {
     initialValue: null,
   });
 
-  stations = toSignal(this.stationService.stations$, {
-    initialValue: [] as Station[],
-  });
+  stations = this.store.stations;
 
   stationId = computed(() => this.paramMap()?.get('stationId') ?? null);
   station = computed(() => {
@@ -106,6 +105,7 @@ export class StationEditComponent {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly stationService: StationService,
+    private readonly store: Store,
   ) {
     effect(() => {
       const station = this.station();

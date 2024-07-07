@@ -11,7 +11,7 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import { EMPTY, switchMap } from 'rxjs';
 
-import { Team, TeamUtils } from '@bkr/api-interface';
+import { TeamUtils } from '@bkr/api-interface';
 
 import { ButtonComponent, EmptyComponent } from '../../components';
 import {
@@ -20,6 +20,7 @@ import {
 } from '../../icons/mini';
 import { AuthService, NotificationService, TeamService } from '../../services';
 import { ConfirmService } from '../../services/confirm.service';
+import { Store } from '../../services/store';
 
 @Component({
   selector: 'bkr-team-list',
@@ -45,11 +46,8 @@ export class TeamListComponent {
     initialValue: false,
   });
 
-  teams = toSignal(this.teamService.teams$, {
-    initialValue: [] as Team[],
-  });
-
   shuffleTeamsLoading = signal(false);
+  teams = this.store.teams;
 
   private readonly destroyRef = inject(DestroyRef);
 
@@ -57,6 +55,7 @@ export class TeamListComponent {
     private readonly authService: AuthService,
     private readonly confirmService: ConfirmService,
     private readonly notificationService: NotificationService,
+    private readonly store: Store,
     private readonly teamService: TeamService,
   ) {}
 

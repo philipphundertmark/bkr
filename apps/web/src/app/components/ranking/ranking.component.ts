@@ -10,7 +10,13 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import dayjs from 'dayjs';
 import { BehaviorSubject } from 'rxjs';
 
-import { Station, StationUtils, Team, TeamUtils } from '@bkr/api-interface';
+import {
+  Station,
+  StationUtils,
+  StationWithResults,
+  TeamUtils,
+  TeamWithResults,
+} from '@bkr/api-interface';
 
 import { RankingItemComponent } from './ranking-item/ranking-item.component';
 
@@ -58,24 +64,26 @@ export class RankingComponent {
   }
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input({ alias: 'stations', required: true })
-  set _stations(value: Station[]) {
+  set _stations(value: StationWithResults[]) {
     this.stations$.next(value);
   }
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input({ alias: 'teams', required: true })
-  set _teams(value: Team[]) {
+  set _teams(value: TeamWithResults[]) {
     this.teams$.next(value);
   }
 
   @HostBinding('class.list') list = true;
 
   ranking$ = new BehaviorSubject<string>('standard');
-  stations$ = new BehaviorSubject<Station[]>([]);
-  teams$ = new BehaviorSubject<Team[]>([]);
+  stations$ = new BehaviorSubject<StationWithResults[]>([]);
+  teams$ = new BehaviorSubject<TeamWithResults[]>([]);
 
   ranking = toSignal(this.ranking$, { initialValue: 'standard' });
-  stations = toSignal(this.stations$, { initialValue: [] as Station[] });
-  teams = toSignal(this.teams$, { initialValue: [] as Team[] });
+  stations = toSignal(this.stations$, {
+    initialValue: [] as StationWithResults[],
+  });
+  teams = toSignal(this.teams$, { initialValue: [] as TeamWithResults[] });
 
   teamsForRanking = computed(() =>
     this.teams().filter((team) =>
@@ -129,8 +137,8 @@ export class RankingComponent {
    * @returns The rank of each team by station
    */
   private getRankByTeamByStation(
-    stations: Station[],
-    teams: Team[],
+    stations: StationWithResults[],
+    teams: TeamWithResults[],
   ): RankByTeamByStation {
     return stations.reduce<RankByTeamByStation>((acc, station) => {
       const rankByTeam = StationUtils.getResultsForTeamsWithRank(
@@ -152,7 +160,7 @@ export class RankingComponent {
   }
 
   private getStationResultsOfTeam(
-    team: Team,
+    team: TeamWithResults,
     stations: Station[],
     rankByTeamByStation: RankByTeamByStation,
   ): StationResult[] {
