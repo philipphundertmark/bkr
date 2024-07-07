@@ -2,15 +2,17 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   HostBinding,
   computed,
+  inject,
   signal,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { map, timer } from 'rxjs';
+import { EMPTY, map, switchMap, timer } from 'rxjs';
 
 import {
   Result,
@@ -28,15 +30,12 @@ import {
   TabsComponent,
 } from '../../components';
 import {
+  ArrowPathRoundedSquareIconComponent,
   CheckCircleIconComponent,
   TrophyIconComponent,
 } from '../../icons/mini';
-import {
-  AuthService,
-  SettingsService,
-  StationService,
-  TeamService,
-} from '../../services';
+import { AuthService, NotificationService, TeamService } from '../../services';
+import { ConfirmService } from '../../services/confirm.service';
 import { Store } from '../../services/store';
 
 dayjs.extend(duration);
@@ -59,6 +58,7 @@ export interface RankingItem {
   selector: 'bkr-home',
   standalone: true,
   imports: [
+    ArrowPathRoundedSquareIconComponent,
     ButtonComponent,
     CheckCircleIconComponent,
     CommonModule,
@@ -133,10 +133,14 @@ export class HomeComponent {
     });
   });
 
+  shuffleTeamsLoading = signal(false);
+
+  private readonly destroyRef = inject(DestroyRef);
+
   constructor(
     private readonly authService: AuthService,
-    private readonly settingsService: SettingsService,
-    private readonly stationService: StationService,
+    private readonly confirmService: ConfirmService,
+    private readonly notificationService: NotificationService,
     private readonly store: Store,
     private readonly teamService: TeamService,
   ) {}
@@ -151,6 +155,37 @@ export class HomeComponent {
 
   hasStationId(rankingItem: RankingItem, stationId: string): boolean {
     return rankingItem.stationIds.includes(stationId);
+  }
+
+  shuffleTeams(): void {
+    this.confirmService
+      .info({
+        title: 'Reihenfolge auslosen',
+        message: 'Möchtest du die Reihenfolge der Teams wirklich neu auslosen?',
+      })
+
+      .pipe(
+        switchMap((confirmed) => {
+          if (!confirmed) return EMPTY;
+
+          this.shuffleTeamsLoading.set(true);
+
+          return this.teamService.shuffleTeams();
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe({
+        next: () => {
+          this.shuffleTeamsLoading.set(false);
+          this.notificationService.success('Reihenfolge wurde ausgelost.');
+        },
+        error: () => {
+          this.shuffleTeamsLoading.set(false);
+          this.notificationService.error(
+            'Reihenfolge konnte nicht ausgelost werden.',
+          );
+        },
+      });
   }
 
   private calculateTeamTime(team: Team, now: dayjs.Dayjs): number {

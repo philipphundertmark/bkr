@@ -1,25 +1,37 @@
 <header class="header">
   <a bkr-forward-button class="col-span-2" routerLink="/rules">Regeln</a>
-  <a bkr-forward-button class="col-span-1" routerLink="/teams">Teams</a>
-  <a bkr-forward-button class="col-span-1" routerLink="/stations">Stationen</a>
-  <a
-    bkr-forward-button
-    bkrType="primary"
-    class="col-span-2"
-    *ngIf="isStation()"
-    routerLink="/my-station"
-  >
-    Meine Station
-  </a>
-  <a
-    bkr-forward-button
-    bkrType="primary"
-    class="col-span-2"
-    *ngIf="isAdmin()"
-    routerLink="/endresult"
-  >
-    Endergebnis
-  </a>
+  <a bkr-forward-button class="col-span-2" routerLink="/stations">Stationen</a>
+
+  @if (isAdmin()) {
+    <a bkr-forward-button class="col-span-2" routerLink="/endresult">
+      Endergebnis
+    </a>
+
+    <a bkr-button bkrType="primary" class="col-span-1" routerLink="/teams/new">
+      Neues Team
+    </a>
+
+    <button
+      bkr-button
+      [bkrLoading]="shuffleTeamsLoading()"
+      class="col-span-1"
+      (click)="shuffleTeams()"
+    >
+      <bkr-arrow-path-rounded-square-icon
+        class="text-gray-500"
+      ></bkr-arrow-path-rounded-square-icon>
+      Shuffle
+    </button>
+  } @else if (isStation()) {
+    <a
+      bkr-forward-button
+      bkrType="primary"
+      class="col-span-2"
+      routerLink="/my-station"
+    >
+      Meine Station
+    </a>
+  }
 </header>
 
 <div

@@ -18,7 +18,6 @@ import {
   StationResultsComponent,
   TeamDetailsComponent,
   TeamEditComponent,
-  TeamListComponent,
   TeamNewComponent,
 } from './pages';
 import { RulesComponent } from './pages/rules/rules.component';
@@ -103,10 +102,6 @@ export const appRoutes: Route[] = [
   {
     path: 'stations/:stationId/results',
     component: StationResultsComponent,
-  },
-  {
-    path: 'teams',
-    component: TeamListComponent,
   },
   {
     path: 'teams/new',

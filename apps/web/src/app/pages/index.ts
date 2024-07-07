@@ -12,5 +12,4 @@ export * from './station-new/station-new.component';
 export * from './station-results/station-results.component';
 export * from './team-details/team-details.component';
 export * from './team-edit/team-edit.component';
-export * from './team-list/team-list.component';
 export * from './team-new/team-new.component';
