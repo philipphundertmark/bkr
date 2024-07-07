@@ -5,19 +5,24 @@ import {
   Component,
   DestroyRef,
   HostBinding,
+  OnInit,
   computed,
-  effect,
   inject,
+  input,
   signal,
 } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import {
+  takeUntilDestroyed,
+  toObservable,
+  toSignal,
+} from '@angular/core/rxjs-interop';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
 
 import {
@@ -42,33 +47,27 @@ import { dateTimeValidator } from '../../validators';
     ReactiveFormsModule,
     RouterModule,
   ],
+  host: { class: 'page' },
+  styleUrl: './team-edit.component.scss',
   templateUrl: './team-edit.component.html',
-  styleUrls: ['./team-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TeamEditComponent {
+export class TeamEditComponent implements OnInit {
   @HostBinding('class.page') page = true;
 
-  paramMap = toSignal(this.route.paramMap, {
-    initialValue: null,
-  });
+  /** Route parameter */
+  teamId = input.required<string>();
 
   teams = this.store.teams;
 
-  teamId = computed(() => this.paramMap()?.get('teamId') ?? null);
-  team = computed(() => {
-    const teamId = this.teamId();
+  team = computed(
+    () => this.teams().find(({ id }) => id === this.teamId()) ?? null,
+  );
+  team$ = toObservable(this.team);
 
-    if (!teamId) {
-      return null;
-    }
+  isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
 
-    return this.teams().find(({ id }) => id === teamId) ?? null;
-  });
-
-  isAdmin = toSignal(this.authService.isAdmin$, {
-    initialValue: false,
-  });
+  saveLoading = signal(false);
 
   form = new FormGroup({
     name: new FormControl<string>('', {
@@ -96,22 +95,26 @@ export class TeamEditComponent {
     }),
   });
 
-  saveLoading = signal(false);
+  formStatus = toSignal(this.form.statusChanges, { initialValue: 'INVALID' });
+  formInvalid = computed(() => this.formStatus() === 'INVALID');
 
   private readonly destroyRef = inject(DestroyRef);
 
   constructor(
     private readonly authService: AuthService,
     private readonly notificationService: NotificationService,
-    private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly store: Store,
     private readonly teamService: TeamService,
-  ) {
-    effect(() => {
-      const team = this.team();
+  ) {}
 
+  /**
+   * @implements {OnInit}
+   */
+  ngOnInit(): void {
+    this.team$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((team) => {
       if (!team) {
+        this.router.navigate(['/']);
         return;
       }
 
@@ -164,8 +167,9 @@ export class TeamEditComponent {
       })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: () => {
+        next: (team) => {
           this.saveLoading.set(false);
+          this.store.updateTeam(team);
           this.notificationService.success('Team wurde aktualisiert.');
 
           this.router.navigate(['/teams', teamId]);

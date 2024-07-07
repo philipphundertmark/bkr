@@ -36,33 +36,30 @@
     </div>
 
     <div class="flex flex-col gap-2">
-      @switch (station.order) {
-        @case (Order.ASC) {
-          <label class="label flex items-center gap-2">
-            Wertung
-            <bkr-arrow-down-circle-icon
-              class="text-indigo-500"
-            ></bkr-arrow-down-circle-icon>
-          </label>
-          <p>
-            Das Team mit den
-            <span class="font-semibold text-indigo-500">wenigsten</span> Punkten
-            gewinnt.
-          </p>
+      <label class="label flex items-center gap-2">
+        Wertung
+        @if (station.order === Order.ASC) {
+          <bkr-arrow-down-circle-icon
+            class="text-indigo-500"
+          ></bkr-arrow-down-circle-icon>
+        } @else {
+          <bkr-arrow-up-circle-icon
+            class="text-indigo-500"
+          ></bkr-arrow-up-circle-icon>
         }
-        @case (Order.DESC) {
-          <label class="label flex items-center gap-2">
-            Wertung
-            <bkr-arrow-up-circle-icon
-              class="text-indigo-500"
-            ></bkr-arrow-up-circle-icon>
-          </label>
-          <p>
-            Das Team mit den
-            <span class="font-semibold text-indigo-500">meisten</span> Punkten
-            gewinnt.
-          </p>
-        }
+      </label>
+      @if (station.order === Order.ASC) {
+        <p>
+          Das Team mit den
+          <span class="font-semibold text-indigo-500">wenigsten</span> Punkten
+          gewinnt.
+        </p>
+      } @else {
+        <p>
+          Das Team mit den
+          <span class="font-semibold text-indigo-500">meisten</span> Punkten
+          gewinnt.
+        </p>
       }
     </div>
 

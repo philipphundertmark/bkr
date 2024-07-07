@@ -3,13 +3,18 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  HostBinding,
+  OnInit,
   computed,
   inject,
+  input,
   signal,
 } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import {
+  takeUntilDestroyed,
+  toObservable,
+  toSignal,
+} from '@angular/core/rxjs-interop';
+import { Router, RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
 import { EMPTY, switchMap } from 'rxjs';
 
@@ -49,31 +54,23 @@ import { Store } from '../../services/store';
     RouterModule,
     TrashIconComponent,
   ],
+  host: { class: 'page' },
+  styleUrl: './team-details.component.scss',
   templateUrl: './team-details.component.html',
-  styleUrls: ['./team-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TeamDetailsComponent {
-  @HostBinding('class.page') page = true;
-
+export class TeamDetailsComponent implements OnInit {
   readonly TeamUtils = TeamUtils;
 
-  paramMap = toSignal(this.route.paramMap, {
-    initialValue: null,
-  });
+  /** Route parameter */
+  teamId = input.required<string>();
 
   teams = this.store.teams;
 
-  teamId = computed(() => this.paramMap()?.get('teamId') ?? null);
-  team = computed(() => {
-    const teamId = this.teamId();
-
-    if (!teamId) {
-      return null;
-    }
-
-    return this.teams().find(({ id }) => id === teamId) ?? null;
-  });
+  team = computed(
+    () => this.teams().find(({ id }) => id === this.teamId()) ?? null,
+  );
+  team$ = toObservable(this.team);
 
   isAdmin = toSignal(this.authService.isAdmin$, {
     initialValue: false,
@@ -91,11 +88,22 @@ export class TeamDetailsComponent {
     private readonly confirmService: ConfirmService,
     private readonly notificationService: NotificationService,
     private readonly resultService: ResultService,
-    private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly store: Store,
     private readonly teamService: TeamService,
   ) {}
+
+  /**
+   * @implements {OnInit}
+   */
+  ngOnInit(): void {
+    this.team$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((team) => {
+      if (!team) {
+        this.router.navigate(['/']);
+        return;
+      }
+    });
+  }
 
   handleDeleteTeam(teamId: string): void {
     this.confirmService
@@ -116,6 +124,7 @@ export class TeamDetailsComponent {
       .subscribe({
         next: () => {
           this.deleteTeamLoading.set(false);
+          this.store.deleteTeam(teamId);
           this.notificationService.success('Team gelöscht.');
 
           this.router.navigate(['/teams']);
@@ -146,6 +155,7 @@ export class TeamDetailsComponent {
       .subscribe({
         next: () => {
           this.deleteTeamResultsLoading.set(false);
+          this.store.deleteResultsByTeamId(teamId);
           this.notificationService.success('Ergebnisse gelöscht.');
         },
         error: () => {
@@ -176,8 +186,9 @@ export class TeamDetailsComponent {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
-        next: () => {
+        next: (team) => {
           this.startTeamLoading.set(false);
+          this.store.updateTeam(team);
           this.notificationService.success('Team gestartet.');
         },
         error: () => {
@@ -206,8 +217,9 @@ export class TeamDetailsComponent {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
-        next: () => {
+        next: (team) => {
           this.stopTeamLoading.set(false);
+          this.store.updateTeam(team);
           this.notificationService.success('Team gestoppt.');
         },
         error: () => {

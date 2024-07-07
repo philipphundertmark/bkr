@@ -1,127 +1,127 @@
-<header class="header" *ngIf="team() as team">
-  <a bkr-button class="col-span-1" [routerLink]="['/teams', team.id]">
-    Abbrechen
-  </a>
+@if (team(); as team) {
+  <header class="header">
+    <a bkr-button class="col-span-1" [routerLink]="['/teams', team.id]">
+      Abbrechen
+    </a>
 
-  <button
-    bkr-button
-    bkrType="primary"
-    class="col-span-1"
-    (click)="handleSave(team.id)"
-    [disabled]="form.invalid || saveLoading()"
-    [bkrLoading]="saveLoading()"
-  >
-    Speichern
-  </button>
-</header>
+    <button
+      bkr-button
+      bkrType="primary"
+      class="col-span-1"
+      (click)="handleSave(team.id)"
+      [disabled]="form.invalid || saveLoading()"
+      [bkrLoading]="saveLoading()"
+    >
+      Speichern
+    </button>
+  </header>
 
-<form class="flex flex-col gap-4" [formGroup]="form" *ngIf="team(); else empty">
-  <div class="flex flex-col gap-2">
-    <label class="label">Nummer<span class="text-indigo-500">*</span></label>
+  <form class="flex flex-col gap-4" [formGroup]="form">
+    <div class="flex flex-col gap-2">
+      <label class="label">Nummer<span class="text-indigo-500">*</span></label>
 
-    <input
-      bkrInput
-      formControlName="number"
-      placeholder="Nummer"
-      type="number"
-    />
-  </div>
-
-  <div class="flex flex-col gap-2">
-    <label class="label">Name<span class="text-indigo-500">*</span></label>
-
-    <input bkrInput formControlName="name" placeholder="Name" type="text" />
-  </div>
-
-  <div class="flex flex-col gap-2">
-    <label class="label">Gestartet um</label>
-
-    <input
-      bkrInput
-      formControlName="startedAt"
-      placeholder="Noch nicht gestartet"
-      type="text"
-    />
-  </div>
-
-  <p class="text-sm text-gray-500">
-    Die Zeit muss im Format
-    <span class="font-semibold text-indigo-500">DD.MM.YYYY HH:mm:ss</span>
-    angegeben werden.
-  </p>
-
-  <div class="flex flex-col gap-2">
-    <label class="label">Angekommen um</label>
-
-    <input
-      bkrInput
-      formControlName="finishedAt"
-      placeholder="Noch nicht angekommen"
-      type="text"
-    />
-  </div>
-
-  <p class="text-sm text-gray-500">
-    Die Zeit muss im Format
-    <span class="font-semibold text-indigo-500">DD.MM.YYYY HH:mm:ss</span>
-    angegeben werden.
-  </p>
-
-  <div class="flex flex-col gap-2">
-    <label class="label">
-      Hilfsmittel<span class="text-indigo-500">*</span>
-    </label>
-
-    <div class="flex items-center gap-4">
       <input
-        class="radio"
-        formControlName="help"
-        id="help-yes"
-        type="radio"
-        [value]="true"
+        bkrInput
+        formControlName="number"
+        placeholder="Nummer"
+        type="number"
       />
-
-      <label for="help-yes">
-        <span class="font-semibold text-indigo-500">Ja</span>, das Team nutzt
-        Hilfsmittel und fällt in die Nebenwertung.
-      </label>
     </div>
 
-    <div class="flex items-center gap-4">
-      <input
-        class="radio"
-        formControlName="help"
-        id="help-no"
-        type="radio"
-        [value]="false"
-      />
-      <label for="help-no">
-        <span class="font-semibold text-indigo-500">Nein</span>, das Team nutzt
-        keine Hilfsmittel.
-      </label>
+    <div class="flex flex-col gap-2">
+      <label class="label">Name<span class="text-indigo-500">*</span></label>
+
+      <input bkrInput formControlName="name" placeholder="Name" type="text" />
     </div>
-  </div>
 
-  <div class="flex flex-col gap-2">
-    <label class="label">
-      Strafminuten<span class="text-indigo-500">*</span>
-    </label>
+    <div class="flex flex-col gap-2">
+      <label class="label">Gestartet um</label>
 
-    <input
-      bkrInput
-      formControlName="penalty"
-      min="0"
-      placeholder="Strafminuten"
-      type="number"
-    />
-  </div>
+      <input
+        bkrInput
+        formControlName="startedAt"
+        placeholder="Noch nicht gestartet"
+        type="text"
+      />
+    </div>
 
-  <div class="flex flex-col gap-2">
-    <label class="label">Members</label>
-    <bkr-members-input formControlName="members"></bkr-members-input>
-  </div>
-</form>
+    <p class="text-sm text-gray-500">
+      Die Zeit muss im Format
+      <span class="font-semibold text-indigo-500">DD.MM.YYYY HH:mm:ss</span>
+      angegeben werden.
+    </p>
 
-<ng-template #empty>
+    <div class="flex flex-col gap-2">
+      <label class="label">Angekommen um</label>
+
+      <input
+        bkrInput
+        formControlName="finishedAt"
+        placeholder="Noch nicht angekommen"
+        type="text"
+      />
+    </div>
+
+    <p class="text-sm text-gray-500">
+      Die Zeit muss im Format
+      <span class="font-semibold text-indigo-500">DD.MM.YYYY HH:mm:ss</span>
+      angegeben werden.
+    </p>
+
+    <div class="flex flex-col gap-2">
+      <label class="label">
+        Hilfsmittel<span class="text-indigo-500">*</span>
+      </label>
+
+      <div class="flex items-center gap-4">
+        <input
+          class="radio"
+          formControlName="help"
+          id="help-yes"
+          type="radio"
+          [value]="true"
+        />
+
+        <label for="help-yes">
+          <span class="font-semibold text-indigo-500">Ja</span>, das Team nutzt
+          Hilfsmittel und fällt in die Nebenwertung.
+        </label>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <input
+          class="radio"
+          formControlName="help"
+          id="help-no"
+          type="radio"
+          [value]="false"
+        />
+        <label for="help-no">
+          <span class="font-semibold text-indigo-500">Nein</span>, das Team
+          nutzt keine Hilfsmittel.
+        </label>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label class="label">
+        Strafminuten<span class="text-indigo-500">*</span>
+      </label>
+
+      <input
+        bkrInput
+        formControlName="penalty"
+        min="0"
+        placeholder="Strafminuten"
+        type="number"
+      />
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label class="label">Members</label>
+      <bkr-members-input formControlName="members"></bkr-members-input>
+    </div>
+  </form>
+} @else {
   <bkr-empty>Team nicht gefunden.</bkr-empty>
-</ng-template>
+}
