@@ -3,16 +3,21 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  HostBinding,
+  OnInit,
   computed,
   inject,
+  input,
   signal,
 } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import {
+  takeUntilDestroyed,
+  toObservable,
+  toSignal,
+} from '@angular/core/rxjs-interop';
+import { Router, RouterModule } from '@angular/router';
 import { EMPTY, switchMap } from 'rxjs';
 
-import { StationUtils } from '@bkr/api-interface';
+import { Order, StationUtils } from '@bkr/api-interface';
 
 import {
   ButtonComponent,
@@ -45,31 +50,24 @@ import { Store } from '../../services/store';
     RouterModule,
     TrashIconComponent,
   ],
+  host: { class: 'page' },
+  styleUrl: './station-details.component.scss',
   templateUrl: './station-details.component.html',
-  styleUrls: ['./station-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StationDetailsComponent {
-  @HostBinding('class.page') page = true;
-
+export class StationDetailsComponent implements OnInit {
+  readonly Order = Order;
   readonly StationUtils = StationUtils;
 
-  paramMap = toSignal(this.route.paramMap, {
-    initialValue: null,
-  });
+  /** Route parameter */
+  stationId = input.required<string>();
 
   stations = this.store.stations;
 
-  stationId = computed(() => this.paramMap()?.get('stationId') ?? null);
-  station = computed(() => {
-    const stationId = this.stationId();
-
-    if (!stationId) {
-      return null;
-    }
-
-    return this.stations().find(({ id }) => id === stationId) ?? null;
-  });
+  station = computed(
+    () => this.stations().find(({ id }) => id === this.stationId()) ?? null,
+  );
+  station$ = toObservable(this.station);
 
   isAdmin = toSignal(this.authService.isAdmin$, {
     initialValue: false,
@@ -83,11 +81,24 @@ export class StationDetailsComponent {
     private readonly authService: AuthService,
     private readonly confirmService: ConfirmService,
     private readonly notificationService: NotificationService,
-    private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly stationService: StationService,
     private readonly store: Store,
   ) {}
+
+  /**
+   * @implements {OnInit}
+   */
+  ngOnInit(): void {
+    this.station$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((station) => {
+        if (!station) {
+          this.router.navigate(['/stations']);
+          return;
+        }
+      });
+  }
 
   handleDeleteStation(stationId: string): void {
     this.confirmService
@@ -108,6 +119,7 @@ export class StationDetailsComponent {
       .subscribe({
         next: () => {
           this.deleteStationLoading.set(false);
+          this.store.deleteStation(stationId);
           this.notificationService.success('Station gelöscht.');
 
           this.router.navigate(['/stations']);

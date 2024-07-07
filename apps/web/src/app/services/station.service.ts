@@ -32,10 +32,7 @@ export class StationService {
     return this.http.delete<void>(`/stations/${id}`);
   }
 
-  updateStation(
-    id: string,
-    dto: UpdateStationSchema,
-  ): Observable<Station | null> {
+  updateStation(id: string, dto: UpdateStationSchema): Observable<Station> {
     return this.http
       .put<StationDTO>(`/stations/${id}`, dto)
       .pipe(map(StationUtils.deserialize));

@@ -94,16 +94,14 @@ export class Store {
     );
   }
 
-  deleteStation(deletedStation: Station): void {
+  deleteStation(stationId: string): void {
     this._stations.update((stations) =>
-      stations.filter((station) => station.id !== deletedStation.id),
+      stations.filter((station) => station.id !== stationId),
     );
   }
 
-  deleteTeam(deletedTeam: Team): void {
-    this._teams.update((teams) =>
-      teams.filter((team) => team.id !== deletedTeam.id),
-    );
+  deleteTeam(teamId: string): void {
+    this._teams.update((teams) => teams.filter((team) => team.id !== teamId));
   }
 
   setResults(results: Result[]): void {

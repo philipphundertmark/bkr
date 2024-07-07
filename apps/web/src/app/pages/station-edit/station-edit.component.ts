@@ -4,20 +4,24 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  HostBinding,
+  OnInit,
   computed,
-  effect,
   inject,
+  input,
   signal,
 } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import {
+  takeUntilDestroyed,
+  toObservable,
+  toSignal,
+} from '@angular/core/rxjs-interop';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 import { Order } from '@bkr/api-interface';
 
@@ -46,31 +50,23 @@ import { Store } from '../../services/store';
     ReactiveFormsModule,
     RouterModule,
   ],
+  host: { class: 'page' },
+  styleUrl: './station-edit.component.scss',
   templateUrl: './station-edit.component.html',
-  styleUrls: ['./station-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StationEditComponent {
-  @HostBinding('class.page') page = true;
-
+export class StationEditComponent implements OnInit {
   readonly Order = Order;
 
-  paramMap = toSignal(this.route.paramMap, {
-    initialValue: null,
-  });
+  /** Route parameter */
+  stationId = input.required<string>();
 
   stations = this.store.stations;
 
-  stationId = computed(() => this.paramMap()?.get('stationId') ?? null);
-  station = computed(() => {
-    const stationId = this.stationId();
-
-    if (!stationId) {
-      return null;
-    }
-
-    return this.stations().find(({ id }) => id === stationId) ?? null;
-  });
+  station = computed(
+    () => this.stations().find(({ id }) => id === this.stationId()) ?? null,
+  );
+  station$ = toObservable(this.station);
 
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
 
@@ -97,31 +93,39 @@ export class StationEditComponent {
     }),
   });
 
+  formStatus = toSignal(this.form.statusChanges, { initialValue: 'INVALID' });
+  formInvalid = computed(() => this.formStatus() === 'INVALID');
+
   private readonly destroyRef = inject(DestroyRef);
 
   constructor(
     private readonly authService: AuthService,
     private readonly notificationService: NotificationService,
-    private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly stationService: StationService,
     private readonly store: Store,
-  ) {
-    effect(() => {
-      const station = this.station();
+  ) {}
 
-      if (!station) {
-        return;
-      }
+  /**
+   * @implements {OnInit}
+   */
+  ngOnInit(): void {
+    this.station$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((station) => {
+        if (!station) {
+          this.router.navigate(['/stations']);
+          return;
+        }
 
-      this.form.patchValue({
-        name: station.name,
-        number: station.number,
-        code: station.code,
-        order: station.order,
-        members: station.members ?? [],
+        this.form.patchValue({
+          name: station.name,
+          number: station.number,
+          code: station.code,
+          order: station.order,
+          members: station.members ?? [],
+        });
       });
-    });
   }
 
   handleSave(stationId: string): void {
@@ -155,8 +159,9 @@ export class StationEditComponent {
       })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: () => {
+        next: (station) => {
           this.saveLoading.set(false);
+          this.store.updateStation(station);
           this.notificationService.success('Station wurde aktualisiert.');
 
           this.router.navigate(['/stations', stationId]);

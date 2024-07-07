@@ -1,14 +1,16 @@
 <header class="header">
   <a bkr-backward-button class="col-span-1" routerLink="/">Zurück</a>
-  <a
-    bkr-button
-    bkrType="primary"
-    class="col-span-1"
-    *ngIf="isAdmin()"
-    routerLink="/stations/new"
-  >
-    Neue Station
-  </a>
+
+  @if (isAdmin()) {
+    <a
+      bkr-button
+      bkrType="primary"
+      class="col-span-1"
+      routerLink="/stations/new"
+    >
+      Neue Station
+    </a>
+  }
 </header>
 
 <div class="space-y-1">
@@ -16,28 +18,32 @@
   <p class="text-gray-500">Eine Übersicht aller Stationen.</p>
 </div>
 
-<ul class="list" *ngIf="stations().length > 0; else empty">
-  <li *ngFor="let station of stations()">
-    <a
-      class="focus-outline-inset list-entry items-center justify-between"
-      [routerLink]="['/stations', station.id]"
-    >
-      <div class="flex flex-col gap-1">
-        <h3 class="name">
-          {{ station.name }}
-          <span class="number">#{{ station.number }}</span>
-        </h3>
+@if (stations().length > 0) {
+  <ul class="list">
+    @for (station of stations(); track station.id) {
+      <li>
+        <a
+          class="focus-outline-inset list-entry items-center justify-between"
+          [routerLink]="['/stations', station.id]"
+        >
+          <div class="flex flex-col gap-1">
+            <h3 class="name">
+              {{ station.name }}
+              <span class="number">#{{ station.number }}</span>
+            </h3>
 
-        <p class="text-gray-500">
-          {{ StationUtils.formatStationMembers(station) }}
-        </p>
-      </div>
+            <p class="text-gray-500">
+              {{ StationUtils.formatStationMembers(station) }}
+            </p>
+          </div>
 
-      <bkr-chevron-right-icon class="text-gray-500"></bkr-chevron-right-icon>
-    </a>
-  </li>
-</ul>
-
-<ng-template #empty>
+          <bkr-chevron-right-icon
+            class="text-gray-500"
+          ></bkr-chevron-right-icon>
+        </a>
+      </li>
+    }
+  </ul>
+} @else {
   <bkr-empty>Es gibt noch keine Stationen.</bkr-empty>
-</ng-template>
+}

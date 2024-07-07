@@ -1,6 +1,6 @@
-<header class="header">
-  <a bkr-backward-button class="col-span-1" routerLink="/stations">Zurück</a>
-  <ng-container *ngIf="station() as station">
+@if (station(); as station) {
+  <header class="header">
+    <a bkr-backward-button class="col-span-1" routerLink="/stations">Zurück</a>
     <a
       bkr-forward-button
       class="col-span-1"
@@ -8,18 +8,17 @@
     >
       Ergebnisse
     </a>
-    <a
-      bkr-button
-      class="col-span-2"
-      *ngIf="isAdmin()"
-      [routerLink]="['/stations', station.id, 'edit']"
-    >
-      Bearbeiten
-    </a>
-  </ng-container>
-</header>
+    @if (isAdmin()) {
+      <a
+        bkr-button
+        class="col-span-2"
+        [routerLink]="['/stations', station.id, 'edit']"
+      >
+        Bearbeiten
+      </a>
+    }
+  </header>
 
-<ng-container *ngIf="station() as station; else empty">
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-2">
       <label class="label">Nummer</label>
@@ -36,28 +35,35 @@
       <p>{{ station.code }}</p>
     </div>
 
-    <div class="flex flex-col gap-2" [ngSwitch]="station.order">
-      <label class="label flex items-center gap-2">
-        Wertung
-        <bkr-arrow-down-circle-icon
-          class="text-indigo-500"
-          *ngSwitchCase="'ASC'"
-        ></bkr-arrow-down-circle-icon>
-        <bkr-arrow-up-circle-icon
-          class="text-indigo-500"
-          *ngSwitchCase="'DESC'"
-        ></bkr-arrow-up-circle-icon>
-      </label>
-      <p *ngSwitchCase="'ASC'">
-        Das Team mit den
-        <span class="font-semibold text-indigo-500">wenigsten</span> Punkten
-        gewinnt.
-      </p>
-      <p *ngSwitchCase="'DESC'">
-        Das Team mit den
-        <span class="font-semibold text-indigo-500">meisten</span> Punkten
-        gewinnt.
-      </p>
+    <div class="flex flex-col gap-2">
+      @switch (station.order) {
+        @case (Order.ASC) {
+          <label class="label flex items-center gap-2">
+            Wertung
+            <bkr-arrow-down-circle-icon
+              class="text-indigo-500"
+            ></bkr-arrow-down-circle-icon>
+          </label>
+          <p>
+            Das Team mit den
+            <span class="font-semibold text-indigo-500">wenigsten</span> Punkten
+            gewinnt.
+          </p>
+        }
+        @case (Order.DESC) {
+          <label class="label flex items-center gap-2">
+            Wertung
+            <bkr-arrow-up-circle-icon
+              class="text-indigo-500"
+            ></bkr-arrow-up-circle-icon>
+          </label>
+          <p>
+            Das Team mit den
+            <span class="font-semibold text-indigo-500">meisten</span> Punkten
+            gewinnt.
+          </p>
+        }
+      }
     </div>
 
     <div class="flex flex-col gap-2">
@@ -66,20 +72,20 @@
     </div>
   </div>
 
-  <bkr-danger-zone *ngIf="isAdmin()">
-    <button
-      bkr-button
-      [bkrLoading]="deleteStationLoading()"
-      bkrType="danger"
-      class="w-full"
-      (click)="handleDeleteStation(station.id)"
-    >
-      <bkr-trash-icon></bkr-trash-icon>
-      Station löschen
-    </button>
-  </bkr-danger-zone>
-</ng-container>
-
-<ng-template #empty>
+  @if (isAdmin()) {
+    <bkr-danger-zone>
+      <button
+        bkr-button
+        [bkrLoading]="deleteStationLoading()"
+        bkrType="danger"
+        class="w-full"
+        (click)="handleDeleteStation(station.id)"
+      >
+        <bkr-trash-icon></bkr-trash-icon>
+        Station löschen
+      </button>
+    </bkr-danger-zone>
+  }
+} @else {
   <bkr-empty>Station nicht gefunden.</bkr-empty>
-</ng-template>
+}

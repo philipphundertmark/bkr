@@ -34,7 +34,7 @@ export class TeamService {
       .pipe(map((teamDtos) => teamDtos.map(TeamUtils.deserialize)));
   }
 
-  updateTeam(id: string, dto: UpdateTeamSchema): Observable<Team | null> {
+  updateTeam(id: string, dto: UpdateTeamSchema): Observable<Team> {
     return this.http
       .put<TeamDTO>(`/teams/${id}`, dto)
       .pipe(map(TeamUtils.deserialize));

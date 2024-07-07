@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  HostBinding,
   inject,
   signal,
 } from '@angular/core';
@@ -24,6 +24,7 @@ import {
   MembersInputComponent,
 } from '../../components';
 import { NotificationService, StationService } from '../../services';
+import { Store } from '../../services/store';
 
 @Component({
   selector: 'bkr-station-new',
@@ -36,12 +37,12 @@ import { NotificationService, StationService } from '../../services';
     ReactiveFormsModule,
     RouterModule,
   ],
+  host: { class: 'page' },
+  styleUrl: './station-new.component.scss',
   templateUrl: './station-new.component.html',
-  styleUrls: ['./station-new.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StationNewComponent {
-  @HostBinding('class.page') page = true;
-
   readonly Order = Order;
 
   form = new FormGroup({
@@ -73,6 +74,7 @@ export class StationNewComponent {
     private readonly notificationService: NotificationService,
     private readonly router: Router,
     private readonly stationService: StationService,
+    private readonly store: Store,
   ) {}
 
   handleSave(): void {
@@ -104,8 +106,9 @@ export class StationNewComponent {
       })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: () => {
+        next: (station) => {
           this.loading.set(false);
+          this.store.createStation(station);
           this.notificationService.success('Station wurde erstellt.');
 
           this.router.navigate(['/stations']);

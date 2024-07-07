@@ -2,20 +2,13 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
   ElementRef,
-  OnInit,
   Optional,
-  QueryList,
-  ViewChildren,
-  inject,
+  signal,
+  viewChildren,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   ControlValueAccessor,
-  FormArray,
-  FormControl,
-  FormGroup,
   NgControl,
   ReactiveFormsModule,
 } from '@angular/forms';
@@ -34,25 +27,17 @@ import { InputDirective } from '../input.directive';
     ReactiveFormsModule,
     XMarkIconComponent,
   ],
+  styleUrl: './members-input.component.scss',
   templateUrl: './members-input.component.html',
-  styleUrls: ['./members-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MembersInputComponent implements ControlValueAccessor, OnInit {
-  @ViewChildren('memberInput') memberInputs?: QueryList<ElementRef>;
+export class MembersInputComponent implements ControlValueAccessor {
+  memberInputs = viewChildren<ElementRef<HTMLInputElement>>('memberInput');
+
+  members = signal<string[]>([]);
 
   onChange?: (value: string[]) => void;
   onTouched?: () => void;
-
-  form = new FormGroup({
-    members: new FormArray<FormControl<string>>([]),
-  });
-
-  private readonly destroyRef = inject(DestroyRef);
-
-  get members(): FormArray<FormControl<string>> {
-    return this.form.controls['members'];
-  }
 
   constructor(@Optional() public ngControl?: NgControl) {
     if (this.ngControl) {
@@ -61,27 +46,10 @@ export class MembersInputComponent implements ControlValueAccessor, OnInit {
   }
 
   /**
-   * @implements {OnInit}
-   */
-  ngOnInit(): void {
-    this.form.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((value) => {
-        if (this.onChange) {
-          this.onChange(value.members ?? []);
-        }
-      });
-  }
-
-  /**
    * @implements {ControlValueAccessor}
    */
   writeValue(value: string[]): void {
-    this.members.clear();
-
-    for (let i = 0; i < (value.length || 1); i++) {
-      this.members.push(this.buildMemberControl(value[i]));
-    }
+    this.members.set(value);
   }
 
   /**
@@ -99,45 +67,55 @@ export class MembersInputComponent implements ControlValueAccessor, OnInit {
   }
 
   handleAddMember(): void {
-    this.members.push(this.buildMemberControl());
+    this.members.update((value) => [...value, '']);
 
-    setTimeout(() => this.focusMemberInputAt(this.members.length - 1), 0);
+    this.onChange?.(this.members());
+
+    setTimeout(() => this.focusMemberInputAt(this.members().length - 1), 0);
   }
 
   handleEnterAt(event: Event, index: number): void {
     event.preventDefault();
 
-    if (index >= this.members.length) {
+    if (index >= this.members().length) {
       // Invalid index
       return;
     }
 
-    if (index === this.members.length - 1) {
+    if (index === this.members().length - 1) {
       this.handleAddMember();
     }
 
     this.focusMemberInputAt(index + 1);
   }
 
+  handleMemberChangeAt(index: number, event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+
+    this.members.update((members) =>
+      members.map((member, i) => (i === index ? value : member)),
+    );
+
+    this.onChange?.(this.members());
+  }
+
   handleRemoveMemberAt(index: number): void {
-    this.members.removeAt(index);
+    this.members.update((members) =>
+      members.slice(0, index).concat(members.slice(index + 1)),
+    );
+
+    this.onChange?.(this.members());
 
     setTimeout(() => {
-      if (index >= this.members.length) {
-        index = this.members.length - 1;
+      if (index >= this.members().length) {
+        index = this.members().length - 1;
       }
 
       this.focusMemberInputAt(index);
     }, 0);
   }
 
-  private buildMemberControl(value?: string): FormControl<string> {
-    return new FormControl<string>(value ?? '', {
-      nonNullable: true,
-    });
-  }
-
   private focusMemberInputAt(index: number): void {
-    this.memberInputs?.get(index)?.nativeElement.focus();
+    this.memberInputs().at(index)?.nativeElement.focus();
   }
 }
