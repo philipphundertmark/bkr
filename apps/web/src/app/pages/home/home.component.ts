@@ -33,9 +33,10 @@ import {
   CheckCircleIconComponent,
   TrophyIconComponent,
 } from '../../icons/mini';
+import { TimePipe } from '../../pipes';
 import { AuthService, NotificationService, TeamService } from '../../services';
 import { ConfirmService } from '../../services/confirm.service';
-import { Store } from '../../services/store';
+import { EventType, Store } from '../../services/store';
 
 dayjs.extend(duration);
 
@@ -66,6 +67,7 @@ export interface RankingItem {
     RouterModule,
     TabComponent,
     TabsComponent,
+    TimePipe,
     TrophyIconComponent,
   ],
   host: { class: 'page' },
@@ -74,13 +76,16 @@ export interface RankingItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
+  readonly EventType = EventType;
+
   ranking = signal('standard');
 
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
   isStation = toSignal(this.authService.isStation$, { initialValue: false });
 
-  publishResults = this.store.publishResults;
+  events = this.store.events;
   isRaceOver = this.store.raceIsOver;
+  publishResults = this.store.publishResults;
 
   stations = this.store.stations;
   teams = this.store.teams;

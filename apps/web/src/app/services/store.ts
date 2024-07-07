@@ -24,6 +24,41 @@ const INITIAL_STATIONS: Station[] = [];
 /** Initial teams state */
 const INITIAL_TEAMS: Team[] = [];
 
+export enum EventType {
+  Start = 'start',
+  Finish = 'finish',
+  CheckIn = 'check-in',
+  CheckOut = 'check-out',
+}
+
+export interface StartEvent {
+  timestamp: dayjs.Dayjs;
+  type: EventType.Start;
+  team: Team;
+}
+
+export interface FinishEvent {
+  timestamp: dayjs.Dayjs;
+  type: EventType.Finish;
+  team: Team;
+}
+
+export interface CheckInEvent {
+  timestamp: dayjs.Dayjs;
+  type: EventType.CheckIn;
+  team: Team;
+  station: Station;
+}
+
+export interface CheckOutEvent {
+  timestamp: dayjs.Dayjs;
+  type: EventType.CheckOut;
+  team: Team;
+  station: Station;
+}
+
+export type Event = StartEvent | FinishEvent | CheckInEvent | CheckOutEvent;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -57,6 +92,9 @@ export class Store {
       .sort((a, b) => a.number - b.number),
   );
 
+  events = computed(() =>
+    this.computeEvents(this._results(), this._stations(), this._teams()),
+  );
   publishResults = computed(() => this._settings().publishResults);
   raceIsOver = computed(
     () =>
@@ -143,5 +181,62 @@ export class Store {
     this._teams.update((teams) =>
       teams.map((team) => (team.id === updatedTeam.id ? updatedTeam : team)),
     );
+  }
+
+  private computeEvents(
+    results: Result[],
+    stations: Station[],
+    teams: Team[],
+  ): Event[] {
+    const events: Event[] = [];
+
+    teams.forEach((team) => {
+      // Generate `Start` event if team has started
+      if (team.startedAt) {
+        events.push({
+          timestamp: team.startedAt,
+          type: EventType.Start,
+          team,
+        });
+      }
+
+      // Generate `Finish` event if team has finished
+      if (team.finishedAt) {
+        events.push({
+          timestamp: team.finishedAt,
+          type: EventType.Finish,
+          team,
+        });
+      }
+    });
+
+    results.forEach((result) => {
+      const station = stations.find((s) => s.id === result.stationId);
+      const team = teams.find((t) => t.id === result.teamId);
+
+      if (!station || !team) {
+        return;
+      }
+
+      // Generate `CheckIn` event
+      events.push({
+        timestamp: result.checkIn,
+        type: EventType.CheckIn,
+        team,
+        station,
+      });
+
+      // Generate `CheckOut` event if team has checked out
+      if (result.checkOut) {
+        events.push({
+          timestamp: result.checkOut,
+          type: EventType.CheckOut,
+          team,
+          station,
+        });
+      }
+    });
+
+    return events.sort((a, b) => b.timestamp.diff(a.timestamp));
   }
 }
