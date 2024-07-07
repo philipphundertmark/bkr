@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import dayjs from 'dayjs';
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 
 import { JwtPayload, Role } from '@bkr/api-interface';

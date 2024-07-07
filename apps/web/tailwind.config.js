@@ -25,8 +25,7 @@ module.exports = {
         zoom: 'zoom 1s infinite ease-in-out',
       },
       fontFamily: {
-        sans: ['Open Sans', ...defaultTheme.fontFamily.sans],
-        title: ['Poppins', ...defaultTheme.fontFamily.sans],
+        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
       },
       keyframes: {
         zoom: {
