@@ -17,55 +17,6 @@ import { handler } from './handler';
 export function StationController(stationService: StationService): Router {
   const router = Router();
 
-  /**
-   * @openapi
-   *
-   * /stations:
-   *   post:
-   *     description: Create a new station
-   *     tags:
-   *       - Station
-   *     security:
-   *       - bearerAuth: []
-   *     requestBody:
-   *       description: The station to create
-   *       required: true
-   *       content:
-   *         application/json:
-   *           schema:
-   *             $ref: '#/components/schemas/CreateStationSchema'
-   *     responses:
-   *       201:
-   *         description: The created station
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/Station'
-   *       400:
-   *         description: Invalid request body
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/BadRequest'
-   *       401:
-   *         description: You are not authenticated
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/Unauthorized'
-   *       403:
-   *         description: You are not authorized to access this resource
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/Forbidden'
-   *       500:
-   *         description: An unexpected error occurred
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/InternalServerError'
-   */
   router.post(
     '/stations',
     authorize(Role.ADMIN),
@@ -104,30 +55,6 @@ export function StationController(stationService: StationService): Router {
     }),
   );
 
-  /**
-   * @openapi
-   *
-   * /stations:
-   *   get:
-   *     description: Get all stations
-   *     tags:
-   *       - Station
-   *     responses:
-   *       200:
-   *         description: All stations
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: array
-   *               items:
-   *                 $ref: '#/components/schemas/Station'
-   *       500:
-   *         description: An unexpected error occurred
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/InternalServerError'
-   */
   router.get(
     '/stations',
     handler(async (req, res) => {
@@ -143,63 +70,6 @@ export function StationController(stationService: StationService): Router {
     }),
   );
 
-  /**
-   * @openapi
-   *
-   * /stations/{stationId}:
-   *   put:
-   *     description: Update a station
-   *     tags:
-   *       - Station
-   *     security:
-   *       - bearerAuth: []
-   *     parameters:
-   *       - $ref: '#/components/parameters/stationId'
-   *     requestBody:
-   *       description: Station updates
-   *       required: true
-   *       content:
-   *         application/json:
-   *           schema:
-   *             $ref: '#/components/schemas/UpdateStationSchema'
-   *     responses:
-   *       200:
-   *         description: The updated station
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/Station'
-   *       400:
-   *         description: Invalid request body
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/BadRequest'
-   *       401:
-   *         description: You are not authenticated
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/Unauthorized'
-   *       403:
-   *         description: You are not authorized to access this resource
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/Forbidden'
-   *       404:
-   *         description: The station does not exist
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/NotFound'
-   *       500:
-   *         description: An unexpected error occurred
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/InternalServerError'
-   */
   router.put(
     '/stations/:stationId',
     authorize(Role.ADMIN),
@@ -259,46 +129,6 @@ export function StationController(stationService: StationService): Router {
     }),
   );
 
-  /**
-   * @openapi
-   *
-   * /stations/{stationId}:
-   *   delete:
-   *     description: Delete a station
-   *     tags:
-   *       - Station
-   *     security:
-   *       - bearerAuth: []
-   *     parameters:
-   *       - $ref: '#/components/parameters/stationId'
-   *     responses:
-   *       200:
-   *         description: Successfully deleted the station
-   *       401:
-   *         description: You are not authenticated
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/Unauthorized'
-   *       403:
-   *         description: You are not authorized to access this resource
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/Forbidden'
-   *       404:
-   *         description: The station does not exist
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/NotFound'
-   *       500:
-   *         description: An unexpected error occurred
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/InternalServerError'
-   */
   router.delete(
     '/stations/:stationId',
     authorize(Role.ADMIN),
