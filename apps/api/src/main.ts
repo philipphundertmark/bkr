@@ -1,5 +1,4 @@
 import http from 'http';
-import swaggerUi from 'swagger-ui-express';
 
 import { createApp } from './app';
 import { config } from './config';
@@ -8,7 +7,6 @@ import { SettingsController } from './controllers/settings.controller';
 import { StationController } from './controllers/station.controller';
 import { TeamController } from './controllers/team.controller';
 import { TokenController } from './controllers/token.controller';
-import { openapiSpec } from './openapi/swagger';
 import { prisma } from './prisma';
 import { ResultService } from './services/result.service';
 import { SettingsService } from './services/settings.service';
@@ -35,9 +33,6 @@ const app = createApp(
   },
 );
 const server = http.createServer(app);
-
-// Swagger UI
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpec));
 
 const port = process.env.PORT || 3333;
 server.listen(port, () => {
