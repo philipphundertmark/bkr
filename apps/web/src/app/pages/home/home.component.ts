@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  HostBinding,
   computed,
   inject,
   signal,
@@ -69,21 +68,16 @@ export interface RankingItem {
     TabsComponent,
     TrophyIconComponent,
   ],
-  templateUrl: './home.component.html',
+  host: { class: 'page' },
   styleUrls: ['./home.component.scss'],
+  templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
-  @HostBinding('class.page') page = true;
-
   ranking = signal('standard');
 
-  isAdmin = toSignal(this.authService.isAdmin$, {
-    initialValue: false,
-  });
-  isStation = toSignal(this.authService.isStation$, {
-    initialValue: false,
-  });
+  isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
+  isStation = toSignal(this.authService.isStation$, { initialValue: false });
 
   publishResults = this.store.publishResults;
   isRaceOver = this.store.raceIsOver;
@@ -175,8 +169,9 @@ export class HomeComponent {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
-        next: () => {
+        next: (teams) => {
           this.shuffleTeamsLoading.set(false);
+          this.store.setTeams(teams);
           this.notificationService.success('Reihenfolge wurde ausgelost.');
         },
         error: () => {

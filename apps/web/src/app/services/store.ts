@@ -44,7 +44,7 @@ export class Store {
         ),
       }))
       // Sort stations by number
-      .sort((a, b) => (a.number = b.number)),
+      .sort((a, b) => a.number - b.number),
   );
   teams = computed(() =>
     this._teams()
@@ -54,7 +54,7 @@ export class Store {
         results: this._results().filter((result) => result.teamId === team.id),
       }))
       // Sort teams by number
-      .sort((a, b) => (a.number = b.number)),
+      .sort((a, b) => a.number - b.number),
   );
 
   publishResults = computed(() => this._settings().publishResults);
