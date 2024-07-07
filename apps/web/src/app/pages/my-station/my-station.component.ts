@@ -1,9 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, computed, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  signal,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 
 import {
+  Order,
   ResultWithRank,
   StationUtils,
   TeamUtils,
@@ -36,12 +42,13 @@ type ResultWithRankAndTeam = ResultWithRank & { team: TeamWithResults };
     TabComponent,
     TabsComponent,
   ],
+  host: { class: 'page' },
+  styleUrl: './my-station.component.scss',
   templateUrl: './my-station.component.html',
-  styleUrls: ['./my-station.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyStationComponent {
-  @HostBinding('class.page') page = true;
-
+  readonly Order = Order;
   readonly TeamUtils = TeamUtils;
 
   ranking = signal('standard');
@@ -51,17 +58,17 @@ export class MyStationComponent {
   stations = this.store.stations;
   teams = this.store.teams;
 
-  checkedInTeams = computed(() => {
-    return this.teams().filter((team) =>
+  checkedInTeams = computed(() =>
+    this.teams().filter((team) =>
       team.results.some(
         (result) => result.stationId === this.stationId() && !result.checkOut,
       ),
-    );
-  });
+    ),
+  );
 
-  station = computed(() => {
-    return this.stations().find((station) => station.id === this.stationId());
-  });
+  station = computed(() =>
+    this.stations().find((station) => station.id === this.stationId()),
+  );
 
   teamsForRanking = computed(() =>
     this.teams().filter((team) =>

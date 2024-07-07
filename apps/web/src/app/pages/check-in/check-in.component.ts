@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  HostBinding,
   computed,
   inject,
   signal,
@@ -28,7 +27,6 @@ import {
   AuthService,
   NotificationService,
   ResultService,
-  TeamService,
 } from '../../services';
 import { Store } from '../../services/store';
 
@@ -43,29 +41,26 @@ import { Store } from '../../services/store';
     ReactiveFormsModule,
     RouterModule,
   ],
+  host: { class: 'page' },
+  styleUrl: './check-in.component.scss',
   templateUrl: './check-in.component.html',
-  styleUrls: ['./check-in.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckInComponent {
-  @HostBinding('class.page') page = true;
-
   readonly TeamUtils = TeamUtils;
 
-  stationId = toSignal(this.authService.sub$, {
-    initialValue: null,
-  });
+  stationId = toSignal(this.authService.sub$, { initialValue: null });
   teams = this.store.teams;
 
   checkInLoading = signal(false);
-  teamsToCheckIn = computed(() => {
-    return this.teams()
+  teamsToCheckIn = computed(() =>
+    this.teams()
       .filter(TeamUtils.isRunning)
       .filter(
         (team) =>
           !team.results.some((result) => result.stationId === this.stationId()),
-      );
-  });
+      ),
+  );
 
   form = new FormGroup({
     selectedTeamId: new FormControl<string>('', Validators.required),
@@ -79,7 +74,6 @@ export class CheckInComponent {
     private readonly resultService: ResultService,
     private readonly router: Router,
     private readonly store: Store,
-    private readonly teamService: TeamService,
   ) {}
 
   handleCheckIn(): void {
@@ -96,8 +90,9 @@ export class CheckInComponent {
       .createResult(stationId, selectedTeamId)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: () => {
+        next: (result) => {
           this.checkInLoading.set(false);
+          this.store.createResult(result);
           this.notificationService.success('Team wurde eingecheckt.');
 
           this.router.navigate(['/my-station']);

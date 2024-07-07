@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  HostBinding,
   computed,
   inject,
   signal,
@@ -39,8 +39,6 @@ import { Store } from '../../services/store';
 @Component({
   selector: 'bkr-check-out',
   standalone: true,
-  templateUrl: './check-out.component.html',
-  styleUrls: ['./check-out.component.scss'],
   imports: [
     AlertComponent,
     ButtonComponent,
@@ -52,10 +50,12 @@ import { Store } from '../../services/store';
     RouterModule,
     TrashIconComponent,
   ],
+  host: { class: 'page' },
+  styleUrl: './check-out.component.scss',
+  templateUrl: './check-out.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckOutComponent {
-  @HostBinding('class.page') page = true;
-
   readonly TeamUtils = TeamUtils;
 
   stationId = toSignal(this.authService.sub$, { initialValue: null });
@@ -109,8 +109,9 @@ export class CheckOutComponent {
       })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: () => {
+        next: (result) => {
           this.checkOutLoading.set(false);
+          this.store.updateResult(result);
           this.notificationService.success('Team wurde ausgecheckt.');
 
           this.router.navigate(['/my-station']);
@@ -149,6 +150,7 @@ export class CheckOutComponent {
       .subscribe({
         next: () => {
           this.deleteResultLoading.set(false);
+          this.store.deleteResult(stationId, teamId);
           this.notificationService.success('Check-in gelöscht.');
 
           this.router.navigate(['/my-station']);

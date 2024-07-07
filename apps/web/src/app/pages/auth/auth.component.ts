@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  HostBinding,
   Input,
   computed,
   inject,
@@ -33,14 +32,13 @@ import { Store } from '../../services/store';
     InputDirective,
     ReactiveFormsModule,
   ],
+  host: { class: 'page' },
+  styleUrl: './auth.component.scss',
   templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthComponent {
   @Input() returnUrl = '/';
-
-  @HostBinding('class.page') page = true;
 
   form = new FormGroup({
     code: new FormControl<string>('', {

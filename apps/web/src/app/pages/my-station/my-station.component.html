@@ -19,81 +19,90 @@
   Checke ein Team direkt ein, sobald es deine Station erreicht.
 </bkr-alert>
 
-<ul class="list" *ngIf="checkedInTeams().length > 0; else emptyCheckins">
-  <li *ngFor="let team of checkedInTeams()">
-    <a
-      class="focus-outline-inset list-entry items-center justify-between"
-      routerLink="/my-station/check-out"
-      [queryParams]="{ teamId: team.id }"
-    >
-      <div class="flex flex-col gap-1">
-        <h3 class="name">
-          {{ TeamUtils.getTeamName(team) }}
-          <span class="number">#{{ team.number }}</span>
-        </h3>
+@if (checkedInTeams().length > 0) {
+  <ul class="list">
+    @for (team of checkedInTeams(); track team.id) {
+      <li>
+        <a
+          class="focus-outline-inset list-entry items-center justify-between"
+          routerLink="/my-station/check-out"
+          [queryParams]="{ teamId: team.id }"
+        >
+          <div class="flex flex-col gap-1">
+            <h3 class="name">
+              {{ TeamUtils.getTeamName(team) }}
+              <span class="number">#{{ team.number }}</span>
+            </h3>
 
-        <p class="text-gray-500">{{ TeamUtils.formatTeamMembers(team) }}</p>
-      </div>
+            <p class="text-gray-500">{{ TeamUtils.formatTeamMembers(team) }}</p>
+          </div>
 
-      <bkr-chevron-right-icon class="text-gray-500"></bkr-chevron-right-icon>
-    </a>
-  </li>
-</ul>
-
-<ng-template #emptyCheckins>
+          <bkr-chevron-right-icon
+            class="text-gray-500"
+          ></bkr-chevron-right-icon>
+        </a>
+      </li>
+    }
+  </ul>
+} @else {
   <bkr-empty>Es sind keine Teams eingecheckt.</bkr-empty>
-</ng-template>
+}
 
 <div class="space-y-1">
   <h2 class="subtitle">Ergebnisse</h2>
   <p class="text-gray-500">Die Ergebnisse der Teams an deiner Station.</p>
 </div>
 
-<bkr-alert *ngIf="station() as station" [ngSwitch]="station.order">
-  <ng-container *ngSwitchCase="'ASC'">
-    An deiner Station gewinnt das Team mit den
-    <span class="font-semibold">wenigsten</span> Punkten.
-  </ng-container>
-  <ng-container *ngSwitchCase="'DESC'">
-    An deiner Station gewinnt das Team mit den
-    <span class="font-semibold">meisten</span> Punkten.
-  </ng-container>
-</bkr-alert>
+@if (station(); as station) {
+  <bkr-alert>
+    @if (station.order === Order.ASC) {
+      An deiner Station gewinnt das Team mit den
+      <span class="font-semibold">wenigsten</span> Punkten.
+    } @else {
+      An deiner Station gewinnt das Team mit den
+      <span class="font-semibold">meisten</span> Punkten.
+    }
+  </bkr-alert>
+}
 
 <bkr-tabs (bkrChange)="handleChangeRanking($event)">
   <bkr-tab bkrKey="standard">Hauptwertung</bkr-tab>
   <bkr-tab bkrKey="help">Nebenwertung</bkr-tab>
 </bkr-tabs>
 
-<ul class="list" *ngIf="results().length > 0; else emptyResults">
-  <li *ngFor="let result of results(); let i = index">
-    <a
-      class="focus-outline-inset list-entry items-center justify-between"
-      routerLink="/my-station/result"
-      [queryParams]="{ teamId: result.teamId }"
-    >
-      <div class="flex gap-4">
-        <div class="font-bold">{{ result.rank }}.</div>
+@if (results().length > 0) {
+  <ul class="list">
+    @for (result of results(); track result.teamId) {
+      <li>
+        <a
+          class="focus-outline-inset list-entry items-center justify-between"
+          routerLink="/my-station/result"
+          [queryParams]="{ teamId: result.teamId }"
+        >
+          <div class="flex gap-4">
+            <div class="font-bold">{{ result.rank }}.</div>
 
-        <div class="flex flex-col gap-1">
-          <h3 class="name">
-            {{ TeamUtils.getTeamName(result.team) }}
-            <span class="number">#{{ result.team.number }}</span>
-          </h3>
+            <div class="flex flex-col gap-1">
+              <h3 class="name">
+                {{ TeamUtils.getTeamName(result.team) }}
+                <span class="number">#{{ result.team.number }}</span>
+              </h3>
 
-          <p class="text-gray-500">
-            {{ TeamUtils.formatTeamMembers(result.team) }}
-          </p>
+              <p class="text-gray-500">
+                {{ TeamUtils.formatTeamMembers(result.team) }}
+              </p>
 
-          <p class="font-semibold">{{ result.points }} Punkte</p>
-        </div>
-      </div>
+              <p class="font-semibold">{{ result.points }} Punkte</p>
+            </div>
+          </div>
 
-      <bkr-chevron-right-icon class="text-gray-500"></bkr-chevron-right-icon>
-    </a>
-  </li>
-</ul>
-
-<ng-template #emptyResults>
+          <bkr-chevron-right-icon
+            class="text-gray-500"
+          ></bkr-chevron-right-icon>
+        </a>
+      </li>
+    }
+  </ul>
+} @else {
   <bkr-empty>Es gibt noch keine Ergebnisse an deiner Station.</bkr-empty>
-</ng-template>
+}
