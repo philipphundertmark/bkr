@@ -55,7 +55,9 @@ export class AppComponent implements OnInit {
   stationsLoading = toSignal(this.stationService.loading$, {
     initialValue: false,
   });
-  teamsLoading = toSignal(this.teamService.loading$, { initialValue: false });
+  teamsLoading = toSignal(this.teamService.loading$, {
+    initialValue: false,
+  });
 
   loading = computed(
     () =>

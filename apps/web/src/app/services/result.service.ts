@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, map, tap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 import {
   Result,
@@ -13,31 +13,26 @@ import {
   providedIn: 'root',
 })
 export class ResultService {
-  private readonly _newResult$ = new Subject<Result>();
-  readonly newResult$ = this._newResult$.asObservable();
-
-  private readonly _updatedResult$ = new Subject<Result>();
-  readonly updatedResult$ = this._updatedResult$.asObservable();
-
-  private readonly _deletedResult$ = new Subject<{
-    stationId: string;
-    teamId: string;
-  }>();
-  readonly deletedResult$ = this._deletedResult$.asObservable();
-
-  private readonly _deletedResultsByTeamId = new Subject<string>();
-  readonly deletedResultsByTeamId$ =
-    this._deletedResultsByTeamId.asObservable();
-
   constructor(private readonly http: HttpClient) {}
 
   createResult(stationId: string, teamId: string): Observable<Result> {
     return this.http
       .post<ResultDTO>(`/stations/${stationId}/results`, { teamId })
-      .pipe(
-        map(ResultUtils.deserialize),
-        tap((result) => this._newResult$.next(result)),
-      );
+      .pipe(map(ResultUtils.deserialize));
+  }
+
+  deleteResult(stationId: string, teamId: string): Observable<void> {
+    return this.http.delete<void>(`/stations/${stationId}/results/${teamId}`);
+  }
+
+  deleteResultsByTeamId(teamId: string): Observable<void> {
+    return this.http.delete<void>(`/teams/${teamId}/results`);
+  }
+
+  getResults(): Observable<Result[]> {
+    return this.http
+      .get<ResultDTO[]>('/results')
+      .pipe(map((resultDtos) => resultDtos.map(ResultUtils.deserialize)));
   }
 
   updateResult(
@@ -47,21 +42,6 @@ export class ResultService {
   ): Observable<Result> {
     return this.http
       .put<ResultDTO>(`/stations/${stationId}/results/${teamId}`, dto)
-      .pipe(
-        map(ResultUtils.deserialize),
-        tap((result) => this._updatedResult$.next(result)),
-      );
-  }
-
-  deleteResult(stationId: string, teamId: string): Observable<void> {
-    return this.http
-      .delete<void>(`/stations/${stationId}/results/${teamId}`)
-      .pipe(tap(() => this._deletedResult$.next({ stationId, teamId })));
-  }
-
-  deleteResultsByTeamId(teamId: string): Observable<void> {
-    return this.http
-      .delete<void>(`/teams/${teamId}/results`)
-      .pipe(tap(() => this._deletedResultsByTeamId.next(teamId)));
+      .pipe(map(ResultUtils.deserialize));
   }
 }
