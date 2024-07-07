@@ -97,8 +97,6 @@ export class CheckInComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          window.plausible('Check-In');
-
           this.checkInLoading.set(false);
           this.notificationService.success('Team wurde eingecheckt.');
 

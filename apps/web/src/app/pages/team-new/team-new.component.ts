@@ -4,7 +4,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  HostBinding,
   inject,
   signal,
 } from '@angular/core';
@@ -23,6 +22,7 @@ import {
   MembersInputComponent,
 } from '../../components';
 import { NotificationService, TeamService } from '../../services';
+import { Store } from '../../services/store';
 
 @Component({
   selector: 'bkr-team-new',
@@ -35,13 +35,12 @@ import { NotificationService, TeamService } from '../../services';
     ReactiveFormsModule,
     RouterModule,
   ],
+  host: { class: 'page' },
+  styleUrl: './team-new.component.scss',
   templateUrl: './team-new.component.html',
-  styleUrls: ['./team-new.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamNewComponent {
-  @HostBinding('class.page') page = true;
-
   form = new FormGroup({
     name: new FormControl<string>('', {
       nonNullable: true,
@@ -65,6 +64,7 @@ export class TeamNewComponent {
   constructor(
     private readonly notificationService: NotificationService,
     private readonly router: Router,
+    private readonly store: Store,
     private readonly teamService: TeamService,
   ) {}
 
@@ -95,12 +95,12 @@ export class TeamNewComponent {
       })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: () => {
-          window.plausible('Create Team');
+        next: (team) => {
           this.loading.set(false);
+          this.store.createTeam(team);
           this.notificationService.success('Team wurde erstellt.');
 
-          this.router.navigate(['/teams']);
+          this.router.navigate(['/']);
         },
         error: (err: HttpErrorResponse) => {
           this.loading.set(false);

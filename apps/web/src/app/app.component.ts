@@ -6,6 +6,7 @@ import {
   OnInit,
   computed,
   inject,
+  signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterModule } from '@angular/router';
@@ -44,10 +45,10 @@ export class AppComponent implements OnInit {
   isAdmin = toSignal(this.authService.isAdmin$);
   isStation = toSignal(this.authService.isStation$);
 
-  resultsError = this.store.resultsError;
-  settingsError = this.store.settingsError;
-  stationsError = this.store.stationsError;
-  teamsError = this.store.teamsError;
+  resultsError = signal<Error | null>(null);
+  settingsError = signal<Error | null>(null);
+  stationsError = signal<Error | null>(null);
+  teamsError = signal<Error | null>(null);
 
   hasError = computed(
     () =>
@@ -57,10 +58,10 @@ export class AppComponent implements OnInit {
       this.teamsError() !== null,
   );
 
-  resultsLoading = this.store.resultsLoading;
-  settingsLoading = this.store.settingsLoading;
-  stationsLoading = this.store.stationsLoading;
-  teamsLoading = this.store.teamsLoading;
+  resultsLoading = signal<boolean>(false);
+  settingsLoading = signal<boolean>(false);
+  stationsLoading = signal<boolean>(false);
+  teamsLoading = signal<boolean>(false);
 
   loading = computed(
     () =>
@@ -86,48 +87,48 @@ export class AppComponent implements OnInit {
    * @implements {OnInit}
    */
   ngOnInit(): void {
-    this.store.setResultsLoading(true);
+    this.resultsLoading.set(true);
 
     this.resultService
       .getResults()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (results) => this.store.setResults(results),
-        error: (error) => this.store.setResultsError(error),
-        complete: () => this.store.setResultsLoading(false),
+        error: (error) => this.resultsError.set(error),
+        complete: () => this.resultsLoading.set(false),
       });
 
-    this.store.setSettingsLoading(true);
+    this.settingsLoading.set(true);
 
     this.settingsService
       .getSettings()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (settings) => this.store.setSettings(settings),
-        error: (error) => this.store.setSettingsError(error),
-        complete: () => this.store.setSettingsLoading(false),
+        error: (error) => this.settingsError.set(error),
+        complete: () => this.settingsLoading.set(false),
       });
 
-    this.store.setStationsLoading(true);
+    this.stationsLoading.set(true);
 
     this.stationService
       .getStations()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (stations) => this.store.setStations(stations),
-        error: (error) => this.store.setStationsError(error),
-        complete: () => this.store.setStationsLoading(false),
+        error: (error) => this.stationsError.set(error),
+        complete: () => this.stationsLoading.set(false),
       });
 
-    this.store.setTeamsLoading(true);
+    this.teamsLoading.set(true);
 
     this.teamService
       .getTeams()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (teams) => this.store.setTeams(teams),
-        error: (error) => this.store.setTeamsError(error),
-        complete: () => this.store.setTeamsLoading(false),
+        error: (error) => this.teamsError.set(error),
+        complete: () => this.teamsLoading.set(false),
       });
   }
 

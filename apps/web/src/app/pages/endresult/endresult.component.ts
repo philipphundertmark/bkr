@@ -79,8 +79,6 @@ export class EndresultComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          window.plausible('Publish Results');
-
           this.publishResultsLoading.set(false);
         },
       });
@@ -94,8 +92,6 @@ export class EndresultComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          window.plausible('Hide Results');
-
           this.hideResultsLoading.set(false);
         },
       });

@@ -165,8 +165,6 @@ export class ResultComponent implements OnInit {
       )
       .subscribe({
         next: () => {
-          window.plausible('Delete Result');
-
           this.deleteResultLoading.set(false);
           this.notificationService.success('Ergebnis gelöscht.');
 

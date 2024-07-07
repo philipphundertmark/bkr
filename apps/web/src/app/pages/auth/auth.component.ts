@@ -88,8 +88,6 @@ export class AuthComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          window.plausible('Login');
-
           this.loginLoading.set(false);
           this.form.reset();
           this.notificationService.success('Du bist jetzt eingeloggt.');

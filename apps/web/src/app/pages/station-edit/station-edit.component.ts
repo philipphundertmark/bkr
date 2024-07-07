@@ -156,8 +156,6 @@ export class StationEditComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          window.plausible('Edit Station');
-
           this.saveLoading.set(false);
           this.notificationService.success('Station wurde aktualisiert.');
 

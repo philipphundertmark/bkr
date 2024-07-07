@@ -33,16 +33,6 @@ export class Store {
   private _stations = signal<Station[]>(INITIAL_STATIONS);
   private _teams = signal<Team[]>(INITIAL_TEAMS);
 
-  private _resultsLoading = signal<boolean>(false);
-  private _settingsLoading = signal<boolean>(false);
-  private _stationsLoading = signal<boolean>(false);
-  private _teamsLoading = signal<boolean>(false);
-
-  private _resultsError = signal<Error | null>(null);
-  private _settingsError = signal<Error | null>(null);
-  private _stationsError = signal<Error | null>(null);
-  private _teamsError = signal<Error | null>(null);
-
   settings = computed(() => this._settings());
   stations = computed(() =>
     this._stations()
@@ -66,16 +56,6 @@ export class Store {
       // Sort teams by number
       .sort((a, b) => (a.number = b.number)),
   );
-
-  resultsLoading = computed(() => this._resultsLoading());
-  settingsLoading = computed(() => this._settingsLoading());
-  stationsLoading = computed(() => this._stationsLoading());
-  teamsLoading = computed(() => this._teamsLoading());
-
-  resultsError = computed(() => this._resultsError());
-  settingsError = computed(() => this._settingsError());
-  stationsError = computed(() => this._stationsError());
-  teamsError = computed(() => this._teamsError());
 
   publishResults = computed(() => this._settings().publishResults);
   raceIsOver = computed(
@@ -140,38 +120,6 @@ export class Store {
 
   setTeams(teams: Team[]): void {
     this._teams.set(teams);
-  }
-
-  setResultsError(error: Error | null): void {
-    this._resultsError.set(error);
-  }
-
-  setSettingsError(error: Error | null): void {
-    this._settingsError.set(error);
-  }
-
-  setStationsError(error: Error | null): void {
-    this._stationsError.set(error);
-  }
-
-  setTeamsError(error: Error | null): void {
-    this._teamsError.set(error);
-  }
-
-  setResultsLoading(loading: boolean): void {
-    this._resultsLoading.set(loading);
-  }
-
-  setSettingsLoading(loading: boolean): void {
-    this._settingsLoading.set(loading);
-  }
-
-  setStationsLoading(loading: boolean): void {
-    this._stationsLoading.set(loading);
-  }
-
-  setTeamsLoading(loading: boolean): void {
-    this._teamsLoading.set(loading);
   }
 
   updateResult(updatedResult: Result): void {

@@ -3,7 +3,7 @@
     class="block rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-500"
     routerLink="/"
   >
-    <h1 class="title">BKR 2023</h1>
+    <h1 class="title">BKR 2024</h1>
   </a>
 
   <button
@@ -14,19 +14,19 @@
       'bg-indigo-500': isAdmin() || isStation(),
     }"
   >
-    <bkr-star-icon *ngIf="isAdmin()"></bkr-star-icon>
-    <bkr-flag-icon *ngIf="isStation()"></bkr-flag-icon>
-    <bkr-user-icon *ngIf="!isAdmin() && !isStation()"></bkr-user-icon>
+    @if (isAdmin()) {
+      <bkr-star-icon></bkr-star-icon>
+    } @else if (isStation()) {
+      <bkr-flag-icon></bkr-flag-icon>
+    } @else {
+      <bkr-user-icon></bkr-user-icon>
+    }
   </button>
 </nav>
 
-<ng-container *ngIf="!loading(); else loadingIndicator">
-  <ng-container *ngIf="!hasError(); else error">
-    <router-outlet></router-outlet>
-  </ng-container>
-</ng-container>
-
-<ng-template #error>
+@if (loading()) {
+  <bkr-loading></bkr-loading>
+} @else if (hasError()) {
   <div class="flex flex-col items-center gap-4 py-32 text-gray-300">
     <!-- Exclamation Triangle Icon (Solid) -->
     <svg
@@ -44,14 +44,6 @@
 
     <span class="text-xl font-bold"> Da lief wohl was schief. </span>
   </div>
-</ng-template>
-
-<ng-template #loadingIndicator>
-  <bkr-loading></bkr-loading>
-</ng-template>
-
-<footer class="flex justify-center p-16 text-sm text-gray-500">
-  <a class="underline" href="https://plausible.io/bkr2023.de" target="_blank">
-    Analytics
-  </a>
-</footer>
+} @else {
+  <router-outlet></router-outlet>
+}
