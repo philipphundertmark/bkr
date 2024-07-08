@@ -47,3 +47,6 @@ dump
 
 .nx/cache
 .nx/workspace-data
+
+# Sentry Config File
+.sentryclirc

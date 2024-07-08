@@ -7,7 +7,7 @@
     "build:api": "nx build api",
     "build:api:prod": "nx build api -c production",
     "build:web": "nx build web",
-    "build:web:prod": "nx build web -c production",
+    "build:web:prod": "nx build web -c production && npm run sentry:sourcemaps",
     "format:check": "nx format:check",
     "format:check:all": "nx format:check --all",
     "format:write": "nx format:write",
@@ -23,7 +23,8 @@
     "start:web": "nx serve web",
     "start": "npm run start:all",
     "test:api": "nx test api",
-    "test:api:coverage": "nx test api --codeCoverage --coverageReporters=\"text,text-summary\""
+    "test:api:coverage": "nx test api --codeCoverage --coverageReporters=\"text,text-summary\"",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org philipphundertmark --project bkr2024 ./dist/apps/web/browser && sentry-cli sourcemaps upload --org philipphundertmark --project bkr2024 ./dist/apps/web/browser"
   },
   "dependencies": {
     "@angular/animations": "18.0.6",
@@ -37,6 +38,7 @@
     "@angular/router": "18.0.6",
     "@prisma/client": "5.16.1",
     "@sentry/angular": "^8.15.0",
+    "@sentry/cli": "^2.32.1",
     "cors": "2.8.5",
     "dayjs": "^1.11.11",
     "express": "4.19.2",

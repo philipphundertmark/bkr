@@ -17,8 +17,10 @@
         "tsConfig": "apps/web/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/web/src/favicon.ico", "apps/web/src/assets"],
+        "sourceMap": true,
         "styles": ["apps/web/src/styles.scss"],
-        "scripts": []
+        "scripts": [],
+        "allowedCommonJsDependencies": ["dayjs", "joi"]
       },
       "configurations": {
         "production": {
@@ -44,8 +46,7 @@
         },
         "development": {
           "optimization": false,
-          "extractLicenses": false,
-          "sourceMap": true
+          "extractLicenses": false
         }
       },
       "defaultConfiguration": "production"
