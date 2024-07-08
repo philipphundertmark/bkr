@@ -37,6 +37,7 @@ import {
 import { AuthService, NotificationService, TeamService } from '../../services';
 import { ConfirmService } from '../../services/confirm.service';
 import { EventType, Store } from '../../services/store';
+import { ClockComponent } from './clock/clock.component';
 import { TickerComponent } from './ticker/ticker.component';
 
 dayjs.extend(duration);
@@ -60,6 +61,7 @@ export interface RankingItem {
     ArrowPathRoundedSquareIconComponent,
     ButtonComponent,
     CheckCircleIconComponent,
+    ClockComponent,
     CommonModule,
     EmptyComponent,
     RankingComponent,
