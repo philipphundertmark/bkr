@@ -68,6 +68,10 @@
     @apply h-5 w-5 border-gray-200 text-indigo-500 focus:ring-indigo-500;
   }
 
+  .card {
+    @apply -mx-6 border border-gray-200 bg-white shadow-sm p-6 sm:mx-0 sm:rounded-xl;
+  }
+
   .list {
     @apply -mx-6 divide-y divide-gray-200 border border-gray-200 bg-white shadow-sm sm:mx-0 sm:rounded-xl;
   }

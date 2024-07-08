@@ -34,203 +34,229 @@
   }
 </header>
 
-@if (isRaceOver() && publishResults()) {
-  <!-- Race is over; present results -->
-  <div class="flex items-center gap-4">
-    <div
-      class="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 text-indigo-500"
-    >
-      <bkr-trophy-icon></bkr-trophy-icon>
-    </div>
+<bkr-tabs
+  [bkrActiveTab]="activeTab()"
+  (bkrChange)="handleChangeActiveTab($event)"
+>
+  <bkr-tab bkrKey="overview">Übersicht</bkr-tab>
+  <bkr-tab bkrKey="ticker">Ticker</bkr-tab>
+</bkr-tabs>
 
-    <div class="space-y-1">
-      <h2 class="subtitle">Endergebnis</h2>
-      <p class="text-gray-500">Das finale Ergebnis aller Teams.</p>
-    </div>
-  </div>
-
-  <bkr-tabs (bkrChange)="handleChangeRanking($event)">
-    <bkr-tab bkrKey="standard">Hauptwertung</bkr-tab>
-    <bkr-tab bkrKey="help">Nebenwertung</bkr-tab>
-  </bkr-tabs>
-
-  <bkr-ranking
-    [ranking]="ranking()"
-    [stations]="stations()"
-    [teams]="teams()"
-  ></bkr-ranking>
-} @else {
-  <div class="space-y-1">
-    <h2 class="subtitle">Übersicht</h2>
-    <p class="text-gray-500">Eine Übersicht aller Teams.</p>
-  </div>
-
-  @if (rankingItems().length > 0) {
-    <ul class="list">
-      @for (rankingItem of rankingItems(); track rankingItem.team.id) {
-        <li>
-          <a
-            class="focus-outline-inset list-entry items-center justify-between"
-            [routerLink]="['/teams', rankingItem.team.id]"
-          >
-            <div class="flex flex-1 flex-col gap-2">
-              <div class="flex justify-between gap-2">
-                <!-- Team name and number-->
-                <h3 class="name">
-                  {{ rankingItem.team.name }}
-                  <span class="number">#{{ rankingItem.team.number }}</span>
-                </h3>
-
-                <div class="flex items-center gap-2">
-                  @if (rankingItem.finished) {
-                    <!-- Finished indicator -->
-                    <bkr-check-circle-icon
-                      class="text-indigo-500"
-                    ></bkr-check-circle-icon>
-                  }
-
-                  <!-- Current time -->
-                  <span class="font-mono">
-                    {{ formatDuration(times()[rankingItem.team.id]) }}
-                  </span>
-                </div>
-              </div>
-
-              <p class="text-gray-500">
-                {{ TeamUtils.formatTeamMembers(rankingItem.team) }}
-              </p>
-
-              <!-- Progress Bar -->
-              <div class="relative py-1.5">
-                <!-- Background -->
-                <div class="h-1 rounded-full bg-gray-200"></div>
-
-                <!-- Foreground -->
-                <div
-                  class="absolute left-0 top-1.5 z-10 h-1 rounded-full bg-indigo-500"
-                  [ngStyle]="{ width: rankingItem.progress + '%' }"
-                ></div>
-
-                <!-- Marker -->
-                <div class="absolute inset-x-0 top-0 z-20 flex justify-between">
-                  <!-- Start -->
-                  <div
-                    class="h-4 w-1 rounded-sm"
-                    [ngClass]="{
-                      'bg-gray-200': !rankingItem.started,
-                      'bg-indigo-500': rankingItem.started,
-                    }"
-                  ></div>
-
-                  <!-- Station -->
-                  @for (station of stations(); track station.id) {
-                    <div
-                      class="h-4 w-4 rounded-full p-1"
-                      [ngClass]="{
-                        'bg-gray-200': !hasStationId(rankingItem, station.id),
-                        'bg-indigo-500': hasStationId(rankingItem, station.id),
-                      }"
-                    >
-                      <div class="h-2 w-2 rounded-full bg-white"></div>
-                    </div>
-                  }
-
-                  <!-- End -->
-                  <div
-                    class="h-4 w-1 rounded-sm"
-                    [ngClass]="{
-                      'bg-gray-200': !rankingItem.finished,
-                      'bg-indigo-500': rankingItem.finished,
-                    }"
-                  ></div>
-                </div>
-              </div>
-            </div>
-          </a>
-        </li>
-      }
-    </ul>
-  } @else {
-    <bkr-empty>Es gibt noch keine Teams.</bkr-empty>
-  }
-}
-
-<!-- Newsfeed -->
-@if (events().length > 0) {
-  <ul role="list" class="space-y-6 -ml-3">
-    @for (event of events(); track $index) {
-      <li class="relative items-start flex gap-x-4">
-        @if ($index < events().length - 1) {
-          <!-- Vertical timeline element -->
-          <div class="absolute -bottom-8 left-0 top-0 flex w-8 justify-center">
-            <div class="w-px bg-gray-200"></div>
-          </div>
-        }
-
-        <!-- Timeline dot -->
+@switch (activeTab()) {
+  @case ('overview') {
+    @if (isRaceOver() && publishResults()) {
+      <!-- Race is over; present results -->
+      <div class="flex items-center gap-4">
         <div
-          class="relative flex p-3 flex-none items-center justify-center bg-gray-100"
+          class="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 text-indigo-500"
         >
-          @if (!isRaceOver() && $index === 0) {
-            <div
-              class="animate-ping absolute inline-flex h-2.5 w-2.5 rounded-full bg-indigo-400 opacity-75"
-            ></div>
-          }
-          <div
-            class="relative h-2 w-2 rounded-full ring-1"
-            [ngClass]="{
-              'bg-indigo-500 ring-indigo-500': !isRaceOver() && $index === 0,
-              'bg-gray-50 ring-gray-300': isRaceOver() || $index !== 0,
-            }"
-          ></div>
+          <bkr-trophy-icon></bkr-trophy-icon>
         </div>
 
-        <!-- Message -->
-        <p class="flex-auto py-1 text-gray-500">
-          @switch (event.type) {
-            @case (EventType.Start) {
-              <span class="font-medium text-gray-900">
-                {{ event.team.name }}
-              </span>
-              ist gestartet.
-            }
-            @case (EventType.Finish) {
-              <span class="font-medium text-gray-900">
-                {{ event.team.name }}
-              </span>
-              ist im Ziel angekommen.
-            }
-            @case (EventType.CheckIn) {
-              <span class="font-medium text-gray-900">
-                {{ event.team.name }}
-              </span>
-              hat
-              <span class="font-medium text-gray-900">
-                {{ event.station.name }}
-              </span>
-              erreicht.
-            }
-            @case (EventType.CheckOut) {
-              <span class="font-medium text-gray-900">
-                {{ event.team.name }}
-              </span>
-              hat
-              <span class="font-medium text-gray-900">
-                {{ event.station.name }}
-              </span>
-              verlassen.
-            }
-          }
-        </p>
+        <div class="space-y-1">
+          <h2 class="subtitle">Endergebnis</h2>
+          <p class="text-gray-500">Das finale Ergebnis aller Teams.</p>
+        </div>
+      </div>
 
-        <!-- Time -->
-        <time
-          class="flex-none py-1 text-gray-500"
-          [dateTime]="event.timestamp.toISOString()"
-        >
-          {{ event.timestamp | time }}
-        </time>
-      </li>
+      <bkr-tabs (bkrChange)="handleChangeRanking($event)">
+        <bkr-tab bkrKey="standard">Hauptwertung</bkr-tab>
+        <bkr-tab bkrKey="help">Nebenwertung</bkr-tab>
+      </bkr-tabs>
+
+      <bkr-ranking
+        [ranking]="ranking()"
+        [stations]="stations()"
+        [teams]="teams()"
+      ></bkr-ranking>
+    } @else {
+      <div class="space-y-1">
+        <h2 class="subtitle">Übersicht</h2>
+        <p class="text-gray-500">Eine Übersicht aller Teams.</p>
+      </div>
+
+      @if (rankingItems().length > 0) {
+        <ul class="list">
+          @for (rankingItem of rankingItems(); track rankingItem.team.id) {
+            <li>
+              <a
+                class="focus-outline-inset list-entry items-center justify-between"
+                [routerLink]="['/teams', rankingItem.team.id]"
+              >
+                <div class="flex flex-1 flex-col gap-2">
+                  <div class="flex justify-between gap-2">
+                    <!-- Team name and number-->
+                    <h3 class="name">
+                      {{ rankingItem.team.name }}
+                      <span class="number">#{{ rankingItem.team.number }}</span>
+                    </h3>
+
+                    <div class="flex items-center gap-2">
+                      @if (rankingItem.finished) {
+                        <!-- Finished indicator -->
+                        <bkr-check-circle-icon
+                          class="text-indigo-500"
+                        ></bkr-check-circle-icon>
+                      }
+
+                      <!-- Current time -->
+                      <span class="font-mono">
+                        {{ formatDuration(times()[rankingItem.team.id]) }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <p class="text-gray-500">
+                    {{ TeamUtils.formatTeamMembers(rankingItem.team) }}
+                  </p>
+
+                  <!-- Progress Bar -->
+                  <div class="relative py-1.5">
+                    <!-- Background -->
+                    <div class="h-1 rounded-full bg-gray-200"></div>
+
+                    <!-- Foreground -->
+                    <div
+                      class="absolute left-0 top-1.5 z-10 h-1 rounded-full bg-indigo-500"
+                      [ngStyle]="{ width: rankingItem.progress + '%' }"
+                    ></div>
+
+                    <!-- Marker -->
+                    <div
+                      class="absolute inset-x-0 top-0 z-20 flex justify-between"
+                    >
+                      <!-- Start -->
+                      <div
+                        class="h-4 w-1 rounded-sm"
+                        [ngClass]="{
+                          'bg-gray-200': !rankingItem.started,
+                          'bg-indigo-500': rankingItem.started,
+                        }"
+                      ></div>
+
+                      <!-- Station -->
+                      @for (station of stations(); track station.id) {
+                        <div
+                          class="h-4 w-4 rounded-full p-1"
+                          [ngClass]="{
+                            'bg-gray-200': !hasStationId(
+                              rankingItem,
+                              station.id
+                            ),
+                            'bg-indigo-500': hasStationId(
+                              rankingItem,
+                              station.id
+                            ),
+                          }"
+                        >
+                          <div class="h-2 w-2 rounded-full bg-white"></div>
+                        </div>
+                      }
+
+                      <!-- End -->
+                      <div
+                        class="h-4 w-1 rounded-sm"
+                        [ngClass]="{
+                          'bg-gray-200': !rankingItem.finished,
+                          'bg-indigo-500': rankingItem.finished,
+                        }"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </li>
+          }
+        </ul>
+      } @else {
+        <bkr-empty>Es gibt noch keine Teams.</bkr-empty>
+      }
     }
-  </ul>
+  }
+  @case ('ticker') {
+    <!-- Newsfeed -->
+    @if (events().length > 0) {
+      <div class="card">
+        <ul role="list" class="space-y-6 -ml-3">
+          @for (event of events(); track $index) {
+            <li class="relative items-start flex gap-x-4">
+              @if ($index < events().length - 1) {
+                <!-- Vertical timeline element -->
+                <div
+                  class="absolute -bottom-8 left-0 top-0 flex w-8 justify-center"
+                >
+                  <div class="w-px bg-gray-200"></div>
+                </div>
+              }
+
+              <!-- Timeline dot -->
+              <div
+                class="relative flex p-3 flex-none items-center justify-center bg-white"
+              >
+                @if (!isRaceOver() && $index === 0) {
+                  <div
+                    class="animate-ping absolute inline-flex h-2.5 w-2.5 rounded-full bg-indigo-400 opacity-75"
+                  ></div>
+                }
+                <div
+                  class="relative h-2 w-2 rounded-full ring-1"
+                  [ngClass]="{
+                    'bg-indigo-500 ring-indigo-500':
+                      !isRaceOver() && $index === 0,
+                    'bg-gray-50 ring-gray-300': isRaceOver() || $index !== 0,
+                  }"
+                ></div>
+              </div>
+
+              <!-- Message -->
+              <p class="flex-auto py-1 text-gray-500">
+                @switch (event.type) {
+                  @case (EventType.Start) {
+                    <span class="font-medium text-gray-900">
+                      {{ event.team.name }}
+                    </span>
+                    ist gestartet.
+                  }
+                  @case (EventType.Finish) {
+                    <span class="font-medium text-gray-900">
+                      {{ event.team.name }}
+                    </span>
+                    ist im Ziel angekommen.
+                  }
+                  @case (EventType.CheckIn) {
+                    <span class="font-medium text-gray-900">
+                      {{ event.team.name }}
+                    </span>
+                    hat
+                    <span class="font-medium text-gray-900">
+                      {{ event.station.name }}
+                    </span>
+                    erreicht.
+                  }
+                  @case (EventType.CheckOut) {
+                    <span class="font-medium text-gray-900">
+                      {{ event.team.name }}
+                    </span>
+                    hat
+                    <span class="font-medium text-gray-900">
+                      {{ event.station.name }}
+                    </span>
+                    verlassen.
+                  }
+                }
+              </p>
+
+              <!-- Time -->
+              <time
+                class="flex-none py-1 text-gray-500"
+                [dateTime]="event.timestamp.toISOString()"
+              >
+                {{ event.timestamp | time }}
+              </time>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  }
 }

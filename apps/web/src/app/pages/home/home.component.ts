@@ -4,6 +4,7 @@ import {
   Component,
   DestroyRef,
   computed,
+  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -77,7 +78,8 @@ export class HomeComponent {
   readonly EventType = EventType;
   readonly TeamUtils = TeamUtils;
 
-  ranking = signal('standard');
+  activeTab = signal(localStorage.getItem('activeTab') ?? 'overview');
+  ranking = signal(localStorage.getItem('ranking') ?? 'standard');
 
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
   isStation = toSignal(this.authService.isStation$, { initialValue: false });
@@ -139,10 +141,22 @@ export class HomeComponent {
     private readonly notificationService: NotificationService,
     private readonly store: Store,
     private readonly teamService: TeamService,
-  ) {}
+  ) {
+    effect(() => {
+      localStorage.setItem('activeTab', this.activeTab());
+    });
+
+    effect(() => {
+      localStorage.setItem('ranking', this.ranking());
+    });
+  }
 
   formatDuration(seconds: number): string {
     return dayjs.duration(seconds, 'seconds').format('HH:mm:ss');
+  }
+
+  handleChangeActiveTab(tab: string): void {
+    this.activeTab.set(tab);
   }
 
   handleChangeRanking(ranking: string): void {

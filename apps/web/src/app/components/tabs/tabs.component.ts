@@ -7,6 +7,7 @@ import {
   DestroyRef,
   EventEmitter,
   HostBinding,
+  Input,
   Output,
   QueryList,
   inject,
@@ -27,6 +28,8 @@ import { TabComponent } from './tab/tab.component';
 export class TabsComponent implements AfterContentInit {
   @ContentChildren(TabComponent) tabComponents?: QueryList<TabComponent>;
 
+  @Input() bkrActiveTab = '';
+
   @Output() bkrChange = new EventEmitter<string>();
 
   @HostBinding('attr.aria-label') ariaLabel = 'Tabs';
@@ -40,7 +43,10 @@ export class TabsComponent implements AfterContentInit {
     const activeTab = this.tabComponents?.find((tab) => tab.active);
 
     if (!activeTab && this.tabComponents?.length) {
-      this.selectTab(this.tabComponents.first);
+      const tabToActivate =
+        this.tabComponents.find((tab) => tab.bkrKey === this.bkrActiveTab) ??
+        this.tabComponents.first;
+      this.selectTab(tabToActivate);
     }
 
     merge(...(this.tabComponents?.map((tab) => tab.bkrClick) ?? []))
