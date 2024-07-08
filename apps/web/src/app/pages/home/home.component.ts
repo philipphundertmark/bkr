@@ -46,12 +46,10 @@ export interface TimeByTeam {
 
 export interface RankingItem {
   finished: boolean;
-  name: string;
-  number: number;
+  team: Team;
   progress: number;
   started: boolean;
   stationIds: string[];
-  teamId: string;
 }
 
 @Component({
@@ -71,12 +69,13 @@ export interface RankingItem {
     TrophyIconComponent,
   ],
   host: { class: 'page' },
-  styleUrls: ['./home.component.scss'],
+  styleUrl: './home.component.scss',
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
   readonly EventType = EventType;
+  readonly TeamUtils = TeamUtils;
 
   ranking = signal('standard');
 
@@ -115,8 +114,6 @@ export class HomeComponent {
 
       return {
         finished: TeamUtils.isFinished(team),
-        name: TeamUtils.getTeamName(team),
-        number: team.number,
         progress: TeamUtils.isFinished(team)
           ? 100
           : team.results.length
@@ -127,7 +124,7 @@ export class HomeComponent {
               : 0,
         stationIds: team.results.map((result) => result.stationId),
         started: TeamUtils.isStarted(team),
-        teamId: team.id,
+        team,
       };
     });
   });

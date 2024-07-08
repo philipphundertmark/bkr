@@ -67,18 +67,18 @@
 
   @if (rankingItems().length > 0) {
     <ul class="list">
-      @for (rankingItem of rankingItems(); track rankingItem.teamId) {
+      @for (rankingItem of rankingItems(); track rankingItem.team.id) {
         <li>
           <a
             class="focus-outline-inset list-entry items-center justify-between"
-            [routerLink]="['/teams', rankingItem.teamId]"
+            [routerLink]="['/teams', rankingItem.team.id]"
           >
             <div class="flex flex-1 flex-col gap-2">
               <div class="flex justify-between gap-2">
                 <!-- Team name and number-->
                 <h3 class="name">
-                  {{ rankingItem.name }}
-                  <span class="number">#{{ rankingItem.number }}</span>
+                  {{ rankingItem.team.name }}
+                  <span class="number">#{{ rankingItem.team.number }}</span>
                 </h3>
 
                 <div class="flex items-center gap-2">
@@ -91,10 +91,14 @@
 
                   <!-- Current time -->
                   <span class="font-mono">
-                    {{ formatDuration(times()[rankingItem.teamId]) }}
+                    {{ formatDuration(times()[rankingItem.team.id]) }}
                   </span>
                 </div>
               </div>
+
+              <p class="text-gray-500">
+                {{ TeamUtils.formatTeamMembers(rankingItem.team) }}
+              </p>
 
               <!-- Progress Bar -->
               <div class="relative py-1.5">
