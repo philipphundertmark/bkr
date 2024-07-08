@@ -7,7 +7,7 @@
     "build:api": "nx build api",
     "build:api:prod": "nx build api -c production",
     "build:web": "nx build web",
-    "build:web:prod": "nx build web -c production && npm run sentry:sourcemaps",
+    "build:web:prod": "nx build web -c production",
     "format:check": "nx format:check",
     "format:check:all": "nx format:check --all",
     "format:write": "nx format:write",
