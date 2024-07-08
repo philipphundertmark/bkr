@@ -34,10 +34,10 @@ import {
   CheckCircleIconComponent,
   TrophyIconComponent,
 } from '../../icons/mini';
-import { TimePipe } from '../../pipes';
 import { AuthService, NotificationService, TeamService } from '../../services';
 import { ConfirmService } from '../../services/confirm.service';
 import { EventType, Store } from '../../services/store';
+import { TickerComponent } from './ticker/ticker.component';
 
 dayjs.extend(duration);
 
@@ -66,7 +66,7 @@ export interface RankingItem {
     RouterModule,
     TabComponent,
     TabsComponent,
-    TimePipe,
+    TickerComponent,
     TrophyIconComponent,
   ],
   host: { class: 'page' },
@@ -87,7 +87,6 @@ export class HomeComponent {
   events = this.store.events;
   isRaceOver = this.store.raceIsOver;
   publishResults = this.store.publishResults;
-
   stations = this.store.stations;
   teams = this.store.teams;
 
