@@ -34,7 +34,7 @@ import { InputDirective } from '../input.directive';
 export class MembersInputComponent implements ControlValueAccessor {
   memberInputs = viewChildren<ElementRef<HTMLInputElement>>('memberInput');
 
-  members = signal<string[]>([]);
+  members = signal<string[]>(['']);
 
   onChange?: (value: string[]) => void;
   onTouched?: () => void;
@@ -49,7 +49,11 @@ export class MembersInputComponent implements ControlValueAccessor {
    * @implements {ControlValueAccessor}
    */
   writeValue(value: string[]): void {
-    this.members.set(value);
+    if (value.length) {
+      this.members.set(['']);
+    } else {
+      this.members.set(value);
+    }
   }
 
   /**
