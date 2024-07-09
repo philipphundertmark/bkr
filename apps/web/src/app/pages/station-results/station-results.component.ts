@@ -116,8 +116,4 @@ export class StationResultsComponent {
   formatDuration(seconds: number): string {
     return dayjs.duration(seconds, 'seconds').format('HH:mm:ss');
   }
-
-  handleChangeRanking(ranking: string): void {
-    this.ranking.set(ranking);
-  }
 }

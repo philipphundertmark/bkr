@@ -103,8 +103,4 @@ export class MyStationComponent {
     private readonly authService: AuthService,
     private readonly store: Store,
   ) {}
-
-  handleChangeRanking(ranking: string): void {
-    this.ranking.set(ranking);
-  }
 }

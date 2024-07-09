@@ -156,14 +156,6 @@ export class HomeComponent {
     return dayjs.duration(seconds, 'seconds').format('HH:mm:ss');
   }
 
-  handleChangeActiveTab(tab: string): void {
-    this.activeTab.set(tab);
-  }
-
-  handleChangeRanking(ranking: string): void {
-    this.ranking.set(ranking);
-  }
-
   hasStationId(rankingItem: RankingItem, stationId: string): boolean {
     return rankingItem.stationIds.includes(stationId);
   }

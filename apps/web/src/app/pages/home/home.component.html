@@ -1,8 +1,8 @@
 <header class="header">
+  <bkr-clock class="col-span-2"></bkr-clock>
+
   <a bkr-forward-button class="col-span-1" routerLink="/rules">Regeln</a>
   <a bkr-forward-button class="col-span-1" routerLink="/stations">Stationen</a>
-
-  <bkr-clock class="col-span-2"></bkr-clock>
 
   @if (isAdmin()) {
     <a bkr-forward-button class="col-span-2" routerLink="/endresult">
@@ -36,12 +36,9 @@
   }
 </header>
 
-<bkr-tabs
-  [bkrActiveTab]="activeTab()"
-  (bkrChange)="handleChangeActiveTab($event)"
->
-  <bkr-tab bkrKey="overview">Übersicht</bkr-tab>
-  <bkr-tab bkrKey="ticker">Ticker</bkr-tab>
+<bkr-tabs [(activeTab)]="activeTab">
+  <bkr-tab key="overview">Übersicht</bkr-tab>
+  <bkr-tab key="ticker">Ticker</bkr-tab>
 </bkr-tabs>
 
 @switch (activeTab()) {
@@ -61,9 +58,9 @@
         </div>
       </div>
 
-      <bkr-tabs (bkrChange)="handleChangeRanking($event)">
-        <bkr-tab bkrKey="standard">Hauptwertung</bkr-tab>
-        <bkr-tab bkrKey="help">Nebenwertung</bkr-tab>
+      <bkr-tabs [(activeTab)]="ranking">
+        <bkr-tab key="standard">Hauptwertung</bkr-tab>
+        <bkr-tab key="help">Nebenwertung</bkr-tab>
       </bkr-tabs>
 
       <bkr-ranking

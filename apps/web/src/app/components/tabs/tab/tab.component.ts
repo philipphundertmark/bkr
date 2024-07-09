@@ -2,31 +2,32 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
   HostBinding,
   HostListener,
-  Input,
-  Output,
+  input,
+  output,
 } from '@angular/core';
+import { outputToObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'bkr-tab',
   standalone: true,
   imports: [CommonModule],
+  styleUrl: './tab.component.scss',
   templateUrl: './tab.component.html',
-  styleUrls: ['./tab.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TabComponent {
-  @Input({ required: true }) bkrKey!: string;
+  key = input.required<string>();
 
-  @Output() bkrClick = new EventEmitter<TabComponent>();
+  activate = output<TabComponent>();
+  activate$ = outputToObservable(this.activate);
 
   @HostBinding('class.active')
   active = false;
 
   @HostListener('click')
   onClick(): void {
-    this.bkrClick.emit(this);
+    this.activate.emit(this);
   }
 }

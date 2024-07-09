@@ -65,9 +65,9 @@
   </bkr-alert>
 }
 
-<bkr-tabs (bkrChange)="handleChangeRanking($event)">
-  <bkr-tab bkrKey="standard">Hauptwertung</bkr-tab>
-  <bkr-tab bkrKey="help">Nebenwertung</bkr-tab>
+<bkr-tabs [(activeTab)]="ranking">
+  <bkr-tab key="standard">Hauptwertung</bkr-tab>
+  <bkr-tab key="help">Nebenwertung</bkr-tab>
 </bkr-tabs>
 
 @if (results().length > 0) {

@@ -3,14 +3,11 @@ import {
   AfterContentInit,
   ChangeDetectionStrategy,
   Component,
-  ContentChildren,
   DestroyRef,
-  EventEmitter,
-  HostBinding,
-  Input,
-  Output,
-  QueryList,
+  contentChildren,
   inject,
+  input,
+  output,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { merge } from 'rxjs';
@@ -21,18 +18,17 @@ import { TabComponent } from './tab/tab.component';
   selector: 'bkr-tabs',
   standalone: true,
   imports: [CommonModule],
+  host: { '[attr.aria-label]': 'Tabs' },
+  styleUrl: './tabs.component.scss',
   templateUrl: './tabs.component.html',
-  styleUrls: ['./tabs.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TabsComponent implements AfterContentInit {
-  @ContentChildren(TabComponent) tabComponents?: QueryList<TabComponent>;
+  tabs = contentChildren(TabComponent);
 
-  @Input() bkrActiveTab = '';
+  activeTab = input<string | null>(null);
 
-  @Output() bkrChange = new EventEmitter<string>();
-
-  @HostBinding('attr.aria-label') ariaLabel = 'Tabs';
+  activeTabChange = output<string>();
 
   private readonly destroyRef = inject(DestroyRef);
 
@@ -40,25 +36,28 @@ export class TabsComponent implements AfterContentInit {
    * @implements {AfterContentInit}
    */
   ngAfterContentInit(): void {
-    const activeTab = this.tabComponents?.find((tab) => tab.active);
+    const activeTab = this.tabs().find((tab) => tab.active);
 
-    if (!activeTab && this.tabComponents?.length) {
+    if (!activeTab) {
       const tabToActivate =
-        this.tabComponents.find((tab) => tab.bkrKey === this.bkrActiveTab) ??
-        this.tabComponents.first;
-      this.selectTab(tabToActivate);
+        this.tabs().find((tab) => tab.key() === this.activeTab()) ??
+        this.tabs().at(0);
+
+      if (tabToActivate) {
+        this.selectTab(tabToActivate);
+      }
     }
 
-    merge(...(this.tabComponents?.map((tab) => tab.bkrClick) ?? []))
+    merge(...(this.tabs().map((tab) => tab.activate$) ?? []))
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((tab) => {
         this.selectTab(tab);
-        this.bkrChange.emit(tab.bkrKey);
+        this.activeTabChange.emit(tab.key());
       });
   }
 
   private selectTab(tab: TabComponent): void {
-    this.tabComponents?.forEach((t) => (t.active = false));
+    this.tabs().forEach((t) => (t.active = false));
     tab.active = true;
   }
 }

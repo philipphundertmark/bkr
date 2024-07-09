@@ -66,10 +66,6 @@ export class EndresultComponent {
     private readonly store: Store,
   ) {}
 
-  handleChangeRanking(ranking: string): void {
-    this.ranking.set(ranking);
-  }
-
   handlePublishResults(): void {
     this.publishResultsLoading.set(true);
 
