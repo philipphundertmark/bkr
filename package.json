@@ -18,13 +18,14 @@
     "prisma:clear-results": "ts-node prisma/scripts/clear-results.ts",
     "prisma:dump": "ts-node prisma/scripts/dump.ts",
     "prisma:generate-results": "ts-node prisma/scripts/generate-results.ts",
+    "prisma:seed": "ts-node prisma/scripts/seed.ts",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org philipphundertmark --project bkr2024 ./dist/apps/web/browser && sentry-cli sourcemaps upload --org philipphundertmark --project bkr2024 ./dist/apps/web/browser",
     "start:all": "nx run-many --target=serve --projects=api,web --parallel",
     "start:api": "nx serve api",
     "start:web": "nx serve web",
     "start": "npm run start:all",
     "test:api": "nx test api",
-    "test:api:coverage": "nx test api --codeCoverage --coverageReporters=\"text,text-summary\"",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org philipphundertmark --project bkr2024 ./dist/apps/web/browser && sentry-cli sourcemaps upload --org philipphundertmark --project bkr2024 ./dist/apps/web/browser"
+    "test:api:coverage": "nx test api --codeCoverage --coverageReporters=\"text,text-summary\""
   },
   "dependencies": {
     "@angular/animations": "18.0.6",
