@@ -20,9 +20,10 @@ export class LiveService {
   }
 
   sendEvent(event: LiveEvent): void {
-    this.clients.forEach((client) =>
-      client.response.write(`data: ${LiveEventUtils.serialize(event)}\n\n`),
-    );
+    this.clients.forEach((client) => {
+      console.log(`Sending event to client ${client.id}`);
+      client.response.write(`data: ${LiveEventUtils.serialize(event)}\n\n`);
+    });
   }
 
   unregisterClient(clientId: number): void {
