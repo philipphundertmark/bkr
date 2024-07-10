@@ -28,9 +28,10 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom([DialogModule, OverlayModule]),
     {
       provide: LIVE_ENDPOINT,
-      useValue: environment.apiUrl.startsWith('https')
-        ? environment.apiUrl.replace('https', 'wss')
-        : environment.apiUrl.replace('http', 'ws') + environment.apiPath,
+      useValue:
+        (environment.apiUrl.startsWith('https')
+          ? environment.apiUrl.replace('https', 'wss')
+          : environment.apiUrl.replace('http', 'ws')) + environment.apiPath,
     },
     {
       provide: ErrorHandler,

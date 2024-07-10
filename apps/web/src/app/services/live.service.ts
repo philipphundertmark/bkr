@@ -14,6 +14,7 @@ export class LiveService implements OnDestroy {
   private readonly socket: Socket;
 
   constructor(@Inject(LIVE_ENDPOINT) endpoint: string) {
+    console.log('Connect to', endpoint);
     this.socket = io(endpoint);
 
     this.socket.on('event', (data: string): void => {
