@@ -17,13 +17,19 @@ import {
 } from '@angular/router';
 import * as Sentry from '@sentry/angular';
 
+import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { ApiHttpInterceptorFn } from './interceptors/api.interceptor';
 import { AuthHttpInterceptorFn } from './interceptors/auth.interceptor';
+import { LIVE_ENDPOINT } from './services';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     importProvidersFrom([DialogModule, OverlayModule]),
+    {
+      provide: LIVE_ENDPOINT,
+      useValue: environment.apiUrl + '/live',
+    },
     {
       provide: ErrorHandler,
       useValue: Sentry.createErrorHandler({

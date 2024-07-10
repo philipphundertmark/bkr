@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { LiveEvent, LiveEventUtils } from '@bkr/api-interface';
+
+export const LIVE_ENDPOINT = new InjectionToken<string>('LIVE_ENDPOINT');
 
 @Injectable({
   providedIn: 'root',
@@ -9,8 +11,8 @@ import { LiveEvent, LiveEventUtils } from '@bkr/api-interface';
 export class LiveService {
   private readonly events$ = new Subject<LiveEvent>();
 
-  constructor() {
-    const live = new EventSource('http://localhost:3333/live');
+  constructor(@Inject(LIVE_ENDPOINT) endpoint: string) {
+    const live = new EventSource(endpoint);
 
     live.onmessage = (event): void => {
       const parsedData = LiveEventUtils.deserialize(event.data);
