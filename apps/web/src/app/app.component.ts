@@ -11,6 +11,8 @@ import {
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterModule } from '@angular/router';
 
+import { LiveEventType } from '@bkr/api-interface';
+
 import { LoadingComponent } from './components';
 import {
   FlagIconComponent,
@@ -18,6 +20,7 @@ import {
   UserIconComponent,
 } from './icons/mini';
 import {
+  LiveService,
   ResultService,
   SettingsService,
   StationService,
@@ -75,6 +78,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private readonly authService: AuthService,
+    private readonly liveService: LiveService,
     private readonly router: Router,
     private readonly resultService: ResultService,
     private readonly settingsService: SettingsService,
@@ -87,6 +91,43 @@ export class AppComponent implements OnInit {
    * @implements {OnInit}
    */
   ngOnInit(): void {
+    this.liveService
+      .listen()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (event) => {
+          switch (event.type) {
+            case LiveEventType.CREATE_RESULT:
+              this.store.createResult(event.result);
+              break;
+            case LiveEventType.DELETE_RESULT:
+              this.store.deleteResult(event.stationId, event.teamId);
+              break;
+            case LiveEventType.UPDATE_RESULT:
+              this.store.updateResult(event.result);
+              break;
+            case LiveEventType.CREATE_STATION:
+              this.store.createStation(event.station);
+              break;
+            case LiveEventType.DELETE_STATION:
+              this.store.deleteStation(event.stationId);
+              break;
+            case LiveEventType.UPDATE_STATION:
+              this.store.updateStation(event.station);
+              break;
+            case LiveEventType.CREATE_TEAM:
+              this.store.createTeam(event.team);
+              break;
+            case LiveEventType.DELETE_TEAM:
+              this.store.deleteTeam(event.teamId);
+              break;
+            case LiveEventType.UPDATE_TEAM:
+              this.store.updateTeam(event.team);
+              break;
+          }
+        },
+      });
+
     this.resultsLoading.set(true);
 
     this.resultService

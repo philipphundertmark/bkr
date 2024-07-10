@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import {
   CreateTeamSchema,
+  LiveEventType,
   Role,
   TeamUtils,
   UpdateTeamSchema,
@@ -9,11 +10,13 @@ import {
 
 import { BadRequestException, NotFoundException } from '../errors';
 import { authorize } from '../middleware/authorize';
+import { LiveService } from '../services/live.service';
 import { ResultService } from '../services/result.service';
 import { TeamService } from '../services/team.service';
 import { handler } from './handler';
 
 export function TeamController(
+  liveService: LiveService,
   resultService: ResultService,
   teamService: TeamService,
 ): Router {
@@ -41,6 +44,11 @@ export function TeamController(
 
       res.status(201);
       res.json(TeamUtils.serialize(team));
+
+      liveService.sendEvent({
+        type: LiveEventType.CREATE_TEAM,
+        team,
+      });
     }),
   );
 

@@ -1,3 +1,6 @@
+export * from './live-event';
+export * from './live-event.utils';
+
 export * from './result';
 export * from './result.dto';
 export * from './result.utils';

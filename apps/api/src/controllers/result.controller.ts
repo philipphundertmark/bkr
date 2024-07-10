@@ -2,7 +2,6 @@ import { Router } from 'express';
 
 import {
   CreateResultSchema,
-  Result,
   ResultUtils,
   Role,
   UpdateResultSchema,
@@ -70,11 +69,17 @@ export function ResultController(
   router.get(
     '/results',
     handler(async (req, res) => {
+      const results = await resultService.getAll();
       const settings = await settingsService.upsertSettings();
-      let results: Result[] = [];
 
-      if (settings.publishResults || isAdmin(req.user) || isStation(req.user)) {
-        results = await resultService.getAll();
+      const isUser = !isAdmin(req.user) && !isStation(req.user);
+
+      if (!settings.publishResults && isUser) {
+        results.map((result) => ({
+          ...result,
+          // Disguise the points to users if the results are not published
+          points: 0,
+        }));
       }
 
       res.status(200);
