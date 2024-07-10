@@ -16,6 +16,8 @@ export class LiveService implements OnDestroy {
     this.source = new EventSource(endpoint);
 
     this.source.onmessage = (event): void => {
+      console.log('raw event', event);
+
       const parsedData = LiveEventUtils.deserialize(event.data);
       this.events$.next(parsedData);
     };
