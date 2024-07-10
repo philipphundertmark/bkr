@@ -28,7 +28,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom([DialogModule, OverlayModule]),
     {
       provide: LIVE_ENDPOINT,
-      useValue: environment.apiUrl + '/live',
+      useValue: environment.apiUrl + environment.apiPath + '/live',
     },
     {
       provide: ErrorHandler,
