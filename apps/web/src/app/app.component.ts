@@ -96,6 +96,8 @@ export class AppComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (event) => {
+          console.log(event);
+
           switch (event.type) {
             case LiveEventType.CREATE_RESULT:
               this.store.createResult(event.result);
