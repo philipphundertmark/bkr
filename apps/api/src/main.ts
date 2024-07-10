@@ -27,13 +27,14 @@ const app = createApp(
   [
     LiveController(liveService),
     ResultController(
+      liveService,
       resultService,
       settingsService,
       stationService,
       teamService,
     ),
     SettingsController(settingsService),
-    StationController(stationService),
+    StationController(liveService, stationService),
     TeamController(liveService, resultService, teamService),
     TokenController(tokenService, stationService),
   ],
