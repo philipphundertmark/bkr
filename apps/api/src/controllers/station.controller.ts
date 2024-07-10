@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { SetOptional } from 'type-fest';
 
-import { Station, StationUtils } from '@bkr/api-interface';
+import { LiveEventType, Station, StationUtils } from '@bkr/api-interface';
 import {
   CreateStationSchema,
   Role,
@@ -11,10 +11,14 @@ import {
 
 import { BadRequestException, NotFoundException } from '../errors';
 import { authorize } from '../middleware/authorize';
+import { LiveService } from '../services/live.service';
 import { StationService } from '../services/station.service';
 import { handler } from './handler';
 
-export function StationController(stationService: StationService): Router {
+export function StationController(
+  liveService: LiveService,
+  stationService: StationService,
+): Router {
   const router = Router();
 
   router.post(
@@ -52,6 +56,11 @@ export function StationController(stationService: StationService): Router {
 
       res.status(201);
       res.json(StationUtils.serialize(station));
+
+      liveService.sendEvent({
+        type: LiveEventType.CREATE_STATION,
+        station,
+      });
     }),
   );
 
@@ -126,6 +135,11 @@ export function StationController(stationService: StationService): Router {
 
       res.status(200);
       res.json(StationUtils.serialize(station));
+
+      liveService.sendEvent({
+        type: LiveEventType.UPDATE_STATION,
+        station,
+      });
     }),
   );
 
@@ -145,6 +159,11 @@ export function StationController(stationService: StationService): Router {
 
       res.status(200);
       res.end();
+
+      liveService.sendEvent({
+        type: LiveEventType.DELETE_STATION,
+        stationId,
+      });
     }),
   );
 

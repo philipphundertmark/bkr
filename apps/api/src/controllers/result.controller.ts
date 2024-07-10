@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import {
   CreateResultSchema,
+  LiveEventType,
   ResultUtils,
   Role,
   UpdateResultSchema,
@@ -11,6 +12,7 @@ import {
 
 import { BadRequestException, NotFoundException } from '../errors';
 import { authorize } from '../middleware/authorize';
+import { LiveService } from '../services/live.service';
 import { ResultService } from '../services/result.service';
 import { SettingsService } from '../services/settings.service';
 import { StationService } from '../services/station.service';
@@ -18,6 +20,7 @@ import { TeamService } from '../services/team.service';
 import { handler } from './handler';
 
 export function ResultController(
+  liveService: LiveService,
   resultService: ResultService,
   settingsService: SettingsService,
   stationService: StationService,
@@ -63,6 +66,11 @@ export function ResultController(
 
       res.status(201);
       res.json(ResultUtils.serialize(result));
+
+      liveService.sendEvent({
+        type: LiveEventType.CREATE_RESULT,
+        result,
+      });
     }),
   );
 
@@ -118,6 +126,11 @@ export function ResultController(
 
       res.status(200);
       res.json(ResultUtils.serialize(result));
+
+      liveService.sendEvent({
+        type: LiveEventType.UPDATE_RESULT,
+        result,
+      });
     }),
   );
 
@@ -140,6 +153,12 @@ export function ResultController(
 
       res.status(200);
       res.end();
+
+      liveService.sendEvent({
+        type: LiveEventType.DELETE_RESULT,
+        stationId,
+        teamId,
+      });
     }),
   );
 

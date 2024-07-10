@@ -119,6 +119,11 @@ export function TeamController(
 
       res.status(200);
       res.json(TeamUtils.serialize(team));
+
+      liveService.sendEvent({
+        type: LiveEventType.UPDATE_TEAM,
+        team,
+      });
     }),
   );
 
@@ -138,6 +143,11 @@ export function TeamController(
 
       res.status(200);
       res.end();
+
+      liveService.sendEvent({
+        type: LiveEventType.DELETE_TEAM,
+        teamId,
+      });
     }),
   );
 
