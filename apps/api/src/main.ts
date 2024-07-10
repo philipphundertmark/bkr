@@ -1,8 +1,9 @@
+import express from 'express';
 import http from 'http';
+import { Server } from 'socket.io';
 
-import { createApp } from './app';
+import { setupApp } from './app';
 import { config } from './config';
-import { LiveController } from './controllers/live.controller';
 import { ResultController } from './controllers/result.controller';
 import { SettingsController } from './controllers/settings.controller';
 import { StationController } from './controllers/station.controller';
@@ -16,16 +17,24 @@ import { StationService } from './services/station.service';
 import { TeamService } from './services/team.service';
 import { TokenService } from './services/token.service';
 
-const liveService = new LiveService();
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: config.ORIGIN,
+  },
+});
+
+const liveService = new LiveService(io);
 const resultService = new ResultService(prisma);
 const settingsService = new SettingsService(prisma);
 const stationService = new StationService(prisma);
 const teamService = new TeamService(prisma);
 const tokenService = new TokenService();
 
-const app = createApp(
+setupApp(
+  app,
   [
-    LiveController(liveService),
     ResultController(
       liveService,
       resultService,
@@ -42,7 +51,6 @@ const app = createApp(
     origin: config.ORIGIN,
   },
 );
-const server = http.createServer(app);
 
 const port = process.env.PORT || 3333;
 server.listen(port, () => {

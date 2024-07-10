@@ -17,12 +17,11 @@ export interface AppConfig {
  * @param config The app config
  * @returns The configured express app
  */
-export const createApp = (
+export const setupApp = (
+  app: express.Application,
   handlers: express.RequestHandler[],
   config?: AppConfig,
-): express.Application => {
-  const app = express();
-
+): void => {
   // Middleware
   app.use(cors({ origin: config?.origin }));
   app.use(express.json());
@@ -37,6 +36,4 @@ export const createApp = (
 
   // Error handler
   app.use(errorHandler);
-
-  return app;
 };

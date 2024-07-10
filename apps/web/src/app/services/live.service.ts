@@ -1,5 +1,6 @@
 import { Inject, Injectable, InjectionToken, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { Socket, io } from 'socket.io-client';
 
 import { LiveEvent, LiveEventUtils } from '@bkr/api-interface';
 
@@ -10,24 +11,22 @@ export const LIVE_ENDPOINT = new InjectionToken<string>('LIVE_ENDPOINT');
 })
 export class LiveService implements OnDestroy {
   private readonly events$ = new Subject<LiveEvent>();
-  private readonly source: EventSource;
+  private readonly socket: Socket;
 
   constructor(@Inject(LIVE_ENDPOINT) endpoint: string) {
-    this.source = new EventSource(endpoint);
+    this.socket = io(endpoint);
 
-    this.source.onmessage = (event): void => {
-      console.log('raw event', event);
-
-      const parsedData = LiveEventUtils.deserialize(event.data);
+    this.socket.on('event', (data: string): void => {
+      const parsedData = LiveEventUtils.deserialize(data);
       this.events$.next(parsedData);
-    };
+    });
   }
 
   /**
    * @implements {OnDestroy}
    */
   ngOnDestroy(): void {
-    this.source.close();
+    this.socket.close();
   }
 
   listen(): Observable<LiveEvent> {
