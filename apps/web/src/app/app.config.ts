@@ -21,17 +21,20 @@ import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { ApiHttpInterceptorFn } from './interceptors/api.interceptor';
 import { AuthHttpInterceptorFn } from './interceptors/auth.interceptor';
-import { LIVE_ENDPOINT } from './services';
+import { LIVE_HOST, LIVE_PATH } from './services';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     importProvidersFrom([DialogModule, OverlayModule]),
     {
-      provide: LIVE_ENDPOINT,
-      useValue:
-        (environment.apiUrl.startsWith('https')
-          ? environment.apiUrl.replace('https', 'wss')
-          : environment.apiUrl.replace('http', 'ws')) + environment.apiPath,
+      provide: LIVE_HOST,
+      useValue: environment.apiUrl.startsWith('https')
+        ? environment.apiUrl.replace('https', 'wss')
+        : environment.apiUrl.replace('http', 'ws'),
+    },
+    {
+      provide: LIVE_PATH,
+      useValue: environment.apiPath + '/socket.io',
     },
     {
       provide: ErrorHandler,

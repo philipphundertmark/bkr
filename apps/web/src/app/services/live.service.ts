@@ -4,7 +4,8 @@ import { Socket, io } from 'socket.io-client';
 
 import { LiveEvent, LiveEventUtils } from '@bkr/api-interface';
 
-export const LIVE_ENDPOINT = new InjectionToken<string>('LIVE_ENDPOINT');
+export const LIVE_HOST = new InjectionToken<string>('LIVE_HOST');
+export const LIVE_PATH = new InjectionToken<string>('LIVE_PATH');
 
 @Injectable({
   providedIn: 'root',
@@ -13,9 +14,12 @@ export class LiveService implements OnDestroy {
   private readonly events$ = new Subject<LiveEvent>();
   private readonly socket: Socket;
 
-  constructor(@Inject(LIVE_ENDPOINT) endpoint: string) {
-    console.log('Connect to', endpoint);
-    this.socket = io(endpoint);
+  constructor(
+    @Inject(LIVE_HOST) host: string,
+    @Inject(LIVE_PATH) path: string,
+  ) {
+    console.log('Connect to', host, path);
+    this.socket = io({ host, path });
 
     this.socket.on('event', (data: string): void => {
       const parsedData = LiveEventUtils.deserialize(data);
