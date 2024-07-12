@@ -26,7 +26,7 @@ export const ApiHttpInterceptorFn: HttpInterceptorFn = (
   }
 
   const fullUrl = baseUrl + endpoint;
-  const modifiedRequest = req.clone({ url: fullUrl, withCredentials: true });
+  const modifiedRequest = req.clone({ url: fullUrl });
 
   return next(modifiedRequest);
 };

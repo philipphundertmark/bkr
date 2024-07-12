@@ -23,7 +23,7 @@ export class LiveService implements OnDestroy {
     @Inject(LIVE_HOST) host: string,
     @Inject(LIVE_PATH) path: string,
   ) {
-    this.socket = io(host, { path, withCredentials: true });
+    this.socket = io(host, { path });
 
     this.socket.on('connect', () => {
       this.connected$.next(true);

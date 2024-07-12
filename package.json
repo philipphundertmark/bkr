@@ -40,7 +40,6 @@
     "@prisma/client": "5.16.1",
     "@sentry/angular": "^8.15.0",
     "@sentry/cli": "^2.32.1",
-    "cookie-parser": "^1.4.6",
     "cors": "2.8.5",
     "dayjs": "^1.11.11",
     "express": "4.19.2",

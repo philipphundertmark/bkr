@@ -107,14 +107,40 @@ export class Store {
   );
 
   createResult(result: Result): void {
+    const resultExists = this._results().some(
+      (existingResult) =>
+        existingResult.stationId === result.stationId &&
+        existingResult.teamId === result.teamId,
+    );
+
+    if (resultExists) {
+      return;
+    }
+
     this._results.update((results) => [...results, result]);
   }
 
   createStation(station: Station): void {
+    const stationExists = this._stations().some(
+      (existingStation) => existingStation.id === station.id,
+    );
+
+    if (stationExists) {
+      return;
+    }
+
     this._stations.update((stations) => [...stations, station]);
   }
 
   createTeam(team: Team): void {
+    const teamExists = this._teams().some(
+      (existingTeam) => existingTeam.id === team.id,
+    );
+
+    if (teamExists) {
+      return;
+    }
+
     this._teams.update((teams) => [...teams, team]);
   }
 
