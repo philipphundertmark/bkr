@@ -28,9 +28,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom([DialogModule, OverlayModule]),
     {
       provide: LIVE_HOST,
-      useValue: environment.apiUrl.startsWith('https')
-        ? environment.apiUrl.replace('https', 'wss')
-        : environment.apiUrl.replace('http', 'ws'),
+      useValue: environment.apiUrl,
     },
     {
       provide: LIVE_PATH,

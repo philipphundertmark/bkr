@@ -1,4 +1,5 @@
 import { Inject, Injectable, InjectionToken, OnDestroy } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Observable, Subject } from 'rxjs';
 import { Socket, io } from 'socket.io-client';
 
@@ -11,15 +12,26 @@ export const LIVE_PATH = new InjectionToken<string>('LIVE_PATH');
   providedIn: 'root',
 })
 export class LiveService implements OnDestroy {
+  private readonly connected$ = new Subject<boolean>();
   private readonly events$ = new Subject<LiveEvent>();
+
   private readonly socket: Socket;
+
+  connected = toSignal(this.connected$);
 
   constructor(
     @Inject(LIVE_HOST) host: string,
     @Inject(LIVE_PATH) path: string,
   ) {
-    console.log('Connect to', host, path);
-    this.socket = io({ host, path });
+    this.socket = io(host, { path, withCredentials: true });
+
+    this.socket.on('connect', () => {
+      this.connected$.next(true);
+    });
+
+    this.socket.on('disconnect', () => {
+      this.connected$.next(false);
+    });
 
     this.socket.on('event', (data: string): void => {
       const parsedData = LiveEventUtils.deserialize(data);

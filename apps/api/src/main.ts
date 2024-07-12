@@ -20,7 +20,13 @@ import { TokenService } from './services/token.service';
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
+  cookie: {
+    name: 'io',
+    path: '/',
+    httpOnly: true,
+  },
   cors: {
+    credentials: true,
     origin: config.ORIGIN,
   },
 });

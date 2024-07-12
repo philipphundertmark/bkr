@@ -48,6 +48,8 @@ export class AppComponent implements OnInit {
   isAdmin = toSignal(this.authService.isAdmin$);
   isStation = toSignal(this.authService.isStation$);
 
+  connected = this.liveService.connected;
+
   resultsError = signal<Error | null>(null);
   settingsError = signal<Error | null>(null);
   stationsError = signal<Error | null>(null);
