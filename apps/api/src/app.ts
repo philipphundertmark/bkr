@@ -1,3 +1,4 @@
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
@@ -23,7 +24,8 @@ export const setupApp = (
   config?: AppConfig,
 ): void => {
   // Middleware
-  app.use(cors({ origin: config?.origin }));
+  app.use(cookieParser());
+  app.use(cors({ credentials: true, origin: config?.origin }));
   app.use(express.json());
   app.use(helmet());
   app.use(logger);
