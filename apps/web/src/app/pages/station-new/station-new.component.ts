@@ -61,7 +61,7 @@ export class StationNewComponent {
       nonNullable: true,
       validators: [Validators.required],
     }),
-    members: new FormControl<string[]>([], {
+    members: new FormControl<string[]>([''], {
       nonNullable: true,
     }),
   });

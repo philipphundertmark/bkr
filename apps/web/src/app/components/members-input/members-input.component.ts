@@ -49,11 +49,7 @@ export class MembersInputComponent implements ControlValueAccessor {
    * @implements {ControlValueAccessor}
    */
   writeValue(value: string[]): void {
-    if (value.length) {
-      this.members.set(['']);
-    } else {
-      this.members.set(value);
-    }
+    this.members.set(value);
   }
 
   /**

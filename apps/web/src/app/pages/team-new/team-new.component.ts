@@ -49,7 +49,7 @@ export class TeamNewComponent {
     number: new FormControl<number | null>(null, {
       validators: [Validators.required],
     }),
-    members: new FormControl<string[]>([], {
+    members: new FormControl<string[]>([''], {
       nonNullable: true,
     }),
     help: new FormControl<boolean>(false, {

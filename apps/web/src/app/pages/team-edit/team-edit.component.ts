@@ -90,7 +90,7 @@ export class TeamEditComponent implements OnInit {
       nonNullable: true,
       validators: [Validators.required, Validators.min(0)],
     }),
-    members: new FormControl<string[]>([], {
+    members: new FormControl<string[]>([''], {
       nonNullable: true,
     }),
   });
@@ -123,7 +123,7 @@ export class TeamEditComponent implements OnInit {
         number: team.number,
         startedAt: team.startedAt?.format('DD.MM.YYYY HH:mm:ss') ?? null,
         finishedAt: team.finishedAt?.format('DD.MM.YYYY HH:mm:ss') ?? null,
-        members: team.members ?? [],
+        members: team.members.length ? team.members : [''],
         help: team.help,
         penalty: team.penalty,
       });

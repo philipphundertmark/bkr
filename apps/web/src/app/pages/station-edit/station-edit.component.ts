@@ -88,7 +88,7 @@ export class StationEditComponent implements OnInit {
       nonNullable: true,
       validators: [Validators.required],
     }),
-    members: new FormControl<string[]>([], {
+    members: new FormControl<string[]>([''], {
       nonNullable: true,
     }),
   });
@@ -123,7 +123,7 @@ export class StationEditComponent implements OnInit {
           number: station.number,
           code: station.code,
           order: station.order,
-          members: station.members ?? [],
+          members: station.members.length ? station.members : [''],
         });
       });
   }

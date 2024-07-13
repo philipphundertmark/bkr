@@ -14,6 +14,7 @@ import {
   provideRouter,
   withComponentInputBinding,
   withEnabledBlockingInitialNavigation,
+  withInMemoryScrolling,
 } from '@angular/router';
 import * as Sentry from '@sentry/angular';
 
@@ -60,6 +61,9 @@ export const appConfig: ApplicationConfig = {
       appRoutes,
       withComponentInputBinding(),
       withEnabledBlockingInitialNavigation(),
+      withInMemoryScrolling({
+        scrollPositionRestoration: 'top',
+      }),
     ),
     provideZoneChangeDetection({ eventCoalescing: true }),
   ],
