@@ -1,7 +1,7 @@
 import expressWinston from 'express-winston';
 import winston from 'winston';
 
-export const logger = expressWinston.logger({
+export const loggerOptions = {
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.colorize(),
@@ -10,4 +10,6 @@ export const logger = expressWinston.logger({
     }),
   ),
   transports: [new winston.transports.Console()],
-});
+} satisfies winston.LoggerOptions;
+
+export const logger = expressWinston.logger(loggerOptions);

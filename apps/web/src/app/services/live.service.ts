@@ -34,8 +34,8 @@ export class LiveService implements OnDestroy {
     });
 
     this.socket.on('event', (data: string): void => {
-      const parsedData = LiveEventUtils.deserialize(data);
-      this.events$.next(parsedData);
+      const event = LiveEventUtils.deserialize(data);
+      this.events$.next(event);
     });
   }
 

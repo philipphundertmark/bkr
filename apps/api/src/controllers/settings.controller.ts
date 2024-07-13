@@ -4,10 +4,14 @@ import { Role, SettingsUtils, UpdateSettingsSchema } from '@bkr/api-interface';
 
 import { BadRequestException } from '../errors';
 import { authorize } from '../middleware/authorize';
+import { LiveService } from '../services/live.service';
 import { SettingsService } from '../services/settings.service';
 import { handler } from './handler';
 
-export function SettingsController(settingsService: SettingsService): Router {
+export function SettingsController(
+  liveService: LiveService,
+  settingsService: SettingsService,
+): Router {
   const router = Router();
 
   router.get(
@@ -36,6 +40,8 @@ export function SettingsController(settingsService: SettingsService): Router {
 
       res.status(200);
       res.json(SettingsUtils.serialize(settings));
+
+      liveService.sendSetSettingsEvent(settings);
     }),
   );
 

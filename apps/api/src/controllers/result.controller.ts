@@ -2,12 +2,9 @@ import { Router } from 'express';
 
 import {
   CreateResultSchema,
-  LiveEventType,
   ResultUtils,
   Role,
   UpdateResultSchema,
-  isAdmin,
-  isStation,
 } from '@bkr/api-interface';
 
 import { BadRequestException, NotFoundException } from '../errors';
@@ -67,10 +64,7 @@ export function ResultController(
       res.status(201);
       res.json(ResultUtils.serialize(result));
 
-      liveService.sendEvent({
-        type: LiveEventType.CREATE_RESULT,
-        result,
-      });
+      liveService.sendCreateResultEvent(result);
     }),
   );
 
@@ -78,17 +72,6 @@ export function ResultController(
     '/results',
     handler(async (req, res) => {
       const results = await resultService.getAll();
-      const settings = await settingsService.upsertSettings();
-
-      const isUser = !isAdmin(req.user) && !isStation(req.user);
-
-      if (!settings.publishResults && isUser) {
-        results.map((result) => ({
-          ...result,
-          // Disguise the points to users if the results are not published
-          points: 0,
-        }));
-      }
 
       res.status(200);
       res.json(results.map(ResultUtils.serialize));
@@ -127,10 +110,7 @@ export function ResultController(
       res.status(200);
       res.json(ResultUtils.serialize(result));
 
-      liveService.sendEvent({
-        type: LiveEventType.UPDATE_RESULT,
-        result,
-      });
+      liveService.sendUpdateResultEvent(result);
     }),
   );
 
@@ -154,11 +134,7 @@ export function ResultController(
       res.status(200);
       res.end();
 
-      liveService.sendEvent({
-        type: LiveEventType.DELETE_RESULT,
-        stationId,
-        teamId,
-      });
+      liveService.sendDeleteResultEvent(stationId, teamId);
     }),
   );
 

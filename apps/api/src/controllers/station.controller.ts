@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { SetOptional } from 'type-fest';
 
-import { LiveEventType, Station, StationUtils } from '@bkr/api-interface';
+import { Station, StationUtils } from '@bkr/api-interface';
 import {
   CreateStationSchema,
   Role,
@@ -57,10 +57,7 @@ export function StationController(
       res.status(201);
       res.json(StationUtils.serialize(station));
 
-      liveService.sendEvent({
-        type: LiveEventType.CREATE_STATION,
-        station,
-      });
+      liveService.sendCreateStationEvent(station);
     }),
   );
 
@@ -136,10 +133,7 @@ export function StationController(
       res.status(200);
       res.json(StationUtils.serialize(station));
 
-      liveService.sendEvent({
-        type: LiveEventType.UPDATE_STATION,
-        station,
-      });
+      liveService.sendUpdateStationEvent(station);
     }),
   );
 
@@ -160,10 +154,7 @@ export function StationController(
       res.status(200);
       res.end();
 
-      liveService.sendEvent({
-        type: LiveEventType.DELETE_STATION,
-        stationId,
-      });
+      liveService.sendDeleteStationEvent(stationId);
     }),
   );
 

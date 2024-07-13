@@ -1,5 +1,6 @@
 import { LiveEvent, LiveEventType } from './live-event';
 import { ResultUtils } from './result.utils';
+import { SettingsUtils } from './settings.utils';
 import { StationUtils } from './station.utils';
 import { TeamUtils } from './team.utils';
 
@@ -15,6 +16,7 @@ export const LiveEventUtils = {
           result: ResultUtils.deserialize(event.result),
         };
       case LiveEventType.DELETE_RESULT:
+      case LiveEventType.DELETE_RESULTS_OF_TEAM:
         return {
           ...event,
         };
@@ -38,6 +40,11 @@ export const LiveEventUtils = {
         return {
           ...event,
         };
+      case LiveEventType.SET_SETTINGS:
+        return {
+          ...event,
+          settings: SettingsUtils.deserialize(event.settings),
+        };
       default:
         throw new Error(`Unknown event type: ${event.type}`);
     }
@@ -51,6 +58,7 @@ export const LiveEventUtils = {
           result: ResultUtils.serialize(event.result),
         });
       case LiveEventType.DELETE_RESULT:
+      case LiveEventType.DELETE_RESULTS_OF_TEAM:
         return JSON.stringify({
           ...event,
         });
@@ -73,6 +81,11 @@ export const LiveEventUtils = {
       case LiveEventType.DELETE_TEAM:
         return JSON.stringify({
           ...event,
+        });
+      case LiveEventType.SET_SETTINGS:
+        return JSON.stringify({
+          ...event,
+          settings: SettingsUtils.serialize(event.settings),
         });
     }
   },

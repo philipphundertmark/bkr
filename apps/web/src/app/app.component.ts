@@ -98,14 +98,15 @@ export class AppComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (event) => {
-          console.log(event);
-
           switch (event.type) {
             case LiveEventType.CREATE_RESULT:
               this.store.createResult(event.result);
               break;
             case LiveEventType.DELETE_RESULT:
               this.store.deleteResult(event.stationId, event.teamId);
+              break;
+            case LiveEventType.DELETE_RESULTS_OF_TEAM:
+              this.store.deleteResultsByTeamId(event.teamId);
               break;
             case LiveEventType.UPDATE_RESULT:
               this.store.updateResult(event.result);
@@ -127,6 +128,9 @@ export class AppComponent implements OnInit {
               break;
             case LiveEventType.UPDATE_TEAM:
               this.store.updateTeam(event.team);
+              break;
+            case LiveEventType.SET_SETTINGS:
+              this.store.setSettings(event.settings);
               break;
           }
         },

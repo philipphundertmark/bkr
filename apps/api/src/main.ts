@@ -42,7 +42,7 @@ setupApp(
       stationService,
       teamService,
     ),
-    SettingsController(settingsService),
+    SettingsController(liveService, settingsService),
     StationController(liveService, stationService),
     TeamController(liveService, resultService, teamService),
     TokenController(tokenService, stationService),

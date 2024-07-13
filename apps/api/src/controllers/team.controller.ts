@@ -2,7 +2,6 @@ import { Router } from 'express';
 
 import {
   CreateTeamSchema,
-  LiveEventType,
   Role,
   TeamUtils,
   UpdateTeamSchema,
@@ -45,10 +44,7 @@ export function TeamController(
       res.status(201);
       res.json(TeamUtils.serialize(team));
 
-      liveService.sendEvent({
-        type: LiveEventType.CREATE_TEAM,
-        team,
-      });
+      liveService.sendCreateTeamEvent(team);
     }),
   );
 
@@ -120,10 +116,7 @@ export function TeamController(
       res.status(200);
       res.json(TeamUtils.serialize(team));
 
-      liveService.sendEvent({
-        type: LiveEventType.UPDATE_TEAM,
-        team,
-      });
+      liveService.sendUpdateTeamEvent(team);
     }),
   );
 
@@ -144,10 +137,7 @@ export function TeamController(
       res.status(200);
       res.end();
 
-      liveService.sendEvent({
-        type: LiveEventType.DELETE_TEAM,
-        teamId,
-      });
+      liveService.sendDeleteTeamEvent(teamId);
     }),
   );
 
@@ -167,6 +157,8 @@ export function TeamController(
 
       res.status(200);
       res.end();
+
+      liveService.sendDeleteResultsOfTeamEvent(teamId);
     }),
   );
 
