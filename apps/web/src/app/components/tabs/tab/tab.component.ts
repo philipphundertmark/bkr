@@ -13,6 +13,7 @@ import { outputToObservable } from '@angular/core/rxjs-interop';
   selector: 'bkr-tab',
   standalone: true,
   imports: [CommonModule],
+  host: { '[attr.role]': 'tab' },
   styleUrl: './tab.component.scss',
   templateUrl: './tab.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
