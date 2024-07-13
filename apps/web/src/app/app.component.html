@@ -6,20 +6,22 @@
     <h1 class="title">BKR 2024</h1>
   </a>
 
-  @if (connected()) {
-    <span>Verbunden</span>
-  } @else {
-    <span>Nicht verbunden</span>
-  }
-
   <button
-    class="rounded-full p-1 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+    class="relative rounded-full p-1 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
     (click)="handleAuth()"
     [ngClass]="{
       'bg-gray-300': !isAdmin() && !isStation(),
       'bg-indigo-500': isAdmin() || isStation(),
     }"
   >
+    <span
+      class="absolute bottom-0 right-0 block h-2 w-2 rounded-full ring-2 ring-gray-100"
+      [ngClass]="{
+        'bg-green-500': connected(),
+        'bg-red-500': !connected(),
+      }"
+    ></span>
+
     @if (isAdmin()) {
       <bkr-star-icon></bkr-star-icon>
     } @else if (isStation()) {

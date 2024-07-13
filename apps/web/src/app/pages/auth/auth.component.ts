@@ -3,9 +3,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  Input,
   computed,
   inject,
+  input,
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
@@ -38,7 +38,7 @@ import { Store } from '../../services/store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthComponent {
-  @Input() returnUrl = '/';
+  returnUrl = input('/');
 
   form = new FormGroup({
     code: new FormControl<string>('', {
@@ -90,7 +90,7 @@ export class AuthComponent {
           this.form.reset();
           this.notificationService.success('Du bist jetzt eingeloggt.');
 
-          this.router.navigateByUrl(this.returnUrl);
+          this.router.navigateByUrl(this.returnUrl());
         },
         error: () => {
           this.loginLoading.set(false);
