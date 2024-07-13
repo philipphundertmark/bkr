@@ -57,7 +57,7 @@ export function StationController(
       res.status(201);
       res.json(StationUtils.serialize(station));
 
-      liveService.sendCreateStationEvent(station);
+      liveService.sendSetStationEvent(station);
     }),
   );
 
@@ -133,7 +133,7 @@ export function StationController(
       res.status(200);
       res.json(StationUtils.serialize(station));
 
-      liveService.sendUpdateStationEvent(station);
+      liveService.sendSetStationEvent(station);
     }),
   );
 

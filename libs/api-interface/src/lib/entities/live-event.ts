@@ -4,35 +4,32 @@ import { Station } from './station';
 import { Team } from './team';
 
 export type LiveEvent =
-  | CreateResultLiveEvent
+  // Results
   | DeleteResultLiveEvent
   | DeleteResultsOfTeamLiveEvent
-  | UpdateResultLiveEvent
-  | CreateStationLiveEvent
+  | SetResultLiveEvent
+  // Settings
+  | SetSettingsLiveEvent
+  // Stations
   | DeleteStationLiveEvent
-  | UpdateStationLiveEvent
-  | CreateTeamLiveEvent
+  | SetStationLiveEvent
+  // Teams
   | DeleteTeamLiveEvent
-  | UpdateTeamLiveEvent
-  | SetSettingsLiveEvent;
+  | SetTeamLiveEvent;
 
 export enum LiveEventType {
-  CREATE_RESULT = 'CREATE_RESULT',
+  // Results
   DELETE_RESULT = 'DELETE_RESULT',
   DELETE_RESULTS_OF_TEAM = 'DELETE_RESULTS_OF_TEAM',
-  UPDATE_RESULT = 'UPDATE_RESULT',
-  CREATE_STATION = 'CREATE_STATION',
-  DELETE_STATION = 'DELETE_STATION',
-  UPDATE_STATION = 'UPDATE_STATION',
-  CREATE_TEAM = 'CREATE_TEAM',
-  DELETE_TEAM = 'DELETE_TEAM',
-  UPDATE_TEAM = 'UPDATE_TEAM',
+  SET_RESULT = 'SET_RESULT',
+  // Settings
   SET_SETTINGS = 'SET_SETTINGS',
-}
-
-export interface CreateResultLiveEvent {
-  type: LiveEventType.CREATE_RESULT;
-  result: Result;
+  // Stations
+  DELETE_STATION = 'DELETE_STATION',
+  SET_STATION = 'SET_STATION',
+  // Teams
+  DELETE_TEAM = 'DELETE_TEAM',
+  SET_TEAM = 'SET_TEAM',
 }
 
 export interface DeleteResultLiveEvent {
@@ -46,14 +43,14 @@ export interface DeleteResultsOfTeamLiveEvent {
   teamId: string;
 }
 
-export interface UpdateResultLiveEvent {
-  type: LiveEventType.UPDATE_RESULT;
+export interface SetResultLiveEvent {
+  type: LiveEventType.SET_RESULT;
   result: Result;
 }
 
-export interface CreateStationLiveEvent {
-  type: LiveEventType.CREATE_STATION;
-  station: Station;
+export interface SetSettingsLiveEvent {
+  type: LiveEventType.SET_SETTINGS;
+  settings: Settings;
 }
 
 export interface DeleteStationLiveEvent {
@@ -61,14 +58,9 @@ export interface DeleteStationLiveEvent {
   stationId: string;
 }
 
-export interface UpdateStationLiveEvent {
-  type: LiveEventType.UPDATE_STATION;
+export interface SetStationLiveEvent {
+  type: LiveEventType.SET_STATION;
   station: Station;
-}
-
-export interface CreateTeamLiveEvent {
-  type: LiveEventType.CREATE_TEAM;
-  team: Team;
 }
 
 export interface DeleteTeamLiveEvent {
@@ -76,12 +68,7 @@ export interface DeleteTeamLiveEvent {
   teamId: string;
 }
 
-export interface UpdateTeamLiveEvent {
-  type: LiveEventType.UPDATE_TEAM;
+export interface SetTeamLiveEvent {
+  type: LiveEventType.SET_TEAM;
   team: Team;
-}
-
-export interface SetSettingsLiveEvent {
-  type: LiveEventType.SET_SETTINGS;
-  settings: Settings;
 }

@@ -64,7 +64,7 @@ export function ResultController(
       res.status(201);
       res.json(ResultUtils.serialize(result));
 
-      liveService.sendCreateResultEvent(result);
+      liveService.sendSetResultEvent(result);
     }),
   );
 
@@ -110,7 +110,7 @@ export function ResultController(
       res.status(200);
       res.json(ResultUtils.serialize(result));
 
-      liveService.sendUpdateResultEvent(result);
+      liveService.sendSetResultEvent(result);
     }),
   );
 

@@ -161,7 +161,7 @@ export class StationEditComponent implements OnInit {
       .subscribe({
         next: (station) => {
           this.saveLoading.set(false);
-          this.store.updateStation(station);
+          this.store.setStation(station);
           this.notificationService.success('Station wurde aktualisiert.');
 
           this.router.navigate(['/stations', stationId]);

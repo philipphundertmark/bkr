@@ -26,16 +26,16 @@ export class LiveService {
     });
   }
 
-  sendCreateResultEvent(result: Result): void {
-    this.sendEvent({ type: LiveEventType.CREATE_RESULT, result });
+  sendSetResultEvent(result: Result): void {
+    this.sendEvent({ type: LiveEventType.SET_RESULT, result });
   }
 
-  sendCreateStationEvent(station: Station): void {
-    this.sendEvent({ type: LiveEventType.CREATE_STATION, station });
+  sendSetStationEvent(station: Station): void {
+    this.sendEvent({ type: LiveEventType.SET_STATION, station });
   }
 
-  sendCreateTeamEvent(team: Team): void {
-    this.sendEvent({ type: LiveEventType.CREATE_TEAM, team });
+  sendSetTeamEvent(team: Team): void {
+    this.sendEvent({ type: LiveEventType.SET_TEAM, team });
   }
 
   sendDeleteResultEvent(stationId: string, teamId: string): void {
@@ -56,18 +56,6 @@ export class LiveService {
 
   sendSetSettingsEvent(settings: Settings): void {
     this.sendEvent({ type: LiveEventType.SET_SETTINGS, settings });
-  }
-
-  sendUpdateResultEvent(result: Result): void {
-    this.sendEvent({ type: LiveEventType.UPDATE_RESULT, result });
-  }
-
-  sendUpdateStationEvent(station: Station): void {
-    this.sendEvent({ type: LiveEventType.UPDATE_STATION, station });
-  }
-
-  sendUpdateTeamEvent(team: Team): void {
-    this.sendEvent({ type: LiveEventType.UPDATE_TEAM, team });
   }
 
   private sendEvent(event: LiveEvent): void {

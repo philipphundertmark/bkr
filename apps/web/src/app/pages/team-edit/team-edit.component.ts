@@ -169,7 +169,7 @@ export class TeamEditComponent implements OnInit {
       .subscribe({
         next: (team) => {
           this.saveLoading.set(false);
-          this.store.updateTeam(team);
+          this.store.setTeam(team);
           this.notificationService.success('Team wurde aktualisiert.');
 
           this.router.navigate(['/teams', teamId]);

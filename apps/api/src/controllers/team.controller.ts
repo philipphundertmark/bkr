@@ -44,7 +44,7 @@ export function TeamController(
       res.status(201);
       res.json(TeamUtils.serialize(team));
 
-      liveService.sendCreateTeamEvent(team);
+      liveService.sendSetTeamEvent(team);
     }),
   );
 
@@ -116,7 +116,7 @@ export function TeamController(
       res.status(200);
       res.json(TeamUtils.serialize(team));
 
-      liveService.sendUpdateTeamEvent(team);
+      liveService.sendSetTeamEvent(team);
     }),
   );
 

@@ -108,7 +108,7 @@ export class StationNewComponent {
       .subscribe({
         next: (station) => {
           this.loading.set(false);
-          this.store.createStation(station);
+          this.store.setStation(station);
           this.notificationService.success('Station wurde erstellt.');
 
           this.router.navigate(['/stations']);

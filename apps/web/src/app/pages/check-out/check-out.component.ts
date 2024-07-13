@@ -111,7 +111,7 @@ export class CheckOutComponent {
       .subscribe({
         next: (result) => {
           this.checkOutLoading.set(false);
-          this.store.updateResult(result);
+          this.store.setResult(result);
           this.notificationService.success('Team wurde ausgecheckt.');
 
           this.router.navigate(['/my-station']);

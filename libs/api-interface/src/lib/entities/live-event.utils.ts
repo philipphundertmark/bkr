@@ -9,41 +9,38 @@ export const LiveEventUtils = {
     const event = JSON.parse(serialized);
 
     switch (event.type) {
-      case LiveEventType.CREATE_RESULT:
-      case LiveEventType.UPDATE_RESULT:
-        return {
-          ...event,
-          result: ResultUtils.deserialize(event.result),
-        };
       case LiveEventType.DELETE_RESULT:
       case LiveEventType.DELETE_RESULTS_OF_TEAM:
         return {
           ...event,
         };
-      case LiveEventType.CREATE_STATION:
-      case LiveEventType.UPDATE_STATION:
+      case LiveEventType.SET_RESULT:
         return {
           ...event,
-          station: StationUtils.deserialize(event.station),
-        };
-      case LiveEventType.DELETE_STATION:
-        return {
-          ...event,
-        };
-      case LiveEventType.CREATE_TEAM:
-      case LiveEventType.UPDATE_TEAM:
-        return {
-          ...event,
-          team: TeamUtils.deserialize(event.team),
-        };
-      case LiveEventType.DELETE_TEAM:
-        return {
-          ...event,
+          result: ResultUtils.deserialize(event.result),
         };
       case LiveEventType.SET_SETTINGS:
         return {
           ...event,
           settings: SettingsUtils.deserialize(event.settings),
+        };
+      case LiveEventType.DELETE_STATION:
+        return {
+          ...event,
+        };
+      case LiveEventType.SET_STATION:
+        return {
+          ...event,
+          station: StationUtils.deserialize(event.station),
+        };
+      case LiveEventType.DELETE_TEAM:
+        return {
+          ...event,
+        };
+      case LiveEventType.SET_TEAM:
+        return {
+          ...event,
+          team: TeamUtils.deserialize(event.team),
         };
       default:
         throw new Error(`Unknown event type: ${event.type}`);
@@ -51,41 +48,38 @@ export const LiveEventUtils = {
   },
   serialize(event: LiveEvent): string {
     switch (event.type) {
-      case LiveEventType.CREATE_RESULT:
-      case LiveEventType.UPDATE_RESULT:
-        return JSON.stringify({
-          ...event,
-          result: ResultUtils.serialize(event.result),
-        });
       case LiveEventType.DELETE_RESULT:
       case LiveEventType.DELETE_RESULTS_OF_TEAM:
         return JSON.stringify({
           ...event,
         });
-      case LiveEventType.CREATE_STATION:
-      case LiveEventType.UPDATE_STATION:
+      case LiveEventType.SET_RESULT:
         return JSON.stringify({
           ...event,
-          station: StationUtils.serialize(event.station),
-        });
-      case LiveEventType.DELETE_STATION:
-        return JSON.stringify({
-          ...event,
-        });
-      case LiveEventType.CREATE_TEAM:
-      case LiveEventType.UPDATE_TEAM:
-        return JSON.stringify({
-          ...event,
-          team: TeamUtils.serialize(event.team),
-        });
-      case LiveEventType.DELETE_TEAM:
-        return JSON.stringify({
-          ...event,
+          result: ResultUtils.serialize(event.result),
         });
       case LiveEventType.SET_SETTINGS:
         return JSON.stringify({
           ...event,
           settings: SettingsUtils.serialize(event.settings),
+        });
+      case LiveEventType.DELETE_STATION:
+        return JSON.stringify({
+          ...event,
+        });
+      case LiveEventType.SET_STATION:
+        return JSON.stringify({
+          ...event,
+          station: StationUtils.serialize(event.station),
+        });
+      case LiveEventType.DELETE_TEAM:
+        return JSON.stringify({
+          ...event,
+        });
+      case LiveEventType.SET_TEAM:
+        return JSON.stringify({
+          ...event,
+          team: TeamUtils.serialize(event.team),
         });
     }
   },

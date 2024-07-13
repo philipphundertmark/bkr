@@ -188,7 +188,7 @@ export class TeamDetailsComponent implements OnInit {
       .subscribe({
         next: (team) => {
           this.startTeamLoading.set(false);
-          this.store.updateTeam(team);
+          this.store.setTeam(team);
           this.notificationService.success('Team gestartet.');
         },
         error: () => {
@@ -219,7 +219,7 @@ export class TeamDetailsComponent implements OnInit {
       .subscribe({
         next: (team) => {
           this.stopTeamLoading.set(false);
-          this.store.updateTeam(team);
+          this.store.setTeam(team);
           this.notificationService.success('Team gestoppt.');
         },
         error: () => {

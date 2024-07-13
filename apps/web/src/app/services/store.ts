@@ -106,42 +106,87 @@ export class Store {
       ),
   );
 
-  createResult(result: Result): void {
-    const resultExists = this._results().some(
-      (existingResult) =>
-        existingResult.stationId === result.stationId &&
-        existingResult.teamId === result.teamId,
-    );
+  setResult(result: Result): void {
+    this._results.update((results) => {
+      let found = false;
 
-    if (resultExists) {
-      return;
-    }
+      const updatedResults = results.map((existingResult) => {
+        if (found) {
+          return existingResult;
+        }
 
-    this._results.update((results) => [...results, result]);
+        const exists =
+          existingResult.stationId === result.stationId &&
+          existingResult.teamId === result.teamId;
+
+        if (exists) {
+          found = true;
+          return result;
+        }
+
+        return existingResult;
+      });
+
+      if (!found) {
+        updatedResults.push(result);
+      }
+
+      return updatedResults;
+    });
   }
 
-  createStation(station: Station): void {
-    const stationExists = this._stations().some(
-      (existingStation) => existingStation.id === station.id,
-    );
+  setStation(station: Station): void {
+    this._stations.update((stations) => {
+      let found = false;
 
-    if (stationExists) {
-      return;
-    }
+      const updatedStations = stations.map((existingStation) => {
+        if (found) {
+          return existingStation;
+        }
 
-    this._stations.update((stations) => [...stations, station]);
+        const exists = existingStation.id === station.id;
+
+        if (exists) {
+          found = true;
+          return station;
+        }
+
+        return existingStation;
+      });
+
+      if (!found) {
+        updatedStations.push(station);
+      }
+
+      return updatedStations;
+    });
   }
 
-  createTeam(team: Team): void {
-    const teamExists = this._teams().some(
-      (existingTeam) => existingTeam.id === team.id,
-    );
+  setTeam(team: Team): void {
+    this._teams.update((teams) => {
+      let found = false;
 
-    if (teamExists) {
-      return;
-    }
+      const updatedTeams = teams.map((existingTeam) => {
+        if (found) {
+          return existingTeam;
+        }
 
-    this._teams.update((teams) => [...teams, team]);
+        const exists = existingTeam.id === team.id;
+
+        if (exists) {
+          found = true;
+          return team;
+        }
+
+        return existingTeam;
+      });
+
+      if (!found) {
+        updatedTeams.push(team);
+      }
+
+      return updatedTeams;
+    });
   }
 
   deleteResult(stationId: string, teamId: string): void {
@@ -182,31 +227,6 @@ export class Store {
 
   setTeams(teams: Team[]): void {
     this._teams.set(teams);
-  }
-
-  updateResult(updatedResult: Result): void {
-    this._results.update((results) =>
-      results.map((result) =>
-        result.stationId === updatedResult.stationId &&
-        result.teamId === updatedResult.teamId
-          ? updatedResult
-          : result,
-      ),
-    );
-  }
-
-  updateStation(updatedStation: Station): void {
-    this._stations.update((stations) =>
-      stations.map((station) =>
-        station.id === updatedStation.id ? updatedStation : station,
-      ),
-    );
-  }
-
-  updateTeam(updatedTeam: Team): void {
-    this._teams.update((teams) =>
-      teams.map((team) => (team.id === updatedTeam.id ? updatedTeam : team)),
-    );
   }
 
   private computeEvents(

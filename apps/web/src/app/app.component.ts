@@ -99,38 +99,29 @@ export class AppComponent implements OnInit {
       .subscribe({
         next: (event) => {
           switch (event.type) {
-            case LiveEventType.CREATE_RESULT:
-              this.store.createResult(event.result);
-              break;
             case LiveEventType.DELETE_RESULT:
               this.store.deleteResult(event.stationId, event.teamId);
               break;
             case LiveEventType.DELETE_RESULTS_OF_TEAM:
               this.store.deleteResultsByTeamId(event.teamId);
               break;
-            case LiveEventType.UPDATE_RESULT:
-              this.store.updateResult(event.result);
+            case LiveEventType.SET_RESULT:
+              this.store.setResult(event.result);
               break;
-            case LiveEventType.CREATE_STATION:
-              this.store.createStation(event.station);
+            case LiveEventType.SET_SETTINGS:
+              this.store.setSettings(event.settings);
               break;
             case LiveEventType.DELETE_STATION:
               this.store.deleteStation(event.stationId);
               break;
-            case LiveEventType.UPDATE_STATION:
-              this.store.updateStation(event.station);
-              break;
-            case LiveEventType.CREATE_TEAM:
-              this.store.createTeam(event.team);
+            case LiveEventType.SET_STATION:
+              this.store.setStation(event.station);
               break;
             case LiveEventType.DELETE_TEAM:
               this.store.deleteTeam(event.teamId);
               break;
-            case LiveEventType.UPDATE_TEAM:
-              this.store.updateTeam(event.team);
-              break;
-            case LiveEventType.SET_SETTINGS:
-              this.store.setSettings(event.settings);
+            case LiveEventType.SET_TEAM:
+              this.store.setTeam(event.team);
               break;
           }
         },

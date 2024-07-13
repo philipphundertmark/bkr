@@ -97,7 +97,7 @@ export class TeamNewComponent {
       .subscribe({
         next: (team) => {
           this.loading.set(false);
-          this.store.createTeam(team);
+          this.store.setTeam(team);
           this.notificationService.success('Team wurde erstellt.');
 
           this.router.navigate(['/']);

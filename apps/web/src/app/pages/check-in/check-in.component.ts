@@ -92,7 +92,7 @@ export class CheckInComponent {
       .subscribe({
         next: (result) => {
           this.checkInLoading.set(false);
-          this.store.createResult(result);
+          this.store.setResult(result);
           this.notificationService.success('Team wurde eingecheckt.');
 
           this.router.navigate(['/my-station']);
