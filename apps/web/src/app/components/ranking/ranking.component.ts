@@ -83,7 +83,7 @@ export class RankingComponent {
             stations,
             rankByTeamByStation,
           ),
-          totalTime: team.finishedAt?.diff(team.startedAt, 'seconds') ?? 0,
+          totalTime: TeamUtils.getTime(team),
         };
       })
       .map((rankingItem): RankingItem => {

@@ -10,7 +10,7 @@
         Bearbeiten
       </a>
 
-      @if (!team.startedAt) {
+      @if (!TeamUtils.isStarted(team) && !TeamUtils.isScheduled(team)) {
         <button
           bkr-button
           [bkrLoading]="startTeamLoading()"
@@ -21,7 +21,9 @@
           <bkr-play-icon></bkr-play-icon>
           Start
         </button>
-      } @else if (!team.finishedAt) {
+      }
+
+      @if (TeamUtils.isStarted(team) && !TeamUtils.isFinished(team)) {
         <button
           bkr-button
           [bkrLoading]="stopTeamLoading()"
@@ -48,7 +50,9 @@
     </div>
 
     <div class="flex flex-col gap-2">
-      <label class="label">Gestartet um</label>
+      <label class="label">
+        {{ TeamUtils.isStarted(team) ? 'Gestartet um' : 'Startet um' }}
+      </label>
       <p>{{ team.startedAt | date }}</p>
     </div>
 

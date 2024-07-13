@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import dayjs from 'dayjs';
 
 import {
   ResultWithRank,
@@ -24,6 +23,7 @@ import {
   TabComponent,
   TabsComponent,
 } from '../../components';
+import { DurationPipe } from '../../pipes';
 import { AuthService } from '../../services';
 import { Store } from '../../services/store';
 
@@ -36,6 +36,7 @@ type ResultWithRankAndTeam = ResultWithRank & { team: TeamWithResults };
     AlertComponent,
     ButtonComponent,
     CommonModule,
+    DurationPipe,
     EmptyComponent,
     RouterModule,
     TabComponent,
@@ -112,8 +113,4 @@ export class StationResultsComponent {
     private readonly route: ActivatedRoute,
     private readonly store: Store,
   ) {}
-
-  formatDuration(seconds: number): string {
-    return dayjs.duration(seconds, 'seconds').format('HH:mm:ss');
-  }
 }

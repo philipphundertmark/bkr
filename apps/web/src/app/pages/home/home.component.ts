@@ -34,6 +34,7 @@ import {
   CheckCircleIconComponent,
   TrophyIconComponent,
 } from '../../icons/mini';
+import { DurationPipe } from '../../pipes';
 import { AuthService, NotificationService, TeamService } from '../../services';
 import { ConfirmService } from '../../services/confirm.service';
 import { EventType, Store } from '../../services/store';
@@ -52,6 +53,7 @@ export interface RankingItem {
   progress: number;
   started: boolean;
   stationIds: string[];
+  time: number;
 }
 
 @Component({
@@ -63,6 +65,7 @@ export interface RankingItem {
     CheckCircleIconComponent,
     ClockComponent,
     CommonModule,
+    DurationPipe,
     EmptyComponent,
     RankingComponent,
     RouterModule,
@@ -92,22 +95,27 @@ export class HomeComponent {
   stations = this.store.stations;
   teams = this.store.teams;
 
-  timer$ = timer(0, 1000).pipe(map(() => dayjs()));
-  timer = toSignal(this.timer$, { initialValue: dayjs() });
-
-  times = computed(() => {
-    const now = this.timer();
-
-    return this.teams().reduce<TimeByTeam>((times, team) => {
-      return {
-        ...times,
-        [team.id]: this.calculateTeamTime(team, now),
-      };
-    }, {});
+  times$ = timer(0, 1000).pipe(
+    map(() =>
+      this.teams().reduce<TimeByTeam>(
+        (times, team) => ({
+          ...times,
+          [team.id]: TeamUtils.getTime(team),
+        }),
+        {},
+      ),
+    ),
+  );
+  times = toSignal(this.times$, {
+    initialValue: this.teams().reduce<TimeByTeam>(
+      (times, team) => ({ ...times, [team.id]: 0 }),
+      {},
+    ),
   });
 
   rankingItems = computed((): RankingItem[] => {
     const stations = this.stations();
+    const times = this.times();
 
     const segment = 100 / (stations.length + 1);
     const halfSegment = segment / 2;
@@ -125,9 +133,10 @@ export class HomeComponent {
             : TeamUtils.isStarted(team)
               ? halfSegment
               : 0,
-        stationIds: team.results.map((result) => result.stationId),
         started: TeamUtils.isStarted(team),
+        stationIds: team.results.map((result) => result.stationId),
         team,
+        time: times[team.id],
       };
     });
   });
@@ -150,10 +159,6 @@ export class HomeComponent {
     effect(() => {
       localStorage.setItem('ranking', this.ranking());
     });
-  }
-
-  formatDuration(seconds: number): string {
-    return dayjs.duration(seconds, 'seconds').format('HH:mm:ss');
   }
 
   hasStationId(rankingItem: RankingItem, stationId: string): boolean {
@@ -190,14 +195,6 @@ export class HomeComponent {
           );
         },
       });
-  }
-
-  private calculateTeamTime(team: Team, now: dayjs.Dayjs): number {
-    return typeof team.startedAt !== 'undefined'
-      ? typeof team.finishedAt !== 'undefined'
-        ? team.finishedAt.diff(team.startedAt, 'seconds')
-        : now.diff(team.startedAt, 'seconds')
-      : 0;
   }
 
   private getLatestResult(

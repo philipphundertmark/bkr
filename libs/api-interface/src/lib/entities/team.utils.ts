@@ -33,8 +33,22 @@ export const TeamUtils = {
       penalty: team.penalty,
     };
   },
+  getTime(team: Team): number {
+    return TeamUtils.isStarted(team)
+      ? TeamUtils.isFinished(team)
+        ? team.finishedAt.diff(team.startedAt, 'seconds')
+        : dayjs().diff(team.startedAt, 'seconds')
+      : 0;
+  },
+  isScheduled(team: Team): team is SetRequired<Team, 'startedAt'> {
+    return (
+      typeof team.startedAt !== 'undefined' && team.startedAt.isAfter(dayjs())
+    );
+  },
   isStarted(team: Team): team is SetRequired<Team, 'startedAt'> {
-    return typeof team.startedAt !== 'undefined';
+    return (
+      typeof team.startedAt !== 'undefined' && team.startedAt.isBefore(dayjs())
+    );
   },
   isFinished(team: Team): team is SetRequired<Team, 'finishedAt'> {
     return typeof team.finishedAt !== 'undefined';

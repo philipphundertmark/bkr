@@ -48,7 +48,7 @@
 
           <!-- Time bonus -->
           <div class="whitespace-nowrap font-mono">
-            - {{ formatDuration(StationUtils.getBonusForRank(result.rank)) }}
+            - {{ StationUtils.getBonusForRank(result.rank) | duration }}
           </div>
         </div>
 

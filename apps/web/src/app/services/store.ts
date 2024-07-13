@@ -7,6 +7,7 @@ import {
   Station,
   StationWithResults,
   Team,
+  TeamUtils,
   TeamWithResults,
 } from '@bkr/api-interface';
 
@@ -100,9 +101,7 @@ export class Store {
     () =>
       this._teams().length > 0 &&
       this._teams().every(
-        (team) =>
-          typeof team.startedAt !== 'undefined' &&
-          typeof team.finishedAt !== 'undefined',
+        (team) => TeamUtils.isStarted(team) && TeamUtils.isFinished(team),
       ),
   );
 
@@ -238,7 +237,7 @@ export class Store {
 
     teams.forEach((team) => {
       // Generate `Start` event if team has started
-      if (team.startedAt) {
+      if (TeamUtils.isStarted(team)) {
         events.push({
           timestamp: team.startedAt,
           type: EventType.Start,
@@ -247,7 +246,7 @@ export class Store {
       }
 
       // Generate `Finish` event if team has finished
-      if (team.finishedAt) {
+      if (TeamUtils.isFinished(team)) {
         events.push({
           timestamp: team.finishedAt,
           type: EventType.Finish,
