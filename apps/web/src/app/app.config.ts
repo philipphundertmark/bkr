@@ -61,9 +61,7 @@ export const appConfig: ApplicationConfig = {
       appRoutes,
       withComponentInputBinding(),
       withEnabledBlockingInitialNavigation(),
-      withInMemoryScrolling({
-        scrollPositionRestoration: 'top',
-      }),
+      withInMemoryScrolling({ scrollPositionRestoration: 'enabled' }),
     ),
     provideZoneChangeDetection({ eventCoalescing: true }),
   ],
