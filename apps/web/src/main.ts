@@ -16,6 +16,7 @@ if (environment.sentry.enabled) {
     dsn: environment.sentry.dsn,
     integrations: [
       Sentry.browserTracingIntegration(),
+      Sentry.httpClientIntegration(),
       Sentry.replayIntegration(),
     ],
     // Performance Monitoring
