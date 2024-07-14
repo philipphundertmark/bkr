@@ -123,6 +123,9 @@ export class AppComponent implements OnInit {
             case LiveEventType.SET_TEAM:
               this.store.setTeam(event.team);
               break;
+            case LiveEventType.SET_TEAMS:
+              this.store.setTeams(event.teams);
+              break;
           }
         },
       });

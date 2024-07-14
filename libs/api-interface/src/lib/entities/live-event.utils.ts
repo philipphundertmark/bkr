@@ -42,6 +42,11 @@ export const LiveEventUtils = {
           ...event,
           team: TeamUtils.deserialize(event.team),
         };
+      case LiveEventType.SET_TEAMS:
+        return {
+          ...event,
+          teams: event.teams.map(TeamUtils.deserialize),
+        };
       default:
         throw new Error(`Unknown event type: ${event.type}`);
     }
@@ -80,6 +85,11 @@ export const LiveEventUtils = {
         return JSON.stringify({
           ...event,
           team: TeamUtils.serialize(event.team),
+        });
+      case LiveEventType.SET_TEAMS:
+        return JSON.stringify({
+          ...event,
+          teams: event.teams.map(TeamUtils.serialize),
         });
     }
   },

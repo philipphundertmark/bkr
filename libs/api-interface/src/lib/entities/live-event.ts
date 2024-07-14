@@ -15,7 +15,8 @@ export type LiveEvent =
   | SetStationLiveEvent
   // Teams
   | DeleteTeamLiveEvent
-  | SetTeamLiveEvent;
+  | SetTeamLiveEvent
+  | SetTeamsLiveEvent;
 
 export enum LiveEventType {
   // Results
@@ -30,6 +31,7 @@ export enum LiveEventType {
   // Teams
   DELETE_TEAM = 'DELETE_TEAM',
   SET_TEAM = 'SET_TEAM',
+  SET_TEAMS = 'SET_TEAMS',
 }
 
 export interface DeleteResultLiveEvent {
@@ -71,4 +73,9 @@ export interface DeleteTeamLiveEvent {
 export interface SetTeamLiveEvent {
   type: LiveEventType.SET_TEAM;
   team: Team;
+}
+
+export interface SetTeamsLiveEvent {
+  type: LiveEventType.SET_TEAMS;
+  teams: Team[];
 }

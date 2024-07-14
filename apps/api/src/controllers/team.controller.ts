@@ -75,6 +75,8 @@ export function TeamController(
 
       res.status(200);
       res.json(teams.map(TeamUtils.serialize));
+
+      liveService.sendSetTeamsEvent(teams);
     }),
   );
 

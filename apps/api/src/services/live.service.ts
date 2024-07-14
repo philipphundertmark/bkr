@@ -38,6 +38,10 @@ export class LiveService {
     this.sendEvent({ type: LiveEventType.SET_TEAM, team });
   }
 
+  sendSetTeamsEvent(teams: Team[]): void {
+    this.sendEvent({ type: LiveEventType.SET_TEAMS, teams });
+  }
+
   sendDeleteResultEvent(stationId: string, teamId: string): void {
     this.sendEvent({ type: LiveEventType.DELETE_RESULT, stationId, teamId });
   }
