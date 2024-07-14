@@ -47,6 +47,7 @@ export interface TimeByTeam {
 }
 
 export interface RankingItem {
+  countdown: number;
   finished: boolean;
   team: Team;
   progress: number;
@@ -122,6 +123,7 @@ export class HomeComponent {
       const latestResult = this.getLatestResult(team, stations);
 
       return {
+        countdown: TeamUtils.getCountdown(team),
         finished: TeamUtils.isFinished(team),
         progress: TeamUtils.isFinished(team)
           ? 100

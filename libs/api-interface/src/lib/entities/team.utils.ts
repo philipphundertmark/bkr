@@ -33,6 +33,11 @@ export const TeamUtils = {
       penalty: team.penalty,
     };
   },
+  getCountdown(team: Team): number {
+    return TeamUtils.isScheduled(team)
+      ? team.startedAt.diff(dayjs(), 'seconds') + 1
+      : 0;
+  },
   getTime(team: Team): number {
     return TeamUtils.isStarted(team)
       ? TeamUtils.isFinished(team)

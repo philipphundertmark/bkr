@@ -96,10 +96,17 @@
                         ></bkr-check-circle-icon>
                       }
 
-                      <!-- Current time -->
-                      <span class="font-mono">
-                        {{ rankingItem.time | duration }}
-                      </span>
+                      @if (rankingItem.countdown) {
+                        <!-- Countdown -->
+                        <span class="font-mono">
+                          -{{ rankingItem.countdown | duration }}
+                        </span>
+                      } @else {
+                        <!-- Current time -->
+                        <span class="font-mono">
+                          {{ rankingItem.time | duration }}
+                        </span>
+                      }
                     </div>
                   </div>
 
