@@ -58,7 +58,7 @@ export class TeamService {
     return team ? this.toTeam(team) : null;
   }
 
-  async shuffleTeams(): Promise<Team[]> {
+  async scheduleTeams(start: string, interval: number): Promise<Team[]> {
     const teams = await this.prisma.team.findMany({
       select: {
         id: true,
@@ -83,6 +83,7 @@ export class TeamService {
     );
 
     const shuffledTeams = teams.sort(() => Math.random() - 0.5);
+    let startedAt = dayjs(start);
 
     const updatedTeams = await this.prisma.$transaction(
       shuffledTeams.map((team, index) =>
@@ -91,7 +92,12 @@ export class TeamService {
             id: team.id,
           },
           data: {
+            finishedAt: null,
             number: index + 1,
+            startedAt: (index === 0
+              ? startedAt
+              : (startedAt = startedAt.add(interval, 'minute'))
+            ).toDate(),
           },
         }),
       ),

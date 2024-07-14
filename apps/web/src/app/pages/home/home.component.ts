@@ -178,7 +178,7 @@ export class HomeComponent {
 
           this.shuffleTeamsLoading.set(true);
 
-          return this.teamService.shuffleTeams();
+          return this.teamService.scheduleTeams();
         }),
         takeUntilDestroyed(this.destroyRef),
       )

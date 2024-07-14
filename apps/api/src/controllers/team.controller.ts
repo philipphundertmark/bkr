@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { Router } from 'express';
 
 import {
@@ -59,10 +60,13 @@ export function TeamController(
   );
 
   router.put(
-    '/teams/shuffle',
+    '/teams/schedule',
     authorize(Role.ADMIN),
     handler(async (req, res) => {
-      const teams = await teamService.shuffleTeams();
+      const teams = await teamService.scheduleTeams(
+        dayjs().add(1, 'minute').toISOString(),
+        4,
+      );
 
       res.status(200);
       res.json(teams.map(TeamUtils.serialize));

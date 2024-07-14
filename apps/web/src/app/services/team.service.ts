@@ -28,9 +28,9 @@ export class TeamService {
       .pipe(map((teamDtos) => teamDtos.map(TeamUtils.deserialize)));
   }
 
-  shuffleTeams(): Observable<Team[]> {
+  scheduleTeams(): Observable<Team[]> {
     return this.http
-      .put<TeamDTO[]>('/teams/shuffle', {})
+      .put<TeamDTO[]>('/teams/schedule', {})
       .pipe(map((teamDtos) => teamDtos.map(TeamUtils.deserialize)));
   }
 
