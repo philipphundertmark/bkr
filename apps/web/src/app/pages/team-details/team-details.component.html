@@ -10,20 +10,19 @@
         Bearbeiten
       </a>
 
-      @if (!TeamUtils.isStarted(team) && !TeamUtils.isScheduled(team)) {
+      @if (!TeamUtils.isStarted(team)) {
         <button
           bkr-button
           [bkrLoading]="startTeamLoading()"
           bkrType="primary"
           class="col-span-2"
           (click)="handleStartTeam(team.id)"
+          [disabled]="TeamUtils.isScheduled(team)"
         >
           <bkr-play-icon></bkr-play-icon>
           Start
         </button>
-      }
-
-      @if (TeamUtils.isStarted(team) && !TeamUtils.isFinished(team)) {
+      } @else if (!TeamUtils.isFinished(team)) {
         <button
           bkr-button
           [bkrLoading]="stopTeamLoading()"
