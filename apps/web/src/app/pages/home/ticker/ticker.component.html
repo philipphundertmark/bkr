@@ -32,35 +32,53 @@
         <p class="flex-auto py-1 text-gray-500">
           @switch (event.type) {
             @case (EventType.Start) {
-              <span class="font-medium text-gray-900">
+              <a
+                class="font-semibold text-indigo-500"
+                [routerLink]="['/teams', event.team.id]"
+              >
                 {{ event.team.name }}
-              </span>
+              </a>
               ist gestartet.
             }
             @case (EventType.Finish) {
-              <span class="font-medium text-gray-900">
+              <a
+                class="font-semibold text-indigo-500"
+                [routerLink]="['/teams', event.team.id]"
+              >
                 {{ event.team.name }}
-              </span>
+              </a>
               ist im Ziel angekommen.
             }
             @case (EventType.CheckIn) {
-              <span class="font-medium text-gray-900">
+              <a
+                class="font-semibold text-indigo-500"
+                [routerLink]="['/teams', event.team.id]"
+              >
                 {{ event.team.name }}
-              </span>
+              </a>
               hat
-              <span class="font-medium text-gray-900">
+              <a
+                class="font-semibold text-indigo-500"
+                [routerLink]="['/stations', event.station.id]"
+              >
                 {{ event.station.name }}
-              </span>
+              </a>
               erreicht.
             }
             @case (EventType.CheckOut) {
-              <span class="font-medium text-gray-900">
+              ><a
+                class="font-semibold text-indigo-500"
+                [routerLink]="['/teams', event.team.id]"
+              >
                 {{ event.team.name }}
-              </span>
+              </a>
               hat
-              <span class="font-medium text-gray-900">
+              <a
+                class="font-semibold text-indigo-500"
+                [routerLink]="['/stations', event.station.id]"
+              >
                 {{ event.station.name }}
-              </span>
+              </a>
               verlassen.
             }
           }

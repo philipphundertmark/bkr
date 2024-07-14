@@ -4,6 +4,7 @@ import { Observable, map } from 'rxjs';
 
 import {
   CreateTeamSchema,
+  ScheduleTeamsSchema,
   Team,
   TeamDTO,
   TeamUtils,
@@ -28,9 +29,9 @@ export class TeamService {
       .pipe(map((teamDtos) => teamDtos.map(TeamUtils.deserialize)));
   }
 
-  scheduleTeams(): Observable<Team[]> {
+  scheduleTeams(dto: ScheduleTeamsSchema): Observable<Team[]> {
     return this.http
-      .put<TeamDTO[]>('/teams/schedule', {})
+      .put<TeamDTO[]>('/teams/schedule', dto)
       .pipe(map((teamDtos) => teamDtos.map(TeamUtils.deserialize)));
   }
 

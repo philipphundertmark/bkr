@@ -1,9 +1,9 @@
-import dayjs from 'dayjs';
 import { Router } from 'express';
 
 import {
   CreateTeamSchema,
   Role,
+  ScheduleTeamsSchema,
   TeamUtils,
   UpdateTeamSchema,
 } from '@bkr/api-interface';
@@ -63,10 +63,15 @@ export function TeamController(
     '/teams/schedule',
     authorize(Role.ADMIN),
     handler(async (req, res) => {
-      const teams = await teamService.scheduleTeams(
-        dayjs().add(1, 'minute').toISOString(),
-        4,
-      );
+      const { value, error } = ScheduleTeamsSchema.validate(req.body);
+
+      if (error) {
+        throw new BadRequestException(error.message);
+      }
+
+      const { start, interval } = value;
+
+      const teams = await teamService.scheduleTeams(start, interval);
 
       res.status(200);
       res.json(teams.map(TeamUtils.serialize));

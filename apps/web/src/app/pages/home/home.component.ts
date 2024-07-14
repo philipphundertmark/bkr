@@ -178,7 +178,10 @@ export class HomeComponent {
 
           this.shuffleTeamsLoading.set(true);
 
-          return this.teamService.scheduleTeams();
+          return this.teamService.scheduleTeams({
+            start: dayjs().add(1, 'minute').toISOString(),
+            interval: 4,
+          });
         }),
         takeUntilDestroyed(this.destroyRef),
       )
