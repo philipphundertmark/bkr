@@ -30,6 +30,7 @@ import { AuthService } from './services/auth.service';
 import { Store } from './services/store';
 
 @Component({
+  selector: 'bkr-root',
   standalone: true,
   imports: [
     CommonModule,
@@ -39,9 +40,8 @@ import { Store } from './services/store';
     RouterModule,
     UserIconComponent,
   ],
-  selector: 'bkr-root',
+  styleUrl: './app.component.scss',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {

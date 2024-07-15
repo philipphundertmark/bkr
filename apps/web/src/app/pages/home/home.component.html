@@ -178,6 +178,11 @@
     }
   }
   @case ('ticker') {
-    <bkr-ticker [events]="events()" [isRaceOver]="isRaceOver()"></bkr-ticker>
+    <bkr-ticker
+      [isRaceOver]="isRaceOver()"
+      [results]="results()"
+      [stations]="stations()"
+      [teams]="teamsOnTimer()"
+    ></bkr-ticker>
   }
 }

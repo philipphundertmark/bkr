@@ -37,14 +37,10 @@ import {
 import { DurationPipe } from '../../pipes';
 import { AuthService, NotificationService, TeamService } from '../../services';
 import { ConfirmService } from '../../services/confirm.service';
-import { EventType, Store } from '../../services/store';
+import { Store } from '../../services/store';
 import { TickerComponent } from './ticker/ticker.component';
 
 dayjs.extend(duration);
-
-export interface TimeByTeam {
-  [teamId: string]: number;
-}
 
 export interface RankingItem {
   countdown: number;
@@ -79,7 +75,6 @@ export interface RankingItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
-  readonly EventType = EventType;
   readonly TeamUtils = TeamUtils;
 
   activeTab = signal(localStorage.getItem('activeTab') ?? 'overview');
@@ -88,38 +83,23 @@ export class HomeComponent {
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
   isStation = toSignal(this.authService.isStation$, { initialValue: false });
 
-  events = this.store.events;
-  isRaceOver = this.store.raceIsOver;
-  publishResults = this.store.publishResults;
+  results = this.store.results;
   stations = this.store.stations;
   teams = this.store.teams;
-
-  times$ = timer(0, 1000).pipe(
-    map(() =>
-      this.teams().reduce<TimeByTeam>(
-        (times, team) => ({
-          ...times,
-          [team.id]: TeamUtils.getTime(team),
-        }),
-        {},
-      ),
-    ),
-  );
-  times = toSignal(this.times$, {
-    initialValue: this.teams().reduce<TimeByTeam>(
-      (times, team) => ({ ...times, [team.id]: 0 }),
-      {},
-    ),
+  teamsOnTimer = toSignal(timer(0, 1000).pipe(map(() => [...this.teams()])), {
+    initialValue: [],
   });
+
+  isRaceOver = this.store.raceIsOver;
+  publishResults = this.store.publishResults;
 
   rankingItems = computed((): RankingItem[] => {
     const stations = this.stations();
-    const times = this.times();
 
     const segment = 100 / (stations.length + 1);
     const halfSegment = segment / 2;
 
-    return this.teams().map((team) => {
+    return this.teamsOnTimer().map((team) => {
       const latestResult = this.getLatestResult(team, stations);
 
       return {
@@ -136,7 +116,7 @@ export class HomeComponent {
         started: TeamUtils.isStarted(team),
         stationIds: team.results.map((result) => result.stationId),
         team,
-        time: times[team.id],
+        time: TeamUtils.getTime(team),
       };
     });
   });
