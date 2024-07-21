@@ -7,9 +7,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// The order in which teams are ranked at a station
 enum Order {
   ASC
   DESC
+}
+
+// A team can either be part of ranking A or B
+enum Ranking {
+  A
+  B
 }
 
 model Result {
@@ -59,6 +66,6 @@ model Team {
 
   startedAt  DateTime?
   finishedAt DateTime?
-  help       Boolean   @default(false)
   penalty    Int       @default(0)
+  ranking    Ranking   @default(A)
 }
