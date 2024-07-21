@@ -11,7 +11,7 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { EMPTY, map, switchMap, timer } from 'rxjs';
+import { EMPTY, switchMap } from 'rxjs';
 
 import {
   Ranking,
@@ -86,10 +86,7 @@ export class HomeComponent {
 
   results = this.store.results;
   stations = this.store.stations;
-  teams = this.store.teams;
-  teamsOnTimer = toSignal(timer(0, 1000).pipe(map(() => [...this.teams()])), {
-    initialValue: [],
-  });
+  teams = this.store.teamsOnTimer;
 
   isRaceOver = this.store.raceIsOver;
   publishResults = this.store.publishResults;
@@ -100,7 +97,7 @@ export class HomeComponent {
     const segment = 100 / (stations.length + 1);
     const halfSegment = segment / 2;
 
-    return this.teamsOnTimer().map((team) => {
+    return this.teams().map((team) => {
       const latestResult = this.getLatestResult(team, stations);
 
       return {
@@ -122,7 +119,7 @@ export class HomeComponent {
     });
   });
 
-  shuffleTeamsLoading = signal(false);
+  scheduleTeamsLoading = signal(false);
 
   private readonly destroyRef = inject(DestroyRef);
 
@@ -138,7 +135,7 @@ export class HomeComponent {
     return rankingItem.stationIds.includes(stationId);
   }
 
-  shuffleTeams(): void {
+  scheduleTeams(): void {
     this.confirmService
       .info({
         title: 'Reihenfolge auslosen',
@@ -149,7 +146,7 @@ export class HomeComponent {
         switchMap((confirmed) => {
           if (!confirmed) return EMPTY;
 
-          this.shuffleTeamsLoading.set(true);
+          this.scheduleTeamsLoading.set(true);
 
           return this.teamService.scheduleTeams({
             start: dayjs().add(1, 'minute').toISOString(),
@@ -160,12 +157,12 @@ export class HomeComponent {
       )
       .subscribe({
         next: (teams) => {
-          this.shuffleTeamsLoading.set(false);
+          this.scheduleTeamsLoading.set(false);
           this.store.setTeams(teams);
           this.notificationService.success('Reihenfolge wurde ausgelost.');
         },
         error: () => {
-          this.shuffleTeamsLoading.set(false);
+          this.scheduleTeamsLoading.set(false);
           this.notificationService.error(
             'Reihenfolge konnte nicht ausgelost werden.',
           );

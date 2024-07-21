@@ -13,9 +13,9 @@
 
     <button
       bkr-button
-      [bkrLoading]="shuffleTeamsLoading()"
+      [bkrLoading]="scheduleTeamsLoading()"
       class="col-span-1"
-      (click)="shuffleTeams()"
+      (click)="scheduleTeams()"
     >
       <bkr-arrow-path-rounded-square-icon
         class="text-gray-500"
@@ -182,7 +182,7 @@
       [isRaceOver]="isRaceOver()"
       [results]="results()"
       [stations]="stations()"
-      [teams]="teamsOnTimer()"
+      [teams]="teams()"
     ></bkr-ticker>
   }
 }

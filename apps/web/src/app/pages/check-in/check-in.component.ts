@@ -50,11 +50,11 @@ export class CheckInComponent {
   readonly TeamUtils = TeamUtils;
 
   stationId = toSignal(this.authService.sub$, { initialValue: null });
-  teams = this.store.teams;
 
   checkInLoading = signal(false);
   teamsToCheckIn = computed(() =>
-    this.teams()
+    this.store
+      .teamsOnTimer()
       .filter(TeamUtils.isRunning)
       .filter(
         (team) =>

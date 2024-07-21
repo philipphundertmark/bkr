@@ -1,5 +1,7 @@
 import { Injectable, computed, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import dayjs from 'dayjs';
+import { timer } from 'rxjs';
 
 import {
   Result,
@@ -34,6 +36,8 @@ export class Store {
   private _stations = signal<Station[]>(INITIAL_STATIONS);
   private _teams = signal<Team[]>(INITIAL_TEAMS);
 
+  private timer = toSignal(timer(0, 1000));
+
   results = computed(() => this._results());
   settings = computed(() => this._settings());
   stations = computed(() =>
@@ -58,12 +62,16 @@ export class Store {
       // Sort teams by number
       .sort((a, b) => a.number - b.number),
   );
+  teamsOnTimer = computed(() => {
+    this.timer();
+    return this.teams().map((team) => ({ ...team }));
+  });
 
   publishResults = computed(() => this._settings().publishResults);
   raceIsOver = computed(
     () =>
-      this._teams().length > 0 &&
-      this._teams().every(
+      this.teamsOnTimer().length > 0 &&
+      this.teamsOnTimer().every(
         (team) => TeamUtils.isStarted(team) && TeamUtils.isFinished(team),
       ),
   );

@@ -34,16 +34,11 @@ interface StationResult {
 }
 
 export interface RankingItem {
-  // Name of the team
   name: string;
-  // Number of the team
   number: number;
-  // Penalty time in seconds
   penalty: number;
   results: StationResult[];
-  // Time in seconds
   time: number;
-  // Total time in seconds
   totalTime: number;
 }
 
