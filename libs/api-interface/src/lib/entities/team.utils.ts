@@ -15,7 +15,7 @@ export const TeamUtils = {
       members: dto.members,
       startedAt: dto.startedAt ? dayjs(dto.startedAt) : undefined,
       finishedAt: dto.finishedAt ? dayjs(dto.finishedAt) : undefined,
-      help: dto.help,
+      ranking: dto.ranking,
       penalty: dto.penalty,
     };
   },
@@ -29,7 +29,7 @@ export const TeamUtils = {
       members: team.members,
       startedAt: team.startedAt?.toISOString(),
       finishedAt: team.finishedAt?.toISOString(),
-      help: team.help,
+      ranking: team.ranking,
       penalty: team.penalty,
     };
   },
@@ -67,10 +67,5 @@ export const TeamUtils = {
     }
 
     return team.members.join(', ');
-  },
-  getTeamName(team: Team): string {
-    const teamName = team.name || `Team ${team.number}`;
-
-    return team.help ? teamName + '*' : teamName;
   },
 };

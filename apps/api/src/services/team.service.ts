@@ -1,7 +1,7 @@
 import { PrismaClient, Team as PrismaTeam } from '@prisma/client';
 import dayjs from 'dayjs';
 
-import { Team } from '@bkr/api-interface';
+import { Ranking, Team } from '@bkr/api-interface';
 
 export class TeamService {
   constructor(private prisma: PrismaClient) {}
@@ -10,14 +10,14 @@ export class TeamService {
     name: string,
     number: number,
     members: string[],
-    help: boolean,
+    ranking: Ranking,
   ): Promise<Team> {
     const team = await this.prisma.team.create({
       data: {
         name: name,
         number: number,
         members: members,
-        help: help,
+        ranking: ranking,
       },
     });
 
@@ -114,7 +114,7 @@ export class TeamService {
       members?: string[];
       startedAt?: string | null;
       finishedAt?: string | null;
-      help?: boolean;
+      ranking?: Ranking;
       penalty?: number;
     },
   ): Promise<Team> {
@@ -134,7 +134,7 @@ export class TeamService {
           typeof updates.finishedAt === 'string'
             ? new Date(updates.finishedAt)
             : updates.finishedAt,
-        help: updates.help,
+        ranking: updates.ranking,
         penalty: updates.penalty,
       },
     });

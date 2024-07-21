@@ -8,6 +8,7 @@ import {
 import dayjs from 'dayjs';
 
 import {
+  Ranking,
   Station,
   StationUtils,
   StationWithResults,
@@ -56,14 +57,12 @@ export interface RankingItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RankingComponent {
-  ranking = input.required<string>();
+  ranking = input.required<Ranking>();
   stations = input.required<StationWithResults[]>();
   teams = input.required<TeamWithResults[]>();
 
   teamsForRanking = computed(() =>
-    this.teams().filter((team) =>
-      this.ranking() === 'standard' ? !team.help : team.help,
-    ),
+    this.teams().filter((team) => team.ranking === this.ranking()),
   );
 
   rankingItems = computed(() => {
@@ -75,7 +74,7 @@ export class RankingComponent {
     return teams
       .map((team): Omit<RankingItem, 'time'> => {
         return {
-          name: TeamUtils.getTeamName(team),
+          name: team.name,
           number: team.number,
           penalty: team.penalty * 60,
           results: this.getStationResultsOfTeam(

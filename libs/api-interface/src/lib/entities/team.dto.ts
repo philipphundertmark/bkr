@@ -1,3 +1,5 @@
+import { Ranking } from '../ranking';
+
 export interface TeamDTO {
   id: string;
   createdAt: string;
@@ -7,6 +9,6 @@ export interface TeamDTO {
   members: string[];
   startedAt?: string;
   finishedAt?: string;
-  help: boolean;
+  ranking: Ranking;
   penalty: number;
 }

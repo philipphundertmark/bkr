@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 
 import {
   Order,
+  Ranking,
   ResultWithRank,
   StationUtils,
   TeamUtils,
@@ -49,9 +50,10 @@ type ResultWithRankAndTeam = ResultWithRank & { team: TeamWithResults };
 })
 export class MyStationComponent {
   readonly Order = Order;
+  readonly Ranking = Ranking;
   readonly TeamUtils = TeamUtils;
 
-  ranking = signal('standard');
+  ranking = signal<Ranking>(Ranking.A);
 
   stationId = toSignal(this.authService.sub$, { initialValue: null });
 
@@ -71,9 +73,7 @@ export class MyStationComponent {
   );
 
   teamsForRanking = computed(() =>
-    this.teams().filter((team) =>
-      this.ranking() === 'standard' ? !team.help : team.help,
-    ),
+    this.teams().filter((team) => team.ranking === this.ranking()),
   );
 
   results = computed(() => {

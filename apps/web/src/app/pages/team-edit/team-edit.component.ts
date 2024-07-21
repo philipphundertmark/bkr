@@ -25,6 +25,8 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
 
+import { Ranking } from '@bkr/api-interface';
+
 import {
   ButtonComponent,
   EmptyComponent,
@@ -53,6 +55,8 @@ import { dateTimeValidator } from '../../validators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamEditComponent implements OnInit {
+  readonly Ranking = Ranking;
+
   @HostBinding('class.page') page = true;
 
   /** Route parameter */
@@ -83,7 +87,7 @@ export class TeamEditComponent implements OnInit {
     finishedAt: new FormControl<string | null>(null, {
       validators: [dateTimeValidator()],
     }),
-    help: new FormControl<boolean>(false, {
+    ranking: new FormControl<Ranking>(Ranking.A, {
       nonNullable: true,
     }),
     penalty: new FormControl<number>(0, {
@@ -124,14 +128,14 @@ export class TeamEditComponent implements OnInit {
         startedAt: team.startedAt?.format('DD.MM.YYYY HH:mm:ss') ?? null,
         finishedAt: team.finishedAt?.format('DD.MM.YYYY HH:mm:ss') ?? null,
         members: team.members.length ? team.members : [''],
-        help: team.help,
+        ranking: team.ranking,
         penalty: team.penalty,
       });
     });
   }
 
   handleSave(teamId: string): void {
-    const { name, number, members, startedAt, finishedAt, help, penalty } =
+    const { name, number, members, startedAt, finishedAt, ranking, penalty } =
       this.form.value;
 
     if (
@@ -139,7 +143,7 @@ export class TeamEditComponent implements OnInit {
       typeof name === 'undefined' ||
       typeof number === 'undefined' ||
       number === null ||
-      typeof help === 'undefined'
+      typeof ranking === 'undefined'
     ) {
       return;
     }
@@ -162,7 +166,7 @@ export class TeamEditComponent implements OnInit {
         finishedAt: finishedAt
           ? dayjs(finishedAt, 'DD.MM.YYYY HH:mm:ss').toISOString()
           : null,
-        help,
+        ranking,
         penalty,
       })
       .pipe(takeUntilDestroyed(this.destroyRef))

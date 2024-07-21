@@ -10,6 +10,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import {
+  Ranking,
   ResultWithRank,
   StationUtils,
   TeamUtils,
@@ -49,10 +50,11 @@ type ResultWithRankAndTeam = ResultWithRank & { team: TeamWithResults };
 export class StationResultsComponent {
   @HostBinding('class.page') page = true;
 
+  readonly Ranking = Ranking;
   readonly StationUtils = StationUtils;
   readonly TeamUtils = TeamUtils;
 
-  ranking = signal('standard');
+  ranking = signal<Ranking>(Ranking.A);
 
   paramMap = toSignal(this.route.paramMap, {
     initialValue: null,
@@ -69,9 +71,7 @@ export class StationResultsComponent {
   teams = this.store.teams;
 
   teamsForRanking = computed(() =>
-    this.teams().filter((team) =>
-      this.ranking() === 'standard' ? !team.help : team.help,
-    ),
+    this.teams().filter((team) => team.ranking === this.ranking()),
   );
 
   stationId = computed(() => this.paramMap()?.get('stationId') ?? null);

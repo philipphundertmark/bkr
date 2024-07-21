@@ -16,6 +16,8 @@ import {
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
+import { Ranking } from '@bkr/api-interface';
+
 import {
   ButtonComponent,
   InputDirective,
@@ -41,6 +43,8 @@ import { Store } from '../../services/store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamNewComponent {
+  readonly Ranking = Ranking;
+
   form = new FormGroup({
     name: new FormControl<string>('', {
       nonNullable: true,
@@ -52,7 +56,7 @@ export class TeamNewComponent {
     members: new FormControl<string[]>([''], {
       nonNullable: true,
     }),
-    help: new FormControl<boolean>(false, {
+    ranking: new FormControl<Ranking>(Ranking.A, {
       nonNullable: true,
     }),
   });
@@ -69,14 +73,14 @@ export class TeamNewComponent {
   ) {}
 
   handleSave(): void {
-    const { name, number, members, help } = this.form.value;
+    const { name, number, members, ranking } = this.form.value;
 
     if (
       this.form.invalid ||
       typeof name === 'undefined' ||
       typeof number === 'undefined' ||
       number === null ||
-      typeof help === 'undefined'
+      typeof ranking === 'undefined'
     ) {
       return;
     }
@@ -91,7 +95,7 @@ export class TeamNewComponent {
         name,
         number,
         members: nonEmptyMembers,
-        help,
+        ranking,
       })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({

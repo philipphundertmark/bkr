@@ -32,7 +32,7 @@ export function TeamController(
         throw new BadRequestException(error.message);
       }
 
-      const { name, number, members, help } = value;
+      const { name, number, members, ranking } = value;
 
       let team = await teamService.getTeamByNumber(number);
 
@@ -40,7 +40,7 @@ export function TeamController(
         throw new BadRequestException('"number" must be unique');
       }
 
-      team = await teamService.createTeam(name, number, members, help);
+      team = await teamService.createTeam(name, number, members, ranking);
 
       res.status(201);
       res.json(TeamUtils.serialize(team));
@@ -92,7 +92,7 @@ export function TeamController(
         throw new BadRequestException(error.message);
       }
 
-      const { name, number, members, startedAt, finishedAt, help, penalty } =
+      const { name, number, members, startedAt, finishedAt, ranking, penalty } =
         value;
 
       let team = await teamService.getTeamById(teamId);
@@ -120,7 +120,7 @@ export function TeamController(
         members,
         startedAt,
         finishedAt,
-        help,
+        ranking,
         penalty,
       });
 

@@ -31,37 +31,29 @@
   </div>
 
   <div class="flex flex-col gap-2">
-    <label class="label">
-      Hilfsmittel<span class="text-indigo-500">*</span>
-    </label>
+    <label class="label"> Wertung<span class="text-indigo-500">*</span> </label>
 
     <div class="flex items-center gap-4">
       <input
         class="radio"
-        formControlName="help"
-        id="help-yes"
+        formControlName="ranking"
+        id="ranking-a"
         type="radio"
-        [value]="true"
+        [value]="Ranking.A"
       />
 
-      <label for="help-yes">
-        <span class="font-semibold text-indigo-500">Ja</span>, das Team nutzt
-        Hilfsmittel und fällt in die Nebenwertung.
-      </label>
+      <label for="ranking-a">A-Wertung</label>
     </div>
 
     <div class="flex items-center gap-4">
       <input
         class="radio"
-        formControlName="help"
-        id="help-no"
+        formControlName="ranking"
+        id="ranking-b"
         type="radio"
-        [value]="false"
+        [value]="Ranking.B"
       />
-      <label for="help-no">
-        <span class="font-semibold text-indigo-500">Nein</span>, das Team nutzt
-        keine Hilfsmittel.
-      </label>
+      <label for="ranking-b"> B-Wertung </label>
     </div>
   </div>
 

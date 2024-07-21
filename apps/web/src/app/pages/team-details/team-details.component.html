@@ -61,17 +61,14 @@
     </div>
 
     <div class="flex flex-col gap-2">
-      <label class="label">Hilfsmittel</label>
-      @if (team.help) {
-        <p>
-          <span class="font-semibold text-indigo-500">Ja</span>, das Team nutzt
-          Hilfsmittel und fällt in die Nebenwertung.
-        </p>
-      } @else {
-        <p>
-          <span class="font-semibold text-indigo-500">Nein</span>, das Team
-          nutzt keine Hilfsmittel.
-        </p>
+      <label class="label">Wertung</label>
+      @switch (team.ranking) {
+        @case (Ranking.A) {
+          <p>A-Wertung</p>
+        }
+        @case (Ranking.B) {
+          <p>B-Wertung</p>
+        }
       }
     </div>
 

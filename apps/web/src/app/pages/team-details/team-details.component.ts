@@ -18,7 +18,7 @@ import { Router, RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
 import { EMPTY, switchMap } from 'rxjs';
 
-import { TeamUtils } from '@bkr/api-interface';
+import { Ranking, TeamUtils } from '@bkr/api-interface';
 
 import {
   ButtonComponent,
@@ -60,6 +60,7 @@ import { Store } from '../../services/store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamDetailsComponent implements OnInit {
+  readonly Ranking = Ranking;
   readonly TeamUtils = TeamUtils;
 
   /** Route parameter */

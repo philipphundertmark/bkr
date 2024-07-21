@@ -9,6 +9,8 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 
+import { Ranking } from '@bkr/api-interface';
+
 import {
   AlertComponent,
   ButtonComponent,
@@ -47,7 +49,9 @@ import { Store } from '../../services/store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EndresultComponent {
-  ranking = signal('standard');
+  readonly Ranking = Ranking;
+
+  ranking = signal<Ranking>(Ranking.A);
 
   stations = this.store.stations;
   teams = this.store.teams;

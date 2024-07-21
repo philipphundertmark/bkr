@@ -4,7 +4,6 @@ import {
   Component,
   DestroyRef,
   computed,
-  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -15,6 +14,7 @@ import duration from 'dayjs/plugin/duration';
 import { EMPTY, map, switchMap, timer } from 'rxjs';
 
 import {
+  Ranking,
   Result,
   Station,
   Team,
@@ -75,10 +75,11 @@ export interface RankingItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
+  readonly Ranking = Ranking;
   readonly TeamUtils = TeamUtils;
 
-  activeTab = signal(localStorage.getItem('activeTab') ?? 'overview');
-  ranking = signal(localStorage.getItem('ranking') ?? 'standard');
+  activeTab = signal<'overview' | 'ticker'>('overview');
+  ranking = signal<Ranking>(Ranking.A);
 
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
   isStation = toSignal(this.authService.isStation$, { initialValue: false });
@@ -131,15 +132,7 @@ export class HomeComponent {
     private readonly notificationService: NotificationService,
     private readonly store: Store,
     private readonly teamService: TeamService,
-  ) {
-    effect(() => {
-      localStorage.setItem('activeTab', this.activeTab());
-    });
-
-    effect(() => {
-      localStorage.setItem('ranking', this.ranking());
-    });
-  }
+  ) {}
 
   hasStationId(rankingItem: RankingItem, stationId: string): boolean {
     return rankingItem.stationIds.includes(stationId);

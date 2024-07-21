@@ -27,8 +27,8 @@
 </bkr-alert>
 
 <bkr-tabs [(activeTab)]="ranking">
-  <bkr-tab key="standard">Hauptwertung</bkr-tab>
-  <bkr-tab key="help">Nebenwertung</bkr-tab>
+  <bkr-tab [key]="Ranking.A">A-Wertung</bkr-tab>
+  <bkr-tab [key]="Ranking.B">B-Wertung</bkr-tab>
 </bkr-tabs>
 
 <ng-container
@@ -42,7 +42,7 @@
         <div class="flex justify-between gap-2">
           <!-- Team name and number-->
           <h3 class="name">
-            {{ TeamUtils.getTeamName(result.team) }}
+            {{ result.team.name }}
             <span class="number">#{{ result.team.number }}</span>
           </h3>
 

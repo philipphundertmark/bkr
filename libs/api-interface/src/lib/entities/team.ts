@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 
+import { Ranking } from '../ranking';
 import { Result } from './result';
 
 export interface Team {
@@ -44,9 +45,9 @@ export interface Team {
   finishedAt?: dayjs.Dayjs;
 
   /**
-   * Whether the team uses any kind of help.
+   * The ranking the team is part of.
    */
-  help: boolean;
+  ranking: Ranking;
 
   /**
    * The penalty time of the team in minutes.

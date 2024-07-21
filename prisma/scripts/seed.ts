@@ -9,25 +9,25 @@ async function main() {
       {
         number: 1,
         name: 'Team 1',
-        help: false,
+        ranking: 'A',
         members: ['Alice', 'Bob'],
       },
       {
         number: 2,
         name: 'Team 2',
-        help: false,
+        ranking: 'A',
         members: ['Charlie', 'David'],
       },
       {
         number: 3,
         name: 'Team 3',
-        help: false,
+        ranking: 'A',
         members: ['Eve', 'Frank'],
       },
       {
         number: 4,
         name: 'Team 4',
-        help: false,
+        ranking: 'A',
         members: ['Grace', 'Hank'],
       },
     ],
@@ -69,7 +69,7 @@ async function main() {
     ],
   });
 
-  console.table(`Created ${teams.count} stations`);
+  console.table(`Created ${stations.count} stations`);
 }
 
 main()
