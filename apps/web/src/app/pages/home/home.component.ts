@@ -86,7 +86,7 @@ export class HomeComponent {
 
   results = this.store.results;
   stations = this.store.stations;
-  teams = this.store.teamsOnTimer;
+  teams = this.store.teams;
 
   isRaceOver = this.store.raceIsOver;
   publishResults = this.store.publishResults;

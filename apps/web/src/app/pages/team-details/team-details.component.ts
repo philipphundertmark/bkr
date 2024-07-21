@@ -67,8 +67,7 @@ export class TeamDetailsComponent implements OnInit {
   teamId = input.required<string>();
 
   team = computed(
-    () =>
-      this.store.teamsOnTimer().find(({ id }) => id === this.teamId()) ?? null,
+    () => this.store.teams().find(({ id }) => id === this.teamId()) ?? null,
   );
   team$ = toObservable(this.team);
 

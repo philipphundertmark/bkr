@@ -36,11 +36,7 @@ export class Store {
   private _stations = signal<Station[]>(INITIAL_STATIONS);
   private _teams = signal<Team[]>(INITIAL_TEAMS);
 
-  private timer = toSignal(timer(0, 1000));
-
-  results = computed(() => this._results());
-  settings = computed(() => this._settings());
-  stations = computed(() =>
+  private _sortedStationsWithResults = computed(() =>
     this._stations()
       // Find the results for each station
       .map<StationWithResults>((station) => ({
@@ -52,7 +48,7 @@ export class Store {
       // Sort stations by number
       .sort((a, b) => a.number - b.number),
   );
-  teams = computed(() =>
+  private _sortedTeamsWithResults = computed(() =>
     this._teams()
       // Find the results for each team
       .map<TeamWithResults>((team) => ({
@@ -62,16 +58,22 @@ export class Store {
       // Sort teams by number
       .sort((a, b) => a.number - b.number),
   );
-  teamsOnTimer = computed(() => {
+
+  private timer = toSignal(timer(0, 1000));
+
+  results = computed(() => this._results());
+  settings = computed(() => this._settings());
+  stations = computed(() => this._sortedStationsWithResults());
+  teams = computed(() => {
     this.timer();
-    return this.teams().map((team) => ({ ...team }));
+    return this._sortedTeamsWithResults().map((team) => ({ ...team }));
   });
 
   publishResults = computed(() => this._settings().publishResults);
   raceIsOver = computed(
     () =>
-      this.teamsOnTimer().length > 0 &&
-      this.teamsOnTimer().every(
+      this.teams().length > 0 &&
+      this.teams().every(
         (team) => TeamUtils.isStarted(team) && TeamUtils.isFinished(team),
       ),
   );

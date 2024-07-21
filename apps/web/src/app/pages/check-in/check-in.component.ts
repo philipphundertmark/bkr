@@ -54,7 +54,7 @@ export class CheckInComponent {
   checkInLoading = signal(false);
   teamsToCheckIn = computed(() =>
     this.store
-      .teamsOnTimer()
+      .teams()
       .filter(TeamUtils.isRunning)
       .filter(
         (team) =>
