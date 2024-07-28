@@ -83,6 +83,10 @@ export const appRoutes: Route[] = [
   {
     path: 'schedule',
     component: ScheduleComponent,
+    canActivate: [roleCanActivateFn],
+    data: {
+      roles: [Role.ADMIN],
+    },
   },
   {
     path: 'stations/new',
