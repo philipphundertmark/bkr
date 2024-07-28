@@ -24,7 +24,11 @@ import {
   LockOpenIconComponent,
   TrophyIconComponent,
 } from '../../icons/mini';
-import { NotificationService, SettingsService } from '../../services';
+import {
+  NotificationService,
+  PreferencesService,
+  SettingsService,
+} from '../../services';
 import { Store } from '../../services/store';
 
 @Component({
@@ -51,7 +55,7 @@ import { Store } from '../../services/store';
 export class EndresultComponent {
   readonly Ranking = Ranking;
 
-  ranking = signal<Ranking>(Ranking.A);
+  ranking = this.preferencesService.endresultSelectedRanking;
 
   stations = this.store.stations;
   teams = this.store.teams;
@@ -66,6 +70,7 @@ export class EndresultComponent {
 
   constructor(
     private readonly notificationService: NotificationService,
+    private readonly preferencesService: PreferencesService,
     private readonly settingsService: SettingsService,
     private readonly store: Store,
   ) {}

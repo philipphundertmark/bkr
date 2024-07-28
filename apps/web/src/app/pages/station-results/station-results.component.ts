@@ -4,7 +4,6 @@ import {
   Component,
   HostBinding,
   computed,
-  signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -25,7 +24,7 @@ import {
   TabsComponent,
 } from '../../components';
 import { DurationPipe } from '../../pipes';
-import { AuthService } from '../../services';
+import { AuthService, PreferencesService } from '../../services';
 import { Store } from '../../services/store';
 
 type ResultWithRankAndTeam = ResultWithRank & { team: TeamWithResults };
@@ -54,7 +53,7 @@ export class StationResultsComponent {
   readonly StationUtils = StationUtils;
   readonly TeamUtils = TeamUtils;
 
-  ranking = signal<Ranking>(Ranking.A);
+  ranking = this.preferencesService.stationResultsSelectedRanking;
 
   paramMap = toSignal(this.route.paramMap, {
     initialValue: null,
@@ -110,6 +109,7 @@ export class StationResultsComponent {
 
   constructor(
     private readonly authService: AuthService,
+    private readonly preferencesService: PreferencesService,
     private readonly route: ActivatedRoute,
     private readonly store: Store,
   ) {}

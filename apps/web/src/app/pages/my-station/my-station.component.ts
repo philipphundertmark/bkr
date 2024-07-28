@@ -1,10 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 
@@ -25,7 +20,7 @@ import {
   TabsComponent,
 } from '../../components';
 import { ChevronRightIconComponent } from '../../icons/mini';
-import { AuthService } from '../../services';
+import { AuthService, PreferencesService } from '../../services';
 import { Store } from '../../services/store';
 
 type ResultWithRankAndTeam = ResultWithRank & { team: TeamWithResults };
@@ -53,7 +48,7 @@ export class MyStationComponent {
   readonly Ranking = Ranking;
   readonly TeamUtils = TeamUtils;
 
-  ranking = signal<Ranking>(Ranking.A);
+  ranking = this.preferencesService.myStationSelectedRanking;
 
   stationId = toSignal(this.authService.sub$, { initialValue: null });
 
@@ -101,6 +96,7 @@ export class MyStationComponent {
 
   constructor(
     private readonly authService: AuthService,
+    private readonly preferencesService: PreferencesService,
     private readonly store: Store,
   ) {}
 }

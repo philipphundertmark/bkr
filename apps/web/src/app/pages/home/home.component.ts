@@ -1,10 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
@@ -31,7 +26,7 @@ import {
   TrophyIconComponent,
 } from '../../icons/mini';
 import { DurationPipe } from '../../pipes';
-import { AuthService } from '../../services';
+import { AuthService, PreferencesService } from '../../services';
 import { Store } from '../../services/store';
 import { TickerComponent } from './ticker/ticker.component';
 
@@ -72,8 +67,8 @@ export class HomeComponent {
   readonly Ranking = Ranking;
   readonly TeamUtils = TeamUtils;
 
-  activeTab = signal<'overview' | 'ticker'>('overview');
-  ranking = signal<Ranking>(Ranking.A);
+  activeTab = this.preferencesService.homeActiveTab;
+  ranking = this.preferencesService.homeSelectedRanking;
 
   isAdmin = toSignal(this.authService.isAdmin$, { initialValue: false });
   isStation = toSignal(this.authService.isStation$, { initialValue: false });
@@ -115,6 +110,7 @@ export class HomeComponent {
 
   constructor(
     private readonly authService: AuthService,
+    private readonly preferencesService: PreferencesService,
     private readonly store: Store,
   ) {}
 
