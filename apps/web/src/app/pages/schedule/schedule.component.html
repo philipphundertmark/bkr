@@ -1,0 +1,58 @@
+<header class="header">
+  <a bkr-button class="col-span-1" routerLink="/">Abbrechen</a>
+
+  <button
+    bkr-button
+    bkrType="primary"
+    class="col-span-1"
+    (click)="handleSave()"
+    [disabled]="form.invalid || scheduleLoading()"
+    [bkrLoading]="scheduleLoading()"
+  >
+    Speichern
+  </button>
+</header>
+
+<bkr-alert>
+  Durch das Festlegen des Rennstarts wird die Reihenfolge aller Teams neu
+  gemischt. Die Startzeit des erstens Teams entspricht dem Start des Rennens.
+  Alle weiteren Teams starten im angegebenen Intervall.
+</bkr-alert>
+
+<form class="flex flex-col gap-4" [formGroup]="form">
+  <div class="flex flex-col gap-2">
+    <label class="label">
+      Start des Rennens<span class="text-indigo-500">*</span>
+    </label>
+
+    <input
+      bkrInput
+      formControlName="start"
+      placeholder="Start des Rennens"
+      type="text"
+    />
+  </div>
+
+  <p class="text-sm text-gray-500">
+    Die Zeit muss im Format
+    <span class="font-semibold text-indigo-500">DD.MM.YYYY HH:mm:ss</span>
+    angegeben werden.
+  </p>
+
+  <div class="flex flex-col gap-2">
+    <label class="label">
+      Start-Intervall<span class="text-indigo-500">*</span>
+    </label>
+
+    <input
+      bkrInput
+      formControlName="interval"
+      placeholder="Start-Interval"
+      type="number"
+    />
+  </div>
+
+  <p class="text-sm text-gray-500">
+    Der Abstand in Minuten zwischen den Starts der Teams.
+  </p>
+</form>

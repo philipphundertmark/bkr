@@ -11,17 +11,7 @@
       Neues Team
     </a>
 
-    <button
-      bkr-button
-      [bkrLoading]="scheduleTeamsLoading()"
-      class="col-span-1"
-      (click)="scheduleTeams()"
-    >
-      <bkr-arrow-path-rounded-square-icon
-        class="text-gray-500"
-      ></bkr-arrow-path-rounded-square-icon>
-      Shuffle
-    </button>
+    <a bkr-button class="col-span-1" routerLink="/schedule">Rennstart</a>
   } @else if (isStation()) {
     <a
       bkr-forward-button

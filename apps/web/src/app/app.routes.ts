@@ -21,6 +21,7 @@ import {
   TeamNewComponent,
 } from './pages';
 import { RulesComponent } from './pages/rules/rules.component';
+import { ScheduleComponent } from './pages/schedule/schedule.component';
 
 export const appRoutes: Route[] = [
   {
@@ -78,6 +79,10 @@ export const appRoutes: Route[] = [
   {
     path: 'stations',
     component: StationListComponent,
+  },
+  {
+    path: 'schedule',
+    component: ScheduleComponent,
   },
   {
     path: 'stations/new',
