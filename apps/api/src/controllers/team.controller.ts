@@ -10,15 +10,15 @@ import {
 
 import { BadRequestException, NotFoundException } from '../errors';
 import { authorize } from '../middleware/authorize';
-import { LiveService } from '../services/live.service';
-import { ResultService } from '../services/result.service';
-import { TeamService } from '../services/team.service';
+import { ILiveService } from '../services/live.service';
+import { IResultService } from '../services/result.service';
+import { ITeamService } from '../services/team.service';
 import { handler } from './handler';
 
 export function TeamController(
-  liveService: LiveService,
-  resultService: ResultService,
-  teamService: TeamService,
+  liveService: ILiveService,
+  resultService: IResultService,
+  teamService: ITeamService,
 ): Router {
   const router = Router();
 

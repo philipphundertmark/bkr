@@ -9,19 +9,17 @@ import {
 
 import { BadRequestException, NotFoundException } from '../errors';
 import { authorize } from '../middleware/authorize';
-import { LiveService } from '../services/live.service';
-import { ResultService } from '../services/result.service';
-import { SettingsService } from '../services/settings.service';
-import { StationService } from '../services/station.service';
-import { TeamService } from '../services/team.service';
+import { ILiveService } from '../services/live.service';
+import { IResultService } from '../services/result.service';
+import { IStationService } from '../services/station.service';
+import { ITeamService } from '../services/team.service';
 import { handler } from './handler';
 
 export function ResultController(
-  liveService: LiveService,
-  resultService: ResultService,
-  settingsService: SettingsService,
-  stationService: StationService,
-  teamService: TeamService,
+  liveService: ILiveService,
+  resultService: IResultService,
+  stationService: IStationService,
+  teamService: ITeamService,
 ): Router {
   const router = Router();
 

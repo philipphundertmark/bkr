@@ -13,7 +13,27 @@ import {
 
 import { loggerOptions } from '../logger';
 
-export class LiveService {
+export interface ILiveService {
+  sendSetResultEvent(result: Result): void;
+
+  sendSetStationEvent(station: Station): void;
+
+  sendSetTeamEvent(team: Team): void;
+
+  sendSetTeamsEvent(teams: Team[]): void;
+
+  sendDeleteResultEvent(stationId: string, teamId: string): void;
+
+  sendDeleteResultsOfTeamEvent(teamId: string): void;
+
+  sendDeleteStationEvent(stationId: string): void;
+
+  sendDeleteTeamEvent(teamId: string): void;
+
+  sendSetSettingsEvent(settings: Settings): void;
+}
+
+export class LiveService implements ILiveService {
   private readonly logger = winston.createLogger(loggerOptions);
 
   constructor(private readonly io: Server) {

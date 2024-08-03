@@ -3,9 +3,43 @@ import dayjs from 'dayjs';
 
 import { Station } from '@bkr/api-interface';
 
-export class StationService {
+export interface IStationService {
+  createStation(
+    name: string,
+    number: number,
+    members: string[],
+    code: string,
+    order: Order,
+  ): Promise<Station>;
+
+  deleteStation(id: string): Promise<void>;
+
+  getAll(): Promise<Station[]>;
+
+  getStationById(id: string): Promise<Station | null>;
+
+  getStationByNumber(number: number): Promise<Station | null>;
+
+  getStationByCode(code: string): Promise<Station | null>;
+
+  updateStation(
+    id: string,
+    updates: {
+      name?: string;
+      number?: number;
+      members?: string[];
+      code?: string;
+      order?: Order;
+    },
+  ): Promise<Station>;
+}
+
+export class StationService implements IStationService {
   constructor(private prisma: PrismaClient) {}
 
+  /**
+   * @implements {IStationService}
+   */
   async createStation(
     name: string,
     number: number,
@@ -26,6 +60,9 @@ export class StationService {
     return this.toStation(station);
   }
 
+  /**
+   * @implements {IStationService}
+   */
   async deleteStation(id: string): Promise<void> {
     await this.prisma.station.delete({
       where: {
@@ -34,12 +71,18 @@ export class StationService {
     });
   }
 
+  /**
+   * @implements {IStationService}
+   */
   async getAll(): Promise<Station[]> {
     const stations = await this.prisma.station.findMany({});
 
     return stations.map((station) => this.toStation(station));
   }
 
+  /**
+   * @implements {IStationService}
+   */
   async getStationById(id: string): Promise<Station | null> {
     const station = await this.prisma.station.findUnique({
       where: {
@@ -50,6 +93,9 @@ export class StationService {
     return station ? this.toStation(station) : null;
   }
 
+  /**
+   * @implements {IStationService}
+   */
   async getStationByNumber(number: number): Promise<Station | null> {
     const station = await this.prisma.station.findUnique({
       where: {
@@ -60,6 +106,9 @@ export class StationService {
     return station ? this.toStation(station) : null;
   }
 
+  /**
+   * @implements {IStationService}
+   */
   async getStationByCode(code: string): Promise<Station | null> {
     const station = await this.prisma.station.findUnique({
       where: {
@@ -70,6 +119,9 @@ export class StationService {
     return station ? this.toStation(station) : null;
   }
 
+  /**
+   * @implements {IStationService}
+   */
   async updateStation(
     id: string,
     updates: {

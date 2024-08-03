@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { MockType } from '../test-utils';
-import { TokenService } from './token.service';
+import { ITokenService } from './token.service';
 
-export const tokenServiceMock: MockType<TokenService> = {
+export const tokenServiceMock = {
   createToken: jest.fn((...args) => {
     throw new Error('createToken not implemented');
   }),
-};
+} satisfies ITokenService;

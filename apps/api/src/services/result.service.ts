@@ -3,9 +3,30 @@ import dayjs from 'dayjs';
 
 import { Result } from '@bkr/api-interface';
 
-export class ResultService {
+export interface IResultService {
+  createResult(stationId: string, teamId: string): Promise<Result>;
+
+  deleteResult(stationId: string, teamId: string): Promise<void>;
+
+  deleteResultsByTeamId(teamId: string): Promise<void>;
+
+  getAll(): Promise<Result[]>;
+
+  getResultById(stationId: string, teamId: string): Promise<Result | null>;
+
+  updateResult(
+    stationId: string,
+    teamId: string,
+    updates: { points?: number; checkIn?: string; checkOut?: string | null },
+  ): Promise<Result>;
+}
+
+export class ResultService implements IResultService {
   constructor(private prisma: PrismaClient) {}
 
+  /**
+   * @implements {IResultService}
+   */
   async createResult(stationId: string, teamId: string): Promise<Result> {
     const result = await this.prisma.result.create({
       data: {
@@ -17,6 +38,9 @@ export class ResultService {
     return this.toResult(result);
   }
 
+  /**
+   * @implements {IResultService}
+   */
   async deleteResult(stationId: string, teamId: string): Promise<void> {
     await this.prisma.result.delete({
       where: {
@@ -28,6 +52,9 @@ export class ResultService {
     });
   }
 
+  /**
+   * @implements {IResultService}
+   */
   async deleteResultsByTeamId(teamId: string): Promise<void> {
     await this.prisma.result.deleteMany({
       where: {
@@ -36,12 +63,18 @@ export class ResultService {
     });
   }
 
+  /**
+   * @implements {IResultService}
+   */
   async getAll(): Promise<Result[]> {
     const results = await this.prisma.result.findMany({});
 
     return results.map((result) => this.toResult(result));
   }
 
+  /**
+   * @implements {IResultService}
+   */
   async getResultById(
     stationId: string,
     teamId: string,
@@ -58,6 +91,9 @@ export class ResultService {
     return result ? this.toResult(result) : null;
   }
 
+  /**
+   * @implements {IResultService}
+   */
   async updateResult(
     stationId: string,
     teamId: string,

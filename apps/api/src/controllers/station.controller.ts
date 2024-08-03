@@ -11,13 +11,13 @@ import {
 
 import { BadRequestException, NotFoundException } from '../errors';
 import { authorize } from '../middleware/authorize';
-import { LiveService } from '../services/live.service';
-import { StationService } from '../services/station.service';
+import { ILiveService } from '../services/live.service';
+import { IStationService } from '../services/station.service';
 import { handler } from './handler';
 
 export function StationController(
-  liveService: LiveService,
-  stationService: StationService,
+  liveService: ILiveService,
+  stationService: IStationService,
 ): Router {
   const router = Router();
 

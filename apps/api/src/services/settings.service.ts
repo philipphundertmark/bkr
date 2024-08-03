@@ -3,9 +3,16 @@ import dayjs from 'dayjs';
 
 import { Settings } from '@bkr/api-interface';
 
-export class SettingsService {
+export interface ISettingsService {
+  upsertSettings(updates?: { publishResults?: boolean }): Promise<Settings>;
+}
+
+export class SettingsService implements ISettingsService {
   constructor(private prisma: PrismaClient) {}
 
+  /**
+   * @implements {ISettingsService}
+   */
   async upsertSettings(
     updates: { publishResults?: boolean } = {},
   ): Promise<Settings> {

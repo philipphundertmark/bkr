@@ -4,13 +4,13 @@ import { CreateTokenSchema, Role } from '@bkr/api-interface';
 
 import { config } from '../config';
 import { BadRequestException } from '../errors';
-import { StationService } from '../services/station.service';
-import { TokenService } from '../services/token.service';
+import { IStationService } from '../services/station.service';
+import { ITokenService } from '../services/token.service';
 import { handler } from './handler';
 
 export function TokenController(
-  tokenService: TokenService,
-  stationService: StationService,
+  tokenService: ITokenService,
+  stationService: IStationService,
 ): Router {
   const router = Router();
 

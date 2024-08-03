@@ -2,13 +2,6 @@ import * as jwt from 'jsonwebtoken';
 
 import { Role } from '@bkr/api-interface';
 
-export type MockType<T, U extends keyof T = keyof T> = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [K in U]: T[K] extends (...args: any[]) => any
-    ? jest.Mock<ReturnType<T[K]>, Parameters<T[K]>>
-    : T[K];
-};
-
 /**
  * Mocks an authorization header for an admin user
  * @returns {Authorization: string} - A valid authorization header for an admin user

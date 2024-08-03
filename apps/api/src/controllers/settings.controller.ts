@@ -4,13 +4,13 @@ import { Role, SettingsUtils, UpdateSettingsSchema } from '@bkr/api-interface';
 
 import { BadRequestException } from '../errors';
 import { authorize } from '../middleware/authorize';
-import { LiveService } from '../services/live.service';
-import { SettingsService } from '../services/settings.service';
+import { ILiveService } from '../services/live.service';
+import { ISettingsService } from '../services/settings.service';
 import { handler } from './handler';
 
 export function SettingsController(
-  liveService: LiveService,
-  settingsService: SettingsService,
+  liveService: ILiveService,
+  settingsService: ISettingsService,
 ): Router {
   const router = Router();
 

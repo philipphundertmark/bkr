@@ -3,14 +3,13 @@ import dayjs from 'dayjs';
 
 import { Settings } from '@bkr/api-interface';
 
-import { MockType } from '../test-utils';
-import { SettingsService } from './settings.service';
+import { ISettingsService } from './settings.service';
 
-export const settingsServiceMock: MockType<SettingsService> = {
+export const settingsServiceMock = {
   upsertSettings: jest.fn((...args) => {
     throw new Error('upsertSettings not implemented');
   }),
-};
+} satisfies ISettingsService;
 
 export const mockSettings = (updates: Partial<Settings>): Settings => ({
   id: '00000000-0000-0000-0000-000000000000',

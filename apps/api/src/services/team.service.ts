@@ -3,9 +3,44 @@ import dayjs from 'dayjs';
 
 import { Ranking, Team } from '@bkr/api-interface';
 
-export class TeamService {
+export interface ITeamService {
+  createTeam(
+    name: string,
+    number: number,
+    members: string[],
+    ranking: Ranking,
+  ): Promise<Team>;
+
+  deleteTeam(id: string): Promise<void>;
+
+  getAll(): Promise<Team[]>;
+
+  getTeamById(id: string): Promise<Team | null>;
+
+  getTeamByNumber(number: number): Promise<Team | null>;
+
+  scheduleTeams(start: string, interval: number): Promise<Team[]>;
+
+  updateTeam(
+    id: string,
+    updates: {
+      name?: string;
+      number?: number;
+      members?: string[];
+      startedAt?: string | null;
+      finishedAt?: string | null;
+      ranking?: Ranking;
+      penalty?: number;
+    },
+  ): Promise<Team>;
+}
+
+export class TeamService implements ITeamService {
   constructor(private prisma: PrismaClient) {}
 
+  /**
+   * @implements {ITeamService}
+   */
   async createTeam(
     name: string,
     number: number,
@@ -24,6 +59,9 @@ export class TeamService {
     return this.toTeam(team);
   }
 
+  /**
+   * @implements {ITeamService}
+   */
   async deleteTeam(id: string): Promise<void> {
     await this.prisma.team.delete({
       where: {
@@ -32,12 +70,18 @@ export class TeamService {
     });
   }
 
+  /**
+   * @implements {ITeamService}
+   */
   async getAll(): Promise<Team[]> {
     const teams = await this.prisma.team.findMany({});
 
     return teams.map((team) => this.toTeam(team));
   }
 
+  /**
+   * @implements {ITeamService}
+   */
   async getTeamById(id: string): Promise<Team | null> {
     const team = await this.prisma.team.findUnique({
       where: {
@@ -48,6 +92,9 @@ export class TeamService {
     return team ? this.toTeam(team) : null;
   }
 
+  /**
+   * @implements {ITeamService}
+   */
   async getTeamByNumber(number: number): Promise<Team | null> {
     const team = await this.prisma.team.findUnique({
       where: {
@@ -58,6 +105,9 @@ export class TeamService {
     return team ? this.toTeam(team) : null;
   }
 
+  /**
+   * @implements {ITeamService}
+   */
   async scheduleTeams(start: string, interval: number): Promise<Team[]> {
     const teams = await this.prisma.team.findMany({
       select: {
@@ -106,6 +156,9 @@ export class TeamService {
     return updatedTeams.map((team) => this.toTeam(team));
   }
 
+  /**
+   * @implements {ITeamService}
+   */
   async updateTeam(
     id: string,
     updates: {

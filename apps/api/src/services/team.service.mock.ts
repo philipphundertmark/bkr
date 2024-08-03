@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import dayjs from 'dayjs';
 
-import { Team } from '@bkr/api-interface';
+import { Ranking, Team } from '@bkr/api-interface';
 
-import { MockType } from '../test-utils';
-import { TeamService } from './team.service';
+import { ITeamService } from './team.service';
 
-export const teamServiceMock: MockType<TeamService> = {
+export const teamServiceMock = {
   createTeam: jest.fn(async (...args) => {
     throw new Error('createTeam not implemented');
   }),
@@ -22,10 +21,13 @@ export const teamServiceMock: MockType<TeamService> = {
   getTeamByNumber: jest.fn(async (...args) => {
     throw new Error('getTeamByNumber not implemented');
   }),
+  scheduleTeams: jest.fn(async (...args) => {
+    throw new Error('scheduleTeams not implemented');
+  }),
   updateTeam: jest.fn(async (...args) => {
     throw new Error('updateTeam not implemented');
   }),
-};
+} satisfies ITeamService;
 
 export const mockTeam = (updates: Partial<Team>): Team => ({
   id: '00000000-0000-0000-0000-000000000000',
@@ -35,6 +37,6 @@ export const mockTeam = (updates: Partial<Team>): Team => ({
   number: 1,
   members: [],
   penalty: 0,
-  results: [],
+  ranking: Ranking.A,
   ...updates,
 });

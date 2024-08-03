@@ -3,10 +3,9 @@ import dayjs from 'dayjs';
 
 import { Order, Station } from '@bkr/api-interface';
 
-import { MockType } from '../test-utils';
-import { StationService } from './station.service';
+import { IStationService } from './station.service';
 
-export const stationServiceMock: MockType<StationService> = {
+export const stationServiceMock = {
   createStation: jest.fn(async (...args) => {
     throw new Error('createStation not implemented');
   }),
@@ -28,7 +27,7 @@ export const stationServiceMock: MockType<StationService> = {
   updateStation: jest.fn(async (...args) => {
     throw new Error('updateStation not implemented');
   }),
-};
+} satisfies IStationService;
 
 export const mockStation = (updates: Partial<Station>): Station => ({
   id: '00000000-0000-0000-0000-000000000000',
@@ -39,6 +38,5 @@ export const mockStation = (updates: Partial<Station>): Station => ({
   members: [],
   code: '000000',
   order: Order.ASC,
-  results: [],
   ...updates,
 });

@@ -4,7 +4,14 @@ import { Role } from '@bkr/api-interface';
 
 import { config } from '../config';
 
-export class TokenService {
+export interface ITokenService {
+  createToken(sub: string, role: Role, expiresIn?: string | number): string;
+}
+
+export class TokenService implements ITokenService {
+  /**
+   * @implements {ITokenService}
+   */
   createToken(
     sub: string,
     role: Role,
