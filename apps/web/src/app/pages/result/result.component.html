@@ -1,7 +1,7 @@
 <header class="header">
   <a bkr-button class="col-span-1" routerLink="/my-station">Abbrechen</a>
 
-  <ng-container *ngIf="result$ | async as result">
+  @if (result(); as result) {
     <button
       bkr-button
       [bkrLoading]="updateResultLoading()"
@@ -12,10 +12,10 @@
     >
       Aktualisieren
     </button>
-  </ng-container>
+  }
 </header>
 
-<ng-container *ngIf="result$ | async as result; else empty">
+@if (result(); as result) {
   <form class="flex flex-col gap-4" [formGroup]="form">
     <div class="flex flex-col gap-2">
       <label class="label">
@@ -67,7 +67,6 @@
       />
     </div>
   </form>
-
   <bkr-danger-zone>
     <button
       bkr-button
@@ -81,8 +80,6 @@
       Ergebnis löschen
     </button>
   </bkr-danger-zone>
-</ng-container>
-
-<ng-template #empty>
+} @else {
   <bkr-empty>Ergebnis nicht gefunden.</bkr-empty>
-</ng-template>
+}

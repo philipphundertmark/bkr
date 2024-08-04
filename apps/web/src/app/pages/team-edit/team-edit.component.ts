@@ -66,6 +66,9 @@ export class TeamEditComponent implements OnInit {
 
   team = computed(
     () => this.teams().find(({ id }) => id === this.teamId()) ?? null,
+    {
+      equal: (a, b) => a?.id === b?.id,
+    },
   );
   team$ = toObservable(this.team);
 

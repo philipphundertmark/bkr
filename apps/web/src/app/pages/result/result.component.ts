@@ -3,12 +3,16 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  HostBinding,
   OnInit,
+  computed,
   inject,
   signal,
 } from '@angular/core';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import {
+  takeUntilDestroyed,
+  toObservable,
+  toSignal,
+} from '@angular/core/rxjs-interop';
 import {
   FormControl,
   FormGroup,
@@ -49,13 +53,12 @@ import { dateTimeValidator } from '../../validators';
     RouterModule,
     TrashIconComponent,
   ],
+  host: { class: 'page' },
+  styleUrl: './result.component.scss',
   templateUrl: './result.component.html',
-  styleUrls: ['./result.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResultComponent implements OnInit {
-  @HostBinding('class.page') page = true;
-
   deleteResultLoading = signal(false);
   updateResultLoading = signal(false);
 
@@ -71,19 +74,26 @@ export class ResultComponent implements OnInit {
     }),
   });
 
-  teams$ = toObservable(this.store.teams);
+  teamId$ = this.route.queryParamMap.pipe(
+    map((params) => params.get('teamId')),
+  );
+  teamId = toSignal(this.teamId$, { initialValue: null });
 
-  result$ = combineLatest([
-    this.route.queryParamMap,
-    this.teams$,
-    this.authService.sub$,
-  ]).pipe(
-    map(([params, teams, stationId]) =>
-      teams
-        .find((team) => team.id === params.get('teamId'))
-        ?.results.find((result) => result.stationId === stationId),
+  team = computed(
+    () => this.store.teams().find((team) => team.id === this.teamId()) ?? null,
+    {
+      equal: (a, b) => a?.id === b?.id,
+    },
+  );
+  team$ = toObservable(this.team);
+
+  result$ = combineLatest([this.team$, this.authService.sub$]).pipe(
+    map(
+      ([team, stationId]) =>
+        team?.results.find((result) => result.stationId === stationId) ?? null,
     ),
   );
+  result = toSignal(this.result$, { initialValue: null });
 
   private readonly destroyRef = inject(DestroyRef);
 
