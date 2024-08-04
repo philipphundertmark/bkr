@@ -6,27 +6,13 @@ import { Order, Station } from '@bkr/api-interface';
 import { IStationService } from './station.service';
 
 export const stationServiceMock = {
-  createStation: jest.fn(async (...args) => {
-    throw new Error('createStation not implemented');
-  }),
-  deleteStation: jest.fn(async (...args) => {
-    throw new Error('deleteStation not implemented');
-  }),
-  getAll: jest.fn(async (...args) => {
-    throw new Error('getAll not implemented');
-  }),
-  getStationByCode: jest.fn(async (...args) => {
-    throw new Error('getStationByCode not implemented');
-  }),
-  getStationById: jest.fn(async (...args) => {
-    throw new Error('getStationById not implemented');
-  }),
-  getStationByNumber: jest.fn(async (...args) => {
-    throw new Error('getStationByNumber not implemented');
-  }),
-  updateStation: jest.fn(async (...args) => {
-    throw new Error('updateStation not implemented');
-  }),
+  createStation: jest.fn(),
+  deleteStation: jest.fn(),
+  getAll: jest.fn(),
+  getStationByCode: jest.fn(),
+  getStationById: jest.fn(),
+  getStationByNumber: jest.fn(),
+  updateStation: jest.fn(),
 } satisfies IStationService;
 
 export const mockStation = (updates: Partial<Station>): Station => ({

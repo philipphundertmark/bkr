@@ -9,8 +9,8 @@ import { ITokenService } from '../services/token.service';
 import { handler } from './handler';
 
 export function TokenController(
-  tokenService: ITokenService,
   stationService: IStationService,
+  tokenService: ITokenService,
 ): Router {
   const router = Router();
 

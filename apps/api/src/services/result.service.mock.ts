@@ -6,24 +6,12 @@ import { Result } from '@bkr/api-interface';
 import { IResultService } from './result.service';
 
 export const resultServiceMock = {
-  createResult: jest.fn((...args) => {
-    throw new Error('createResult not implemented');
-  }),
-  deleteResult: jest.fn((...args) => {
-    throw new Error('deleteResult not implemented');
-  }),
-  deleteResultsByTeamId: jest.fn((...args) => {
-    throw new Error('deleteResultsByTeamId not implemented');
-  }),
-  getAll: jest.fn((...args) => {
-    throw new Error('getAll not implemented');
-  }),
-  getResultById: jest.fn((...args) => {
-    throw new Error('getResultById not implemented');
-  }),
-  updateResult: jest.fn((...args) => {
-    throw new Error('updateResult not implemented');
-  }),
+  createResult: jest.fn(),
+  deleteResult: jest.fn(),
+  deleteResultsByTeamId: jest.fn(),
+  getAll: jest.fn(),
+  getResultById: jest.fn(),
+  updateResult: jest.fn(),
 } satisfies IResultService;
 
 export const mockResult = (updates: Partial<Result>): Result => ({

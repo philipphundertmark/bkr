@@ -6,27 +6,13 @@ import { Ranking, Team } from '@bkr/api-interface';
 import { ITeamService } from './team.service';
 
 export const teamServiceMock = {
-  createTeam: jest.fn(async (...args) => {
-    throw new Error('createTeam not implemented');
-  }),
-  deleteTeam: jest.fn(async (...args) => {
-    throw new Error('deleteTeam not implemented');
-  }),
-  getAll: jest.fn(async (...args) => {
-    throw new Error('getAll not implemented');
-  }),
-  getTeamById: jest.fn(async (...args) => {
-    throw new Error('getTeamById not implement');
-  }),
-  getTeamByNumber: jest.fn(async (...args) => {
-    throw new Error('getTeamByNumber not implemented');
-  }),
-  scheduleTeams: jest.fn(async (...args) => {
-    throw new Error('scheduleTeams not implemented');
-  }),
-  updateTeam: jest.fn(async (...args) => {
-    throw new Error('updateTeam not implemented');
-  }),
+  createTeam: jest.fn(),
+  deleteTeam: jest.fn(),
+  getAll: jest.fn(),
+  getTeamById: jest.fn(),
+  getTeamByNumber: jest.fn(),
+  scheduleTeams: jest.fn(),
+  updateTeam: jest.fn(),
 } satisfies ITeamService;
 
 export const mockTeam = (updates: Partial<Team>): Team => ({

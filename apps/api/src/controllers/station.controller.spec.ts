@@ -1,8 +1,9 @@
 import axios from 'axios';
+import express from 'express';
 import http from 'http';
 
-import { createApp } from '../app';
-import { StationService } from '../services/station.service';
+import { setupApp } from '../app';
+import { liveServiceMock } from '../services/live.service.mock';
 import {
   mockStation,
   stationServiceMock,
@@ -19,9 +20,9 @@ const client = axios.create({
   validateStatus: () => true,
 });
 
-const app = createApp([
-  StationController(stationServiceMock as unknown as StationService),
-]);
+const app = express();
+setupApp(app, [StationController(liveServiceMock, stationServiceMock)]);
+
 const server = http.createServer(app);
 
 describe('StationController', () => {
@@ -249,6 +250,7 @@ describe('StationController', () => {
           code: '123456',
         }),
       );
+      stationServiceMock.getStationByNumber.mockResolvedValueOnce(null);
 
       const response = await client.post(
         '/stations',
@@ -637,7 +639,7 @@ describe('StationController', () => {
       });
 
       stationServiceMock.getStationById.mockResolvedValueOnce(station);
-      stationServiceMock.deleteStation.mockResolvedValueOnce();
+      stationServiceMock.deleteStation.mockResolvedValueOnce(undefined);
 
       const response = await client.delete('/stations/1', {
         headers: mockAuthorizationHeaderForAdmin(),

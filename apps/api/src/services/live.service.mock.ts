@@ -6,33 +6,15 @@ import { Settings } from '@bkr/api-interface';
 import { ILiveService } from './live.service';
 
 export const liveServiceMock = {
-  sendDeleteResultEvent: jest.fn((...args) => {
-    throw new Error('sendDeleteResultEvent not implemented');
-  }),
-  sendDeleteResultsOfTeamEvent: jest.fn((...args) => {
-    throw new Error('sendDeleteResultsOfTeamEvent not implemented');
-  }),
-  sendDeleteStationEvent: jest.fn((...args) => {
-    throw new Error('sendDeleteStationEvent not implemented');
-  }),
-  sendDeleteTeamEvent: jest.fn((...args) => {
-    throw new Error('sendDeleteTeamEvent not implemented');
-  }),
-  sendSetResultEvent: jest.fn((...args) => {
-    throw new Error('sendSetResultEvent not implemented');
-  }),
-  sendSetSettingsEvent: jest.fn((...args) => {
-    throw new Error('sendSetSettingsEvent not implemented');
-  }),
-  sendSetStationEvent: jest.fn((...args) => {
-    throw new Error('sendSetStationEvent not implemented');
-  }),
-  sendSetTeamEvent: jest.fn((...args) => {
-    throw new Error('sendSetTeamEvent not implemented');
-  }),
-  sendSetTeamsEvent: jest.fn((...args) => {
-    throw new Error('sendSetTeamsEvent not implemented');
-  }),
+  sendDeleteResultEvent: jest.fn(),
+  sendDeleteResultsOfTeamEvent: jest.fn(),
+  sendDeleteStationEvent: jest.fn(),
+  sendDeleteTeamEvent: jest.fn(),
+  sendSetResultEvent: jest.fn(),
+  sendSetSettingsEvent: jest.fn(),
+  sendSetStationEvent: jest.fn(),
+  sendSetTeamEvent: jest.fn(),
+  sendSetTeamsEvent: jest.fn(),
 } satisfies ILiveService;
 
 export const mockSettings = (updates: Partial<Settings>): Settings => ({

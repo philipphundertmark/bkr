@@ -1,7 +1,8 @@
 import axios from 'axios';
+import express from 'express';
 import http from 'http';
 
-import { createApp } from '../app';
+import { setupApp } from '../app';
 import { StationService } from '../services/station.service';
 import { stationServiceMock } from '../services/station.service.mock';
 import { TokenService } from '../services/token.service';
@@ -14,10 +15,11 @@ const client = axios.create({
   validateStatus: () => true,
 });
 
-const app = createApp([
+const app = express();
+setupApp(app, [
   TokenController(
-    tokenServiceMock as unknown as TokenService,
     stationServiceMock as unknown as StationService,
+    tokenServiceMock as unknown as TokenService,
   ),
 ]);
 const server = http.createServer(app);

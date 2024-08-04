@@ -1,10 +1,10 @@
 import axios from 'axios';
+import express from 'express';
 import http from 'http';
 
-import { createApp } from '../app';
-import { ResultService } from '../services/result.service';
+import { setupApp } from '../app';
+import { liveServiceMock } from '../services/live.service.mock';
 import { resultServiceMock } from '../services/result.service.mock';
-import { TeamService } from '../services/team.service';
 import { teamServiceMock } from '../services/team.service.mock';
 import { TeamController } from './team.controller';
 
@@ -14,11 +14,9 @@ const client = axios.create({
   validateStatus: () => true,
 });
 
-const app = createApp([
-  TeamController(
-    resultServiceMock as unknown as ResultService,
-    teamServiceMock as unknown as TeamService,
-  ),
+const app = express();
+setupApp(app, [
+  TeamController(liveServiceMock, resultServiceMock, teamServiceMock),
 ]);
 const server = http.createServer(app);
 

@@ -1,15 +1,14 @@
 import axios from 'axios';
+import express from 'express';
 import http from 'http';
 
-import { createApp } from '../app';
-import { ResultService } from '../services/result.service';
+import { setupApp } from '../app';
+import { liveServiceMock } from '../services/live.service.mock';
 import { mockResult, resultServiceMock } from '../services/result.service.mock';
-import { StationService } from '../services/station.service';
 import {
   mockStation,
   stationServiceMock,
 } from '../services/station.service.mock';
-import { TeamService } from '../services/team.service';
 import { mockTeam, teamServiceMock } from '../services/team.service.mock';
 import { mockAuthorizationHeaderForStation } from '../test-utils';
 import { ResultController } from './result.controller';
@@ -20,11 +19,13 @@ const client = axios.create({
   validateStatus: () => true,
 });
 
-const app = createApp([
+const app = express();
+setupApp(app, [
   ResultController(
-    resultServiceMock as unknown as ResultService,
-    stationServiceMock as unknown as StationService,
-    teamServiceMock as unknown as TeamService,
+    liveServiceMock,
+    resultServiceMock,
+    stationServiceMock,
+    teamServiceMock,
   ),
 ]);
 const server = http.createServer(app);

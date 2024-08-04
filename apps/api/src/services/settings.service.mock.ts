@@ -6,9 +6,7 @@ import { Settings } from '@bkr/api-interface';
 import { ISettingsService } from './settings.service';
 
 export const settingsServiceMock = {
-  upsertSettings: jest.fn((...args) => {
-    throw new Error('upsertSettings not implemented');
-  }),
+  upsertSettings: jest.fn(),
 } satisfies ISettingsService;
 
 export const mockSettings = (updates: Partial<Settings>): Settings => ({

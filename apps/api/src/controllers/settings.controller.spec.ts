@@ -1,8 +1,9 @@
 import axios from 'axios';
+import express from 'express';
 import http from 'http';
 
-import { createApp } from '../app';
-import { SettingsService } from '../services/settings.service';
+import { setupApp } from '../app';
+import { liveServiceMock } from '../services/live.service.mock';
 import { settingsServiceMock } from '../services/settings.service.mock';
 import { SettingsController } from './settings.controller';
 
@@ -12,9 +13,8 @@ const client = axios.create({
   validateStatus: () => true,
 });
 
-const app = createApp([
-  SettingsController(settingsServiceMock as unknown as SettingsService),
-]);
+const app = express();
+setupApp(app, [SettingsController(liveServiceMock, settingsServiceMock)]);
 const server = http.createServer(app);
 
 describe('SettingsController', () => {
