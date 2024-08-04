@@ -4,16 +4,49 @@ import dayjs from 'dayjs';
 import { Result } from '@bkr/api-interface';
 
 export interface IResultService {
+  /**
+   * Creates a new result for the specified station and team.
+   *
+   * @param stationId - The ID of the station.
+   * @param teamId - The ID of the team.
+   */
   createResult(stationId: string, teamId: string): Promise<Result>;
 
+  /**
+   * Deletes the result of the specified station and team.
+   *
+   * @param stationId - The ID of the station.
+   * @param teamId - The ID of the team.
+   */
   deleteResult(stationId: string, teamId: string): Promise<void>;
 
+  /**
+   * Deletes all results of the specified team.
+   *
+   * @param teamId - The ID of the team.
+   */
   deleteResultsByTeamId(teamId: string): Promise<void>;
 
+  /**
+   * Returns all results.
+   */
   getAll(): Promise<Result[]>;
 
+  /**
+   * Returns the result of the specified station and team.
+   *
+   * @param stationId - The ID of the station.
+   * @param teamId - The ID of the team.
+   */
   getResultById(stationId: string, teamId: string): Promise<Result | null>;
 
+  /**
+   * Updates the result of the specified station and team.
+   *
+   * @param stationId - The ID of the station.
+   * @param teamId - The ID of the team.
+   * @param updates - The updates to apply to the result.
+   */
   updateResult(
     stationId: string,
     teamId: string,
@@ -122,6 +155,12 @@ export class ResultService implements IResultService {
     return this.toResult(result);
   }
 
+  /**
+   * Converts a result read from the database to a result object.
+   *
+   * @param result - The result read from the database.
+   * @returns The result object.
+   */
   private toResult(result: PrismaResult): Result {
     return {
       ...result,

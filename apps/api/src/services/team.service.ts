@@ -4,6 +4,14 @@ import dayjs from 'dayjs';
 import { Ranking, Team } from '@bkr/api-interface';
 
 export interface ITeamService {
+  /**
+   * Creates a team with the specified properties.
+   *
+   * @param name - The name of the team.
+   * @param number - The number of the team.
+   * @param members - The members of the team.
+   * @param ranking - The ranking the team is participating in.
+   */
   createTeam(
     name: string,
     number: number,
@@ -11,16 +19,48 @@ export interface ITeamService {
     ranking: Ranking,
   ): Promise<Team>;
 
+  /**
+   * Deletes the team with the specified ID.
+   *
+   * @param id - The ID of the team to delete.
+   */
   deleteTeam(id: string): Promise<void>;
 
+  /**
+   * Returns all teams.
+   */
   getAll(): Promise<Team[]>;
 
+  /**
+   * Returns the team with the specified ID.
+   *
+   * @param id - The ID of the team to retrieve.
+   */
   getTeamById(id: string): Promise<Team | null>;
 
+  /**
+   * Returns the team with the specified number.
+   * If no team with the specified number exists, null is returned.
+   *
+   * @param number - The number of the team to retrieve.
+   */
   getTeamByNumber(number: number): Promise<Team | null>;
 
+  /**
+   * Schedules the teams with the specified start time and interval.
+   * This also shuffles the teams.
+   *
+   * @param start - The start time of the first team.
+   * @param interval - The interval between the teams in minutes.
+   */
   scheduleTeams(start: string, interval: number): Promise<Team[]>;
 
+  /**
+   * Updates the team with the specified ID.
+   *
+   * @param id - The ID of the team to update.
+   * @param updates - The updates to apply to the team.
+   */
   updateTeam(
     id: string,
     updates: {
@@ -195,6 +235,12 @@ export class TeamService implements ITeamService {
     return this.toTeam(team);
   }
 
+  /**
+   * Converts a team read from the database to a team object.
+   *
+   * @param team - The team read from the database.
+   * @returns The team object.
+   */
   private toTeam(team: PrismaTeam): Team {
     return {
       ...team,

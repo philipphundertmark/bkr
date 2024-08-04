@@ -4,6 +4,12 @@ import dayjs from 'dayjs';
 import { Settings } from '@bkr/api-interface';
 
 export interface ISettingsService {
+  /**
+   * Update the settings with the specified updates.
+   * If the settings do not exist, they will be created.
+   *
+   * @param updates - The updates to apply to the settings.
+   */
   upsertSettings(updates?: { publishResults?: boolean }): Promise<Settings>;
 }
 
@@ -38,6 +44,12 @@ export class SettingsService implements ISettingsService {
     return this.toSettings(settings);
   }
 
+  /**
+   * Converts settings read from the database to a settings object.
+   *
+   * @param settings - The settings read from the database.
+   * @returns The settings object.
+   */
   private toSettings(settings: PrismaSettings): Settings {
     return {
       ...settings,

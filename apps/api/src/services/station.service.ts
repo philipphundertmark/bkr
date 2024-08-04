@@ -4,6 +4,15 @@ import dayjs from 'dayjs';
 import { Station } from '@bkr/api-interface';
 
 export interface IStationService {
+  /**
+   * Creates a station with the specified properties.
+   *
+   * @param name - The name of the station.
+   * @param number - The number of the station.
+   * @param members - The members of the station.
+   * @param code - The code of the station.
+   * @param order - The order of the station.
+   */
   createStation(
     name: string,
     number: number,
@@ -12,16 +21,47 @@ export interface IStationService {
     order: Order,
   ): Promise<Station>;
 
+  /**
+   * Deletes the station with the specified ID.
+   *
+   * @param id - The ID of the station to delete.
+   */
   deleteStation(id: string): Promise<void>;
 
+  /**
+   * Returns all stations.
+   */
   getAll(): Promise<Station[]>;
 
+  /**
+   * Returns the station with the specified ID.
+   *
+   * @param id - The ID of the station to retrieve.
+   */
   getStationById(id: string): Promise<Station | null>;
 
+  /**
+   * Returns the station with the specified number.
+   * If no station with the specified number exists, null is returned.
+   *
+   * @param number - The number of the station to retrieve.
+   */
   getStationByNumber(number: number): Promise<Station | null>;
 
+  /**
+   * Returns the station with the specified code.
+   * If no station with the specified code exists, null is returned.
+   *
+   * @param code - The code of the station to retrieve.
+   */
   getStationByCode(code: string): Promise<Station | null>;
 
+  /**
+   * Updates the station with the specified ID.
+   *
+   * @param id - The ID of the station to update.
+   * @param updates - The updates to apply to the station.
+   */
   updateStation(
     id: string,
     updates: {
@@ -148,6 +188,12 @@ export class StationService implements IStationService {
     return this.toStation(station);
   }
 
+  /**
+   * Converts a station read from the database to a station object.
+   *
+   * @param station - The station read from the database.
+   * @returns The station object.
+   */
   private toStation(station: PrismaStation): Station {
     return {
       ...station,

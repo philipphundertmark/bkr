@@ -5,6 +5,10 @@ import { Role } from '@bkr/api-interface';
 import { config } from '../config';
 
 export interface ITokenService {
+  /**
+   * Creates a new token for the specified subject and role.
+   * The token will expire in 7 days by default.
+   */
   createToken(sub: string, role: Role, expiresIn?: string | number): string;
 }
 
