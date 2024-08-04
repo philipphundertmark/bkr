@@ -59,7 +59,12 @@ export class Store {
       .sort((a, b) => a.number - b.number),
   );
 
-  private timer = toSignal(timer(0, 1000));
+  // Start the timer at the next full second
+  private readonly timerStart = dayjs()
+    .millisecond(0)
+    .add(1, 'second')
+    .toDate();
+  private timer = toSignal(timer(this.timerStart, 1000));
 
   results = computed(() => this._results());
   settings = computed(() => this._settings());
