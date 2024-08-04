@@ -35,17 +35,11 @@ const tokenService = new TokenService();
 setupApp(
   app,
   [
-    ResultController(
-      liveService,
-      resultService,
-      settingsService,
-      stationService,
-      teamService,
-    ),
+    ResultController(liveService, resultService, stationService, teamService),
     SettingsController(liveService, settingsService),
     StationController(liveService, stationService),
     TeamController(liveService, resultService, teamService),
-    TokenController(tokenService, stationService),
+    TokenController(stationService, tokenService),
   ],
   {
     origin: config.ORIGIN,
