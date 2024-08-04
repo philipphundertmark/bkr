@@ -2,13 +2,14 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  HostBinding,
   computed,
+  input,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 import {
+  Order,
   Ranking,
   ResultWithRank,
   StationUtils,
@@ -42,47 +43,43 @@ type ResultWithRankAndTeam = ResultWithRank & { team: TeamWithResults };
     TabComponent,
     TabsComponent,
   ],
+  host: { class: 'page' },
+  styleUrl: './station-results.component.scss',
   templateUrl: './station-results.component.html',
-  styleUrls: ['./station-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StationResultsComponent {
-  @HostBinding('class.page') page = true;
-
+  readonly Order = Order;
   readonly Ranking = Ranking;
   readonly StationUtils = StationUtils;
   readonly TeamUtils = TeamUtils;
 
-  ranking = this.preferencesService.stationResultsSelectedRanking;
-
-  paramMap = toSignal(this.route.paramMap, {
-    initialValue: null,
-  });
+  /**
+   * Route parameter
+   */
+  stationId = input.required<string>();
 
   isAdmin = toSignal(this.authService.isAdmin$, {
     initialValue: false,
   });
 
-  isRaceOver = this.store.raceIsOver;
-  publishResults = this.store.publishResults;
+  ranking = this.preferencesService.stationResultsSelectedRanking;
 
   stations = this.store.stations;
   teams = this.store.teams;
+
+  isRaceOver = this.store.raceIsOver;
+  publishResults = this.store.publishResults;
 
   teamsForRanking = computed(() =>
     this.teams().filter((team) => team.ranking === this.ranking()),
   );
 
-  stationId = computed(() => this.paramMap()?.get('stationId') ?? null);
-  station = computed(() => {
-    const stationId = this.stationId();
-
-    if (!stationId) {
-      return null;
-    }
-
-    return this.stations().find((station) => station.id === stationId) ?? null;
-  });
+  station = computed(
+    () =>
+      this.stations().find((station) => station.id === this.stationId()) ??
+      null,
+  );
 
   results = computed(() => {
     const station = this.station();
@@ -110,7 +107,6 @@ export class StationResultsComponent {
   constructor(
     private readonly authService: AuthService,
     private readonly preferencesService: PreferencesService,
-    private readonly route: ActivatedRoute,
     private readonly store: Store,
   ) {}
 }

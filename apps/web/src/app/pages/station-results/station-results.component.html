@@ -1,73 +1,70 @@
-<header class="header" *ngIf="station() as station">
-  <a
-    bkr-backward-button
-    class="col-span-1"
-    [routerLink]="['/stations', station.id]"
-  >
-    Zurück
-  </a>
-</header>
+@if (station(); as station) {
+  <header class="header">
+    <a
+      bkr-backward-button
+      class="col-span-1"
+      [routerLink]="['/stations', station.id]"
+    >
+      Zurück
+    </a>
+  </header>
 
-<div class="space-y-1">
-  <h2 class="subtitle">Ergebnisse</h2>
-  <p class="text-gray-500">
-    Die Ergebnisse aller Teams an {{ station()?.name ?? 'dieser Station' }}.
-  </p>
-</div>
+  <div class="space-y-1">
+    <h2 class="subtitle">Ergebnisse</h2>
+    <p class="text-gray-500">
+      Die Ergebnisse aller Teams an {{ station.name }}.
+    </p>
+  </div>
 
-<bkr-alert *ngIf="station() as station" [ngSwitch]="station.order">
-  <ng-container *ngSwitchCase="'ASC'">
-    An dieser Station gewinnt das Team mit den
-    <span class="font-semibold">wenigsten</span> Punkten.
-  </ng-container>
-  <ng-container *ngSwitchCase="'DESC'">
-    An dieser Station gewinnt das Team mit den
-    <span class="font-semibold">meisten</span> Punkten.
-  </ng-container>
-</bkr-alert>
+  <bkr-alert>
+    @if (station.order === Order.ASC) {
+      An dieser Station gewinnt das Team mit den
+      <span class="font-semibold">wenigsten</span> Punkten.
+    } @else {
+      An dieser Station gewinnt das Team mit den
+      <span class="font-semibold">meisten</span> Punkten.
+    }
+  </bkr-alert>
 
-<bkr-tabs [(activeTab)]="ranking">
-  <bkr-tab [key]="Ranking.A">A-Wertung</bkr-tab>
-  <bkr-tab [key]="Ranking.B">B-Wertung</bkr-tab>
-</bkr-tabs>
+  <bkr-tabs [(activeTab)]="ranking">
+    <bkr-tab [key]="Ranking.A">A-Wertung</bkr-tab>
+    <bkr-tab [key]="Ranking.B">B-Wertung</bkr-tab>
+  </bkr-tabs>
+}
 
-<ng-container
-  *ngIf="isRaceOver() && (isAdmin() || publishResults()); else unavailable"
->
-  <ul class="list" *ngIf="results().length > 0; else empty">
-    <li class="list-entry" *ngFor="let result of results()">
-      <div class="font-bold">{{ result.rank }}.</div>
+@if (results().length === 0) {
+  <bkr-empty>Es gibt keine Ergebnisse an dieser Station.</bkr-empty>
+} @else if (isRaceOver() && (isAdmin() || publishResults())) {
+  <ul class="list">
+    @for (result of results(); track result.teamId) {
+      <li class="list-entry">
+        <div class="font-bold">{{ result.rank }}.</div>
 
-      <div class="flex flex-1 flex-col gap-1">
-        <div class="flex justify-between gap-2">
-          <!-- Team name and number-->
-          <h3 class="name">
-            {{ result.team.name }}
-            <span class="number">#{{ result.team.number }}</span>
-          </h3>
+        <div class="flex flex-1 flex-col gap-1">
+          <div class="flex justify-between gap-2">
+            <!-- Team name and number-->
+            <h3 class="name">
+              {{ result.team.name }}
+              <span class="number">#{{ result.team.number }}</span>
+            </h3>
 
-          <!-- Time bonus -->
-          <div class="whitespace-nowrap font-mono">
-            - {{ StationUtils.getBonusForRank(result.rank) | duration }}
+            <!-- Time bonus -->
+            <div class="whitespace-nowrap font-mono">
+              - {{ StationUtils.getBonusForRank(result.rank) | duration }}
+            </div>
           </div>
+
+          <!-- Team members -->
+          <p class="text-gray-500">
+            {{ TeamUtils.formatTeamMembers(result.team) }}
+          </p>
+
+          <!-- Points -->
+          <p class="font-semibold">{{ result.points }} Punkte</p>
         </div>
-
-        <!-- Team members -->
-        <p class="text-gray-500">
-          {{ TeamUtils.formatTeamMembers(result.team) }}
-        </p>
-
-        <!-- Points -->
-        <p class="font-semibold">{{ result.points }} Punkte</p>
-      </div>
-    </li>
+      </li>
+    }
   </ul>
-
-  <ng-template #empty>
-    <bkr-empty>Es gibt keine Ergebnisse an dieser Station.</bkr-empty>
-  </ng-template>
-</ng-container>
-
-<ng-template #unavailable>
+} @else {
   <bkr-empty>Die Ergebnisse stehen noch nicht zur Verfügung.</bkr-empty>
-</ng-template>
+}

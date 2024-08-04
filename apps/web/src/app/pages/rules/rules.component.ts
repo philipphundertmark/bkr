@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { ButtonComponent } from '../../components';
@@ -9,10 +9,9 @@ import { MapIconComponent } from '../../icons/mini';
   selector: 'bkr-rules',
   standalone: true,
   imports: [ButtonComponent, CommonModule, MapIconComponent, RouterModule],
+  host: { class: 'page' },
+  styleUrl: './rules.component.scss',
   templateUrl: './rules.component.html',
-  styleUrls: ['./rules.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RulesComponent {
-  @HostBinding('class.page') page = true;
-}
+export class RulesComponent {}
