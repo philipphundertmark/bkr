@@ -1,17 +1,13 @@
-<bkr-chevron-left-icon
-  class="-ml-1.5"
-  *ngIf="isBackward"
-></bkr-chevron-left-icon>
+@if (isBackward) {
+  <bkr-chevron-left-icon class="-ml-1.5"></bkr-chevron-left-icon>
+}
 
-<ng-container *ngIf="!bkrLoading; else loading">
+@if (bkrLoading) {
+  <bkr-spinner></bkr-spinner>
+} @else {
   <ng-content></ng-content>
-</ng-container>
+}
 
-<ng-template #loading>
-  <bkr-spinner *ngIf="bkrLoading"></bkr-spinner>
-</ng-template>
-
-<bkr-chevron-right-icon
-  class="-mr-1.5"
-  *ngIf="isForward"
-></bkr-chevron-right-icon>
+@if (isForward) {
+  <bkr-chevron-right-icon class="-mr-1.5"></bkr-chevron-right-icon>
+}

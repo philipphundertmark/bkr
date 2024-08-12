@@ -1,21 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 
-import {
-  ChevronRightIconComponent,
-  ExclamationCircleIconComponent,
-} from '../../icons/mini';
+import { ChevronRightIconComponent } from '../../icons/mini';
 
 @Component({
   selector: 'bkr-danger-zone',
   standalone: true,
-  imports: [
-    ChevronRightIconComponent,
-    CommonModule,
-    ExclamationCircleIconComponent,
-  ],
+  imports: [ChevronRightIconComponent, CommonModule],
+  styleUrl: './danger-zone.component.scss',
   templateUrl: './danger-zone.component.html',
-  styleUrls: ['./danger-zone.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DangerZoneComponent {

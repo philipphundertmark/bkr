@@ -1,22 +1,16 @@
-<div class="flex items-center gap-4" (click)="toggleCollapsed()" role="button">
-  <div
-    class="flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-500"
-  >
-    <bkr-exclamation-circle-icon></bkr-exclamation-circle-icon>
+<div class="flex flex-col gap-2" (click)="toggleCollapsed()" role="button">
+  <div class="flex items-center gap-2 -ml-1">
+    <bkr-chevron-right-icon
+      class="text-red-500"
+      [ngClass]="{ 'rotate-90': !collapsed() }"
+    >
+    </bkr-chevron-right-icon>
+    <h2 class="subtitle danger">Danger zone</h2>
   </div>
 
-  <div class="space-y-1">
-    <div class="flex items-center gap-2">
-      <bkr-chevron-right-icon
-        class="text-red-500"
-        [ngClass]="{ 'rotate-90': !collapsed() }"
-      >
-      </bkr-chevron-right-icon>
-      <h2 class="subtitle danger">Danger zone</h2>
-    </div>
-
-    <p class="text-gray-500">Hier wird's gefährlich.</p>
-  </div>
+  <p class="text-gray-500">Hier wird's gefährlich.</p>
 </div>
 
-<ng-content *ngIf="!collapsed()"></ng-content>
+@if (!collapsed()) {
+  <ng-content></ng-content>
+}
