@@ -15,6 +15,7 @@
     "lint": "nx affected:lint",
     "lint:all": "nx run-many -t lint",
     "migrate:reset": "prisma migrate reset --force",
+    "postinstall": "cp -n .env.example .env",
     "prisma:clear-results": "ts-node prisma/scripts/clear-results.ts",
     "prisma:dump": "ts-node prisma/scripts/dump.ts",
     "prisma:generate-results": "ts-node prisma/scripts/generate-results.ts",

@@ -1,12 +1,8 @@
 {
-  "[prisma]": {
-    "editor.defaultFormatter": "Prisma.prisma"
-  },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
   "files.associations": {
     "*.scss": "tailwindcss"
   },
-  "tailwindCSS.emmetCompletions": true,
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  }
 }
