@@ -2,11 +2,11 @@
   <a bkr-button class="col-span-1" routerLink="/teams">Abbrechen</a>
   <button
     bkr-button
+    [bkrLoading]="loading()"
     bkrType="primary"
     class="col-span-1"
     (click)="handleSave()"
     [disabled]="form.invalid || loading()"
-    [bkrLoading]="loading()"
   >
     Speichern
   </button>
@@ -31,7 +31,7 @@
   </div>
 
   <div class="flex flex-col gap-2">
-    <label class="label"> Wertung<span class="text-indigo-500">*</span> </label>
+    <label class="label">Wertung<span class="text-indigo-500">*</span></label>
 
     <div class="flex items-center gap-4">
       <input
@@ -53,7 +53,7 @@
         type="radio"
         [value]="Ranking.B"
       />
-      <label for="ranking-b"> B-Wertung </label>
+      <label for="ranking-b">B-Wertung</label>
     </div>
   </div>
 

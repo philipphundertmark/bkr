@@ -6,11 +6,11 @@
 
     <button
       bkr-button
+      [bkrLoading]="saveLoading()"
       bkrType="primary"
       class="col-span-1"
       (click)="handleSave(team.id)"
       [disabled]="form.invalid || saveLoading()"
-      [bkrLoading]="saveLoading()"
     >
       Speichern
     </button>
@@ -82,7 +82,7 @@
           [value]="Ranking.A"
         />
 
-        <label for="ranking-a"> A-Wertung </label>
+        <label for="ranking-a">A-Wertung</label>
       </div>
 
       <div class="flex items-center gap-4">
@@ -93,7 +93,7 @@
           type="radio"
           [value]="Ranking.B"
         />
-        <label for="ranking-b"> B-Wertung </label>
+        <label for="ranking-b">B-Wertung</label>
       </div>
     </div>
 
@@ -112,7 +112,7 @@
     </div>
 
     <div class="flex flex-col gap-2">
-      <label class="label">Members</label>
+      <label class="label">Mitglieder</label>
       <bkr-members-input formControlName="members"></bkr-members-input>
     </div>
   </form>
