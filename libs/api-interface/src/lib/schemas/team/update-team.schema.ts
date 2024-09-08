@@ -13,9 +13,9 @@ export interface UpdateTeamSchema {
 }
 
 export const UpdateTeamSchema: joi.ObjectSchema<UpdateTeamSchema> = joi.object({
-  name: joi.string().min(3),
+  name: joi.string(),
   number: joi.number().min(1),
-  members: joi.array().items(joi.string().min(3)),
+  members: joi.array().items(joi.string()),
   startedAt: joi.string().isoDate().allow(null),
   finishedAt: joi.string().isoDate().allow(null),
   ranking: joi.string().valid(Ranking.A, Ranking.B),

@@ -12,7 +12,7 @@ export interface UpdateStationSchema {
 
 export const UpdateStationSchema: joi.ObjectSchema<UpdateStationSchema> =
   joi.object({
-    name: joi.string().min(3),
+    name: joi.string(),
     number: joi.number().min(1),
     members: joi.array().items(joi.string()),
     code: joi.string().length(6),
