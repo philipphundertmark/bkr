@@ -1,7 +1,7 @@
 <!-- Newsfeed -->
 @if (events().length > 0) {
   <ul role="list" class="space-y-6 -ml-3">
-    @for (event of events(); track $index) {
+    @for (event of displayedEvents(); track $index) {
       <li class="relative items-start flex gap-x-4">
         @if ($index < events().length - 1) {
           <!-- Vertical timeline element -->

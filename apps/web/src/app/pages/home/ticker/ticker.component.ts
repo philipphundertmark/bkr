@@ -2,8 +2,10 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  HostListener,
   computed,
   input,
+  signal,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import dayjs from 'dayjs';
@@ -58,6 +60,7 @@ export type Event = StartEvent | FinishEvent | CheckInEvent | CheckOutEvent;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TickerComponent {
+  readonly BATCH_SIZE = 20;
   readonly EventType = EventType;
 
   isRaceOver = input(false);
@@ -66,9 +69,26 @@ export class TickerComponent {
   stations = input.required<Station[]>();
   teams = input.required<Team[]>();
 
+  currentIndex = signal(this.BATCH_SIZE);
+  displayedEvents = computed(() => this.events().slice(0, this.currentIndex()));
   events = computed(() =>
     this.computeEvents(this.results(), this.stations(), this.teams()),
   );
+
+  // Detect when user scrolls to the bottom
+  @HostListener('window:scroll', [])
+  onScroll(): void {
+    const scrollPosition = window.innerHeight + window.scrollY; // Current scroll position
+    const threshold = document.body.offsetHeight * 0.8; // 80% of the page height
+
+    // Check if more items are available to load
+    const moreItemsAvailable = this.currentIndex() < this.events().length;
+
+    if (scrollPosition >= threshold && moreItemsAvailable) {
+      // If the user has scrolled past 80% of the page, load more items
+      this.currentIndex.update((prev) => prev + this.BATCH_SIZE);
+    }
+  }
 
   private computeEvents(
     results: Result[],
