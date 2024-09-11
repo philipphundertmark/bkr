@@ -78,13 +78,17 @@ export class TickerComponent {
   // Detect when user scrolls to the bottom
   @HostListener('window:scroll', [])
   onScroll(): void {
+    const moreItemsAvailable = this.currentIndex() < this.events().length;
+
+    // Check if more items are available to load
+    if (!moreItemsAvailable) {
+      return;
+    }
+
     const scrollPosition = window.innerHeight + window.scrollY; // Current scroll position
     const threshold = document.body.offsetHeight * 0.8; // 80% of the page height
 
-    // Check if more items are available to load
-    const moreItemsAvailable = this.currentIndex() < this.events().length;
-
-    if (scrollPosition >= threshold && moreItemsAvailable) {
+    if (scrollPosition >= threshold) {
       // If the user has scrolled past 80% of the page, load more items
       this.currentIndex.update((prev) => prev + this.BATCH_SIZE);
     }
